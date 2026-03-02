@@ -1,0 +1,1240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Philipp Beer — Builder, Investor, Dad</title>
+  <meta name="description" content="Philipp Beer is a builder, investor, and growth operator based in Berlin. General Partner at w3.wave, angel investor, and maker of AI-powered tools.">
+  <meta property="og:title" content="Philipp Beer — Builder, Investor, Dad">
+  <meta property="og:description" content="Builder, investor, and growth operator based in Berlin. Thinking about what happens when the cost of building drops to nearly zero.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://philippbeer.me">
+  <meta name="twitter:card" content="summary">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      font-family: 'IBM Plex Mono', monospace;
+      background: #c8bfa9;
+      background-image:
+        radial-gradient(ellipse at 30% 20%, #d4c9b0 0%, transparent 50%),
+        radial-gradient(ellipse at 70% 80%, #b8ad96 0%, transparent 50%);
+      color: #ffb347;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ==========================================
+       THE COMPUTER
+       ========================================== */
+    .computer {
+      width: 100%;
+      max-width: 820px;
+    }
+
+    /* ---- TOP STRIP (label / vents) ---- */
+    .computer-top {
+      background: linear-gradient(180deg, #d6cdb8 0%, #ccc3ae 100%);
+      border: 1px solid #b3aa96;
+      border-bottom: none;
+      border-radius: 12px 12px 0 0;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .computer-brand {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #8a8070;
+    }
+
+    .computer-model {
+      background: #c4675c;
+      color: #fff;
+      font-size: 8px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      padding: 3px 10px;
+      border-radius: 2px;
+      text-transform: uppercase;
+    }
+
+    .vent-group {
+      display: flex;
+      gap: 3px;
+    }
+
+    .vent {
+      width: 20px;
+      height: 2px;
+      background: #b3aa96;
+      border-radius: 1px;
+    }
+
+    /* ---- MONITOR HOUSING ---- */
+    .monitor {
+      background: linear-gradient(180deg, #ccc3ae 0%, #c0b69e 50%, #b8ad96 100%);
+      border-left: 1px solid #b3aa96;
+      border-right: 1px solid #b3aa96;
+      padding: 20px 24px;
+    }
+
+    /* ---- CRT SCREEN ---- */
+    .screen-bezel {
+      background: #3a3632;
+      border-radius: 12px;
+      padding: 12px;
+      box-shadow:
+        inset 0 2px 8px rgba(0,0,0,0.5),
+        0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .screen {
+      background: #1c1c18;
+      border-radius: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* CRT scanline overlay */
+    .screen::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 0, 0, 0.08) 2px,
+        rgba(0, 0, 0, 0.08) 4px
+      );
+      pointer-events: none;
+      z-index: 10;
+      border-radius: 8px;
+    }
+
+    /* CRT vignette / curvature glow */
+    .screen::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        ellipse at center,
+        transparent 60%,
+        rgba(0, 0, 0, 0.35) 100%
+      );
+      pointer-events: none;
+      z-index: 11;
+      border-radius: 8px;
+    }
+
+    /* Screen reflection glare */
+    .screen-glare {
+      position: absolute;
+      top: -20%;
+      left: -20%;
+      width: 80%;
+      height: 80%;
+      background: radial-gradient(
+        ellipse at 40% 40%,
+        rgba(255, 255, 255, 0.03) 0%,
+        transparent 60%
+      );
+      pointer-events: none;
+      z-index: 12;
+    }
+
+    .screen-content {
+      padding: 40px 36px;
+      max-height: 70vh;
+      overflow-y: auto;
+      position: relative;
+      z-index: 5;
+      scrollbar-width: thin;
+      scrollbar-color: #ffb347 #2a2a24;
+    }
+
+    .screen-content::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .screen-content::-webkit-scrollbar-track {
+      background: #2a2a24;
+    }
+
+    .screen-content::-webkit-scrollbar-thumb {
+      background: #ffb347;
+      border-radius: 3px;
+    }
+
+    /* ---- CONTROL PANEL ---- */
+    .control-panel {
+      background: linear-gradient(180deg, #c0b69e 0%, #ccc3ae 100%);
+      border-left: 1px solid #b3aa96;
+      border-right: 1px solid #b3aa96;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .panel-section {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .knob {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 40% 35%, #444, #1a1a1a 70%);
+      box-shadow:
+        0 2px 4px rgba(0,0,0,0.3),
+        inset 0 1px 2px rgba(255,255,255,0.1);
+      position: relative;
+    }
+
+    .knob::after {
+      content: '';
+      position: absolute;
+      top: 4px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 2px;
+      height: 8px;
+      background: #888;
+      border-radius: 1px;
+    }
+
+    .indicator {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      box-shadow: inset 0 1px 2px rgba(0,0,0,0.3);
+    }
+
+    .indicator.red { background: #c4675c; box-shadow: 0 0 6px rgba(196,103,92,0.6), inset 0 1px 2px rgba(0,0,0,0.3); }
+    .indicator.green { background: #6b8f5e; box-shadow: 0 0 6px rgba(107,143,94,0.5), inset 0 1px 2px rgba(0,0,0,0.3); }
+    .indicator.amber { background: #ffb347; box-shadow: 0 0 6px rgba(255,179,71,0.5), inset 0 1px 2px rgba(0,0,0,0.3); }
+    .indicator.off { background: #555; box-shadow: none; }
+
+    .panel-label {
+      font-size: 7px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #8a8070;
+      font-weight: 700;
+    }
+
+    .panel-btn {
+      width: 20px;
+      height: 14px;
+      border-radius: 3px;
+      border: 1px solid #999;
+      cursor: default;
+    }
+
+    .panel-btn.orange { background: linear-gradient(180deg, #e8834a, #c4675c); }
+    .panel-btn.beige { background: linear-gradient(180deg, #d6cdb8, #c0b69e); }
+    .panel-btn.dark { background: linear-gradient(180deg, #555, #333); }
+
+    .panel-divider {
+      width: 1px;
+      height: 28px;
+      background: #b3aa96;
+      margin: 0 4px;
+    }
+
+    .panel-stripe-group {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .panel-stripe {
+      height: 3px;
+      border-radius: 1px;
+    }
+
+    .panel-stripe.s1 { width: 40px; background: #c4675c; }
+    .panel-stripe.s2 { width: 40px; background: #e8a87c; }
+    .panel-stripe.s3 { width: 40px; background: #f5d6a0; }
+    .panel-stripe.s4 { width: 40px; background: #8a8070; }
+
+    /* ---- BOTTOM HOUSING ---- */
+    .computer-bottom {
+      background: linear-gradient(180deg, #b8ad96 0%, #c0b69e 40%, #ccc3ae 100%);
+      border: 1px solid #b3aa96;
+      border-top: none;
+      border-radius: 0 0 12px 12px;
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .power-led {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #6b8f5e;
+      box-shadow: 0 0 8px rgba(107,143,94,0.7);
+      animation: led-pulse 3s ease-in-out infinite;
+    }
+
+    @keyframes led-pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
+    }
+
+    .floppy-slot {
+      width: 80px;
+      height: 6px;
+      background: #3a3632;
+      border-radius: 1px;
+      border: 1px solid #999;
+    }
+
+    /* ==========================================
+       SCREEN CONTENT STYLES
+       ========================================== */
+
+    /* General text */
+    .screen-content a {
+      color: #f5d6a0;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(245,214,160,0.3);
+      transition: color 0.2s, border-color 0.2s;
+    }
+
+    .screen-content a:hover {
+      color: #fff;
+      border-color: #fff;
+    }
+
+    /* ---- HERO ---- */
+    .hero {
+      text-align: center;
+      padding-bottom: 32px;
+    }
+
+    .hero-cursor {
+      display: inline-block;
+      width: 10px;
+      height: 20px;
+      background: #ffb347;
+      margin-left: 4px;
+      animation: blink 1s step-end infinite;
+      vertical-align: text-bottom;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    h1 {
+      font-family: 'Space Mono', monospace;
+      font-size: 32px;
+      font-weight: 700;
+      color: #ffb347;
+      text-shadow: 0 0 10px rgba(255,179,71,0.4);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .subtitle {
+      font-size: 12px;
+      color: #8a7e5a;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 32px;
+    }
+
+    .reflection {
+      font-size: 14px;
+      line-height: 1.9;
+      color: #d4a54a;
+      font-style: italic;
+      max-width: 540px;
+      margin: 0 auto;
+      text-shadow: 0 0 6px rgba(212,165,74,0.15);
+    }
+
+    /* ---- CONTACT PILLS ---- */
+    .reach-out {
+      padding: 28px 0 8px;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      border: 1px solid #ffb347;
+      border-radius: 2px;
+      padding: 6px 14px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      color: #ffb347;
+      text-decoration: none;
+      transition: background 0.2s, color 0.2s;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .pill:hover {
+      background: #ffb347;
+      color: #1c1c18;
+      border-bottom: 1px solid #ffb347;
+    }
+
+    .pill svg {
+      width: 12px;
+      height: 12px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* ---- DIVIDERS ---- */
+    .divider {
+      border: none;
+      border-top: 1px solid #3a3520;
+      margin: 0;
+    }
+
+    /* ---- SECTIONS ---- */
+    .section {
+      padding: 36px 0;
+    }
+
+    .section + .section {
+      border-top: 1px solid #3a3520;
+    }
+
+    .section-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: #6b8f5e;
+      margin-bottom: 24px;
+      text-shadow: 0 0 6px rgba(107,143,94,0.3);
+    }
+
+    /* ---- NOW ---- */
+    .now-content {
+      border: 1px solid #3a3520;
+      padding: 20px;
+      position: relative;
+    }
+
+    .now-content::before {
+      content: '> status --current';
+      position: absolute;
+      top: -8px;
+      left: 12px;
+      background: #1c1c18;
+      padding: 0 8px;
+      font-size: 10px;
+      color: #6b8f5e;
+      letter-spacing: 1px;
+    }
+
+    .now-content p {
+      color: #c4a44a;
+      font-size: 13px;
+      line-height: 1.9;
+    }
+
+    .now-content strong {
+      color: #ffb347;
+    }
+
+    .now-updated {
+      margin-top: 14px;
+      font-size: 10px;
+      color: #5a5530;
+    }
+
+    /* ---- WORK ROWS ---- */
+    .work-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 10px 0;
+      border-bottom: 1px solid #2a2820;
+    }
+
+    .work-row:last-of-type {
+      border-bottom: none;
+    }
+
+    .work-company {
+      font-weight: 700;
+      font-size: 14px;
+      color: #ffb347;
+    }
+
+    .work-role {
+      font-size: 11px;
+      color: #8a7e5a;
+      margin-top: 1px;
+    }
+
+    .work-years {
+      font-size: 11px;
+      color: #5a5530;
+      white-space: nowrap;
+      margin-left: 12px;
+    }
+
+    /* ---- TOGGLES ---- */
+    .toggle {
+      margin-top: 4px;
+    }
+
+    .toggle-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      color: #6b8f5e;
+      padding: 8px 0;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.2s;
+      text-shadow: 0 0 4px rgba(107,143,94,0.2);
+    }
+
+    .toggle-btn:hover {
+      color: #8fb87e;
+    }
+
+    .toggle-btn:focus-visible {
+      outline: 1px solid #6b8f5e;
+      outline-offset: 4px;
+    }
+
+    .toggle-chevron {
+      display: inline-block;
+      transition: transform 0.25s ease;
+      font-size: 10px;
+    }
+
+    .toggle-btn[aria-expanded="true"] .toggle-chevron {
+      transform: rotate(90deg);
+    }
+
+    .toggle-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease, opacity 0.3s ease;
+      opacity: 0;
+    }
+
+    .toggle-content.open {
+      opacity: 1;
+    }
+
+    .toggle-inner {
+      padding: 4px 0 16px;
+      font-size: 13px;
+      color: #998e5a;
+      line-height: 1.8;
+    }
+
+    .toggle-inner ul {
+      margin-top: 6px;
+      padding-left: 18px;
+    }
+
+    .toggle-inner li {
+      margin-bottom: 4px;
+    }
+
+    .toggle-inner li::marker {
+      color: #6b8f5e;
+    }
+
+    .toggle-inner a {
+      color: #f5d6a0;
+    }
+
+    /* ---- SIDE PROJECTS ---- */
+    .side-projects {
+      list-style: none;
+      padding: 0;
+    }
+
+    .side-projects li {
+      padding: 3px 0;
+      font-size: 13px;
+      color: #998e5a;
+    }
+
+    .side-projects li strong {
+      color: #ffb347;
+      font-weight: 600;
+    }
+
+    /* ---- INVESTING ---- */
+    .invest-thesis {
+      font-size: 13px;
+      color: #c4a44a;
+      line-height: 1.9;
+      margin-bottom: 24px;
+    }
+
+    .invest-thesis em {
+      color: #ffb347;
+      font-style: italic;
+    }
+
+    .invest-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .invest-card {
+      border: 1px solid #3a3520;
+      padding: 12px;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.2s, background 0.2s;
+      display: block;
+    }
+
+    .invest-card:hover {
+      border-color: #ffb347;
+      background: rgba(255,179,71,0.04);
+    }
+
+    .invest-card-name {
+      font-weight: 700;
+      font-size: 13px;
+      color: #ffb347;
+    }
+
+    .invest-card-desc {
+      font-size: 10px;
+      color: #6a6240;
+      margin-top: 2px;
+    }
+
+    .invest-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0 24px;
+      list-style: none;
+    }
+
+    .invest-list-item {
+      padding: 8px 0;
+      border-bottom: 1px solid #2a2820;
+    }
+
+    .invest-list-item a {
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      border-bottom: none;
+    }
+
+    .invest-list-item a:hover .invest-list-name {
+      color: #fff;
+    }
+
+    .invest-list-name {
+      font-weight: 600;
+      font-size: 12px;
+      color: #d4a54a;
+      transition: color 0.2s;
+    }
+
+    .invest-list-desc {
+      font-size: 10px;
+      color: #5a5530;
+    }
+
+    /* ---- CTA ---- */
+    .cta-text {
+      font-size: 13px;
+      color: #c4a44a;
+      line-height: 1.9;
+      margin-bottom: 8px;
+    }
+
+    /* ---- MANTRA ---- */
+    .mantra {
+      padding: 36px 0 8px;
+      text-align: center;
+      border-top: 1px solid #3a3520;
+    }
+
+    .mantra p {
+      font-size: 11px;
+      color: #5a5530;
+      letter-spacing: 1px;
+    }
+
+    /* ---- FOOTER INSIDE SCREEN ---- */
+    .screen-footer {
+      text-align: center;
+      padding-top: 8px;
+    }
+
+    .screen-footer p {
+      font-size: 10px;
+      color: #3a3520;
+    }
+
+    /* ==========================================
+       RESPONSIVE
+       ========================================== */
+    @media (max-width: 860px) {
+      body {
+        padding: 0;
+        align-items: flex-start;
+      }
+
+      .computer-top {
+        border-radius: 0;
+      }
+
+      .computer-bottom {
+        border-radius: 0;
+      }
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 22px;
+        letter-spacing: 1px;
+      }
+
+      .reflection {
+        font-size: 13px;
+      }
+
+      .screen-content {
+        padding: 28px 20px;
+      }
+
+      .invest-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .invest-list {
+        grid-template-columns: 1fr;
+      }
+
+      .reach-out {
+        gap: 6px;
+      }
+
+      .pill {
+        padding: 5px 10px;
+        font-size: 10px;
+      }
+
+      .control-panel {
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .monitor {
+        padding: 12px;
+      }
+
+      .screen-bezel {
+        padding: 8px;
+      }
+    }
+
+    /* ---- FADE IN ---- */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+<div class="computer">
+
+  <!-- Top strip -->
+  <div class="computer-top">
+    <span class="computer-brand">PB-9000</span>
+    <div class="vent-group">
+      <div class="vent"></div><div class="vent"></div><div class="vent"></div>
+      <div class="vent"></div><div class="vent"></div><div class="vent"></div>
+      <div class="vent"></div><div class="vent"></div>
+    </div>
+    <span class="computer-model">Personal Terminal</span>
+  </div>
+
+  <!-- Monitor -->
+  <div class="monitor">
+    <div class="screen-bezel">
+      <div class="screen">
+        <div class="screen-glare"></div>
+
+        <div class="screen-content">
+
+          <!-- Hero -->
+          <section class="hero">
+            <h1>Philipp Beer<span class="hero-cursor"></span></h1>
+            <p class="subtitle">Builder _ Investor _ Dad _ Polymath</p>
+            <p class="reflection">
+              I think a lot about what happens when the cost of building drops to
+              nearly zero. When anyone can ship software in a weekend. When the
+              bottleneck shifts from execution to taste, judgment, and knowing which
+              problems actually matter. I invest in that future. I build in it. And
+              I'm still figuring out what it means.
+            </p>
+          </section>
+
+          <!-- Contact pills -->
+          <nav class="reach-out" aria-label="Contact links">
+            <a class="pill" href="mailto:philipp@philippbeer.me">
+              <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              Email
+            </a>
+            <a class="pill" href="https://linkedin.com/in/philippbeer" target="_blank" rel="noopener noreferrer">
+              <svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+              LinkedIn
+            </a>
+            <a class="pill" href="https://x.com/philippbeer_" target="_blank" rel="noopener noreferrer">
+              <svg viewBox="0 0 24 24"><path d="M4 4l6.5 8L4 20h2l5.5-6.8L16 20h4l-6.8-8.5L20 4h-2l-5.2 6.4L9 4H4z"/></svg>
+              X
+            </a>
+            <a class="pill" href="https://github.com/depose28" target="_blank" rel="noopener noreferrer">
+              <svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+              GitHub
+            </a>
+          </nav>
+
+          <hr class="divider">
+
+          <!-- Now -->
+          <section class="section fade-in">
+            <p class="section-label">[ NOW ]</p>
+            <div class="now-content">
+              <p>
+                Based in Berlin. I run <strong>w3.wave</strong>, a liquid token fund focused on digital assets. On the side, I actively make angel investments across AI, fintech, and emerging tech — and have spun up two small, private co-investment vehicles alongside close friends. Before that, I spent eight years at Google on the enterprise and hardware side across EMEA, then scaled Nuri (formerly Bitwala) from 10K to 300K users as Chief Growth Officer.
+              </p>
+              <p style="margin-top: 14px;">
+                Right now I'm building AI tools with Claude Code and Cursor — currently working on Agent Pulse (AI commerce readiness) and an AI tenant concierge for German property management. Spending weekends in Brandenburg with the family.
+              </p>
+              <p class="now-updated">last_updated: March 2026</p>
+            </div>
+          </section>
+
+          <!-- Work -->
+          <section class="section fade-in">
+            <p class="section-label">[ WORK ]</p>
+
+            <div class="work-row">
+              <div class="work-info">
+                <div class="work-company">w3.wave</div>
+                <div class="work-role">General Partner</div>
+              </div>
+              <div class="work-years">2024 &ndash;</div>
+            </div>
+
+            <div class="work-row">
+              <div class="work-info">
+                <div class="work-company">Forager Ventures</div>
+                <div class="work-role">Founder &amp; Angel Investor</div>
+              </div>
+              <div class="work-years">2021 &ndash;</div>
+            </div>
+
+            <div class="work-row">
+              <div class="work-info">
+                <div class="work-company">Cluster Capital</div>
+                <div class="work-role">Syndicate Member</div>
+              </div>
+              <div class="work-years">2017 &ndash;</div>
+            </div>
+
+            <div class="work-row">
+              <div class="work-info">
+                <div class="work-company">Nuri (Bitwala)</div>
+                <div class="work-role">Chief Growth Officer</div>
+              </div>
+              <div class="work-years">2019 &ndash; 22</div>
+            </div>
+
+            <div class="work-row">
+              <div class="work-info">
+                <div class="work-company">Google</div>
+                <div class="work-role">Enterprise &amp; Hardware Marketing, EMEA</div>
+              </div>
+              <div class="work-years">2011 &ndash; 18</div>
+            </div>
+
+            <div class="toggle">
+              <button class="toggle-btn" aria-expanded="false" aria-controls="toggle-google" onclick="toggleContent(this)">
+                <span class="toggle-chevron">&#9654;</span> cat google.log
+              </button>
+              <div class="toggle-content" id="toggle-google">
+                <div class="toggle-inner">
+                  I joined Google in Dublin in 2011 on the enterprise side, working on acquisition and go-to-market for Google's business products across EMEA. Later moved to London and shifted to hardware — leading go-to-market strategy for Pixel, Google Home, and Chromecast across 15+ markets. Managed cross-channel media, co-marketing partnerships, and regional launches through some of Google's biggest consumer hardware pushes in Europe.
+                </div>
+              </div>
+            </div>
+
+            <div class="toggle">
+              <button class="toggle-btn" aria-expanded="false" aria-controls="toggle-nuri" onclick="toggleContent(this)">
+                <span class="toggle-chevron">&#9654;</span> cat nuri.log
+              </button>
+              <div class="toggle-content" id="toggle-nuri">
+                <div class="toggle-inner">
+                  Joined as the first C-level hire to build out marketing, growth, BI, and communications — eventually leading a team of 40+ people. Helped scale the platform from 10K to 300K users and grew assets under management from near-zero to over &euro;500M. Led the rebrand from Bitwala to Nuri and handled fundraising communications through Seed to Series B. It was a wild ride at a crypto-meets-banking startup in Berlin, and I learned a lot about what it takes to scale something fast in a regulated market.
+                </div>
+              </div>
+            </div>
+
+            <div class="toggle">
+              <button class="toggle-btn" aria-expanded="false" aria-controls="toggle-projects" onclick="toggleContent(this)">
+                <span class="toggle-chevron">&#9654;</span> ls ~/side-projects/
+              </button>
+              <div class="toggle-content" id="toggle-projects">
+                <div class="toggle-inner">
+                  <p>I build things quickly using AI-assisted tools like Claude Code, Cursor, and Lovable. A few things I've shipped or am working on:</p>
+                  <ul class="side-projects">
+                    <li><strong>Agent Pulse</strong> — AI commerce readiness scoring for e-commerce sites</li>
+                    <li><strong>FragMilo</strong> — AI-powered tenant issue resolution</li>
+                    <li><strong>Beaches of Mallorca</strong> — Real-time beach info app</li>
+                    <li><strong>Portfolio tools</strong> — Investment tracking and macro intelligence dashboards</li>
+                  </ul>
+                  <p style="margin-top: 10px;">
+                    <a href="https://github.com/depose28" target="_blank" rel="noopener noreferrer">> cd github.com/depose28</a>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Investing -->
+          <section class="section fade-in">
+            <p class="section-label">[ PORTFOLIO ]</p>
+
+            <div class="invest-thesis">
+              <p>I actively make angel investments across AI, fintech, and emerging tech. I also co-organize two small, private co-investment vehicles — <em>Homie Capital</em> and <em>Common Thread II</em> — alongside close friends.</p>
+            </div>
+
+            <div class="invest-grid">
+              <a class="invest-card" href="https://spacex.com" target="_blank" rel="noopener noreferrer">
+                <div class="invest-card-name">SpaceX</div>
+                <div class="invest-card-desc">Space exploration &amp; transport</div>
+              </a>
+              <a class="invest-card" href="https://lightmatter.co" target="_blank" rel="noopener noreferrer">
+                <div class="invest-card-name">Lightmatter</div>
+                <div class="invest-card-desc">Photonic computing for AI</div>
+              </a>
+              <a class="invest-card" href="https://skild.ai" target="_blank" rel="noopener noreferrer">
+                <div class="invest-card-name">Skild AI</div>
+                <div class="invest-card-desc">Robotics foundation model</div>
+              </a>
+              <a class="invest-card" href="https://d-matrix.ai" target="_blank" rel="noopener noreferrer">
+                <div class="invest-card-name">D-Matrix</div>
+                <div class="invest-card-desc">In-memory AI inference chips</div>
+              </a>
+              <a class="invest-card" href="https://apptronik.com" target="_blank" rel="noopener noreferrer">
+                <div class="invest-card-name">Apptronik</div>
+                <div class="invest-card-desc">Humanoid robotics</div>
+              </a>
+              <a class="invest-card" href="https://efficient.computer" target="_blank" rel="noopener noreferrer">
+                <div class="invest-card-name">Efficient Computer</div>
+                <div class="invest-card-desc">Ultra-low-power edge processors</div>
+              </a>
+              <a class="invest-card" href="https://corgi.insure" target="_blank" rel="noopener noreferrer">
+                <div class="invest-card-name">Corgi AI</div>
+                <div class="invest-card-desc">AI insurance</div>
+              </a>
+              <span class="invest-card" style="cursor: default;">
+                <div class="invest-card-name">Impossible Computer</div>
+                <div class="invest-card-desc">Stealth computing startup (Naval Ravikant)</div>
+              </span>
+              <a class="invest-card" href="https://reflectorbital.com" target="_blank" rel="noopener noreferrer">
+                <div class="invest-card-name">Reflect Orbital</div>
+                <div class="invest-card-desc">Sunlight-on-demand from space</div>
+              </a>
+              <a class="invest-card" href="https://foundation.bot" target="_blank" rel="noopener noreferrer">
+                <div class="invest-card-name">Foundation</div>
+                <div class="invest-card-desc">General-purpose humanoid robotics</div>
+              </a>
+            </div>
+
+            <div class="toggle">
+              <button class="toggle-btn" aria-expanded="false" aria-controls="toggle-investments" onclick="toggleContent(this)">
+                <span class="toggle-chevron">&#9654;</span> more --verbose
+              </button>
+              <div class="toggle-content" id="toggle-investments">
+                <div class="toggle-inner">
+                  <ul class="invest-list">
+                    <li class="invest-list-item">
+                      <a href="https://loyal.com" target="_blank" rel="noopener noreferrer">
+                        <div class="invest-list-name">Loyal</div>
+                        <div class="invest-list-desc">Dog longevity biotech</div>
+                      </a>
+                    </li>
+                    <li class="invest-list-item">
+                      <a href="https://fathomradiant.co" target="_blank" rel="noopener noreferrer">
+                        <div class="invest-list-name">Fathom Radiant</div>
+                        <div class="invest-list-desc">Optical interconnects for AI</div>
+                      </a>
+                    </li>
+                    <li class="invest-list-item">
+                      <a href="https://proteus-space.com" target="_blank" rel="noopener noreferrer">
+                        <div class="invest-list-name">Proteus Space</div>
+                        <div class="invest-list-desc">AI-designed satellite systems</div>
+                      </a>
+                    </li>
+                    <li class="invest-list-item">
+                      <a href="https://airtm.com" target="_blank" rel="noopener noreferrer">
+                        <div class="invest-list-name">AirTM</div>
+                        <div class="invest-list-desc">Digital dollar wallets</div>
+                      </a>
+                    </li>
+                    <li class="invest-list-item">
+                      <a href="https://herita.tech" target="_blank" rel="noopener noreferrer">
+                        <div class="invest-list-name">Herita</div>
+                        <div class="invest-list-desc">Digital trade finance</div>
+                      </a>
+                    </li>
+                    <li class="invest-list-item">
+                      <a href="https://synthetix.io" target="_blank" rel="noopener noreferrer">
+                        <div class="invest-list-name">Synthetix</div>
+                        <div class="invest-list-desc">Decentralized derivatives</div>
+                      </a>
+                    </li>
+                    <li class="invest-list-item">
+                      <a href="https://maple.finance" target="_blank" rel="noopener noreferrer">
+                        <div class="invest-list-name">Maple</div>
+                        <div class="invest-list-desc">Institutional DeFi lending</div>
+                      </a>
+                    </li>
+                    <li class="invest-list-item">
+                      <a href="https://thegraph.com" target="_blank" rel="noopener noreferrer">
+                        <div class="invest-list-name">The Graph</div>
+                        <div class="invest-list-desc">Indexing protocol for Web3</div>
+                      </a>
+                    </li>
+                    <li class="invest-list-item">
+                      <a href="https://avax.network" target="_blank" rel="noopener noreferrer">
+                        <div class="invest-list-name">Avalanche</div>
+                        <div class="invest-list-desc">L1 blockchain platform</div>
+                      </a>
+                    </li>
+                    <li class="invest-list-item">
+                      <a href="https://thedefiant.io" target="_blank" rel="noopener noreferrer">
+                        <div class="invest-list-name">The Defiant</div>
+                        <div class="invest-list-desc">Crypto investment vehicle</div>
+                      </a>
+                    </li>
+                    <li class="invest-list-item">
+                      <a href="https://spaceshipdao.xyz" target="_blank" rel="noopener noreferrer">
+                        <div class="invest-list-name">Spaceship DAO</div>
+                        <div class="invest-list-desc">Generalist venture DAO</div>
+                      </a>
+                    </li>
+                    <li class="invest-list-item">
+                      <a href="https://flamingodao.xyz" target="_blank" rel="noopener noreferrer">
+                        <div class="invest-list-name">Flamingo DAO</div>
+                        <div class="invest-list-desc">NFT-focused investment DAO</div>
+                      </a>
+                    </li>
+                    <li class="invest-list-item">
+                      <a href="https://beakerdao.xyz" target="_blank" rel="noopener noreferrer">
+                        <div class="invest-list-name">Beaker DAO</div>
+                        <div class="invest-list-desc">Decentralized science DAO</div>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Get in Touch -->
+          <section class="section fade-in">
+            <p class="section-label">[ CONTACT ]</p>
+
+            <p class="cta-text">
+              You can <a href="mailto:philipp@philippbeer.me">email me directly</a> or reach out on <a href="https://linkedin.com/in/philippbeer" target="_blank" rel="noopener noreferrer">LinkedIn</a>. Happy to connect.
+            </p>
+
+            <div class="toggle">
+              <button class="toggle-btn" aria-expanded="false" aria-controls="toggle-invest-cta" onclick="toggleContent(this)">
+                <span class="toggle-chevron">&#9654;</span> cat angel-investing.txt
+              </button>
+              <div class="toggle-content" id="toggle-invest-cta">
+                <div class="toggle-inner">
+                  <ul>
+                    <li>I like to invest in founders I know personally or through investors I trust</li>
+                    <li>I'm most drawn to AI infrastructure, fintech, and deep tech — especially where software meets the physical world</li>
+                    <li><a href="mailto:philipp@philippbeer.me">Reach out</a> directly to see if it makes sense to work together</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="toggle">
+              <button class="toggle-btn" aria-expanded="false" aria-controls="toggle-advise" onclick="toggleContent(this)">
+                <span class="toggle-chevron">&#9654;</span> cat advising.txt
+              </button>
+              <div class="toggle-content" id="toggle-advise">
+                <div class="toggle-inner">
+                  <ul>
+                    <li>I've scaled products from zero to hundreds of thousands of users across EMEA</li>
+                    <li>I can help with growth strategy, positioning, channel mix, and European market entry</li>
+                    <li>Happy to do a one-off session or something more ongoing — <a href="mailto:philipp@philippbeer.me">get in touch</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="toggle">
+              <button class="toggle-btn" aria-expanded="false" aria-controls="toggle-advisory" onclick="toggleContent(this)">
+                <span class="toggle-chevron">&#9654;</span> cat advisory-calls.txt
+              </button>
+              <div class="toggle-content" id="toggle-advisory">
+                <div class="toggle-inner">
+                  <p><a href="mailto:philipp@philippbeer.me">Book an advisory call</a> with me.</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Mantra -->
+          <div class="mantra fade-in">
+            <p>// Everything I've built is a prototype for what's next.</p>
+          </div>
+
+          <div class="screen-footer">
+            <p>&copy; 2026 Philipp Beer &middot; Berlin &middot; vibe-coded with Claude</p>
+          </div>
+
+        </div><!-- /screen-content -->
+      </div><!-- /screen -->
+    </div><!-- /screen-bezel -->
+  </div><!-- /monitor -->
+
+  <!-- Control Panel -->
+  <div class="control-panel">
+    <div class="panel-section">
+      <div class="knob"></div>
+      <div class="knob"></div>
+      <div class="knob"></div>
+    </div>
+    <div class="panel-divider"></div>
+    <div class="panel-section">
+      <div class="indicator red"></div>
+      <div class="indicator green"></div>
+      <div class="indicator amber"></div>
+      <div class="indicator off"></div>
+      <div class="indicator off"></div>
+    </div>
+    <div class="panel-divider"></div>
+    <div class="panel-section">
+      <div class="panel-btn orange"></div>
+      <div class="panel-btn beige"></div>
+      <div class="panel-btn dark"></div>
+      <div class="panel-btn orange"></div>
+    </div>
+    <div class="panel-divider"></div>
+    <div class="panel-stripe-group">
+      <div class="panel-stripe s1"></div>
+      <div class="panel-stripe s2"></div>
+      <div class="panel-stripe s3"></div>
+      <div class="panel-stripe s4"></div>
+    </div>
+    <div style="flex:1"></div>
+    <div class="panel-section">
+      <span class="panel-label">Process</span>
+      <div class="indicator green"></div>
+      <div class="indicator green"></div>
+    </div>
+  </div>
+
+  <!-- Bottom -->
+  <div class="computer-bottom">
+    <div class="power-led"></div>
+    <div class="floppy-slot"></div>
+    <span class="panel-label">PB-9000 &mdash; Personal Terminal v2.6</span>
+  </div>
+
+</div><!-- /computer -->
+
+<script>
+  function toggleContent(btn) {
+    const content = btn.nextElementSibling;
+    const isOpen = btn.getAttribute('aria-expanded') === 'true';
+    btn.setAttribute('aria-expanded', !isOpen);
+    if (!isOpen) {
+      content.style.maxHeight = content.scrollHeight + 'px';
+      content.classList.add('open');
+    } else {
+      content.style.maxHeight = '0';
+      content.classList.remove('open');
+    }
+  }
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.1, root: document.querySelector('.screen-content') }
+  );
+  document.querySelectorAll('.fade-in').forEach((el) => observer.observe(el));
+</script>
+
+</body>
+</html>
