@@ -27,13 +27,13 @@
 
     body {
       font-family: 'IBM Plex Mono', monospace;
-      background: #3a3530;
+      background: #1e1e22;
       background-image:
-        radial-gradient(ellipse at 50% 30%, rgba(120,110,95,0.6) 0%, transparent 50%),
-        radial-gradient(ellipse at 30% 80%, rgba(100,90,75,0.3) 0%, transparent 45%),
-        radial-gradient(ellipse at 70% 70%, rgba(90,80,65,0.25) 0%, transparent 40%),
-        linear-gradient(180deg, #4a4540 0%, #3a3530 40%, #2e2a25 100%);
-      color: #ffb347;
+        radial-gradient(ellipse at 50% 30%, rgba(60,58,65,0.5) 0%, transparent 50%),
+        radial-gradient(ellipse at 30% 80%, rgba(50,48,55,0.3) 0%, transparent 45%),
+        radial-gradient(ellipse at 70% 70%, rgba(45,43,50,0.25) 0%, transparent 40%),
+        linear-gradient(180deg, #262628 0%, #1e1e22 40%, #18181c 100%);
+      color: #e08a3a;
       min-height: 100vh;
       display: flex;
       align-items: center;
@@ -135,7 +135,7 @@
     }
 
     .screen {
-      background: #1c1c18;
+      background: #141416;
       border-radius: 8px;
       position: relative;
       overflow: hidden;
@@ -196,7 +196,7 @@
       position: relative;
       z-index: 5;
       scrollbar-width: thin;
-      scrollbar-color: #ffb347 #2a2a24;
+      scrollbar-color: #e08a3a #1e1e22;
     }
 
     .screen-content::-webkit-scrollbar {
@@ -204,11 +204,11 @@
     }
 
     .screen-content::-webkit-scrollbar-track {
-      background: #2a2a24;
+      background: #1e1e22;
     }
 
     .screen-content::-webkit-scrollbar-thumb {
-      background: #ffb347;
+      background: #e08a3a;
       border-radius: 3px;
     }
 
@@ -284,7 +284,7 @@
       font-size: 7px;
       letter-spacing: 1.5px;
       text-transform: uppercase;
-      color: #8a8070;
+      color: #707078;
       font-weight: 700;
       text-align: center;
       margin-top: 5px;
@@ -319,15 +319,20 @@
 
     .indicator.red { background: radial-gradient(circle at 40% 35%, #e07060, #a84040); box-shadow: 0 0 8px rgba(196,103,92,0.7), inset 0 1px 2px rgba(0,0,0,0.3); border-color: #7a3030; }
     .indicator.green { background: radial-gradient(circle at 40% 35%, #8ab87e, #4a6a40); box-shadow: 0 0 8px rgba(107,143,94,0.6), inset 0 1px 2px rgba(0,0,0,0.3); border-color: #3a5530; }
-    .indicator.amber { background: radial-gradient(circle at 40% 35%, #ffcc66, #cc8820); box-shadow: 0 0 8px rgba(255,179,71,0.6), inset 0 1px 2px rgba(0,0,0,0.3); border-color: #997720; }
+    .indicator.amber { background: radial-gradient(circle at 40% 35%, #ffcc66, #cc8820); box-shadow: 0 0 8px rgba(224,138,58,0.6), inset 0 1px 2px rgba(0,0,0,0.3); border-color: #997720; }
     .indicator.off { background: radial-gradient(circle at 40% 35%, #666, #3a3a3a); box-shadow: none; border-color: #555; }
 
     .panel-label {
       font-size: 7px;
       letter-spacing: 2px;
       text-transform: uppercase;
-      color: #8a8070;
+      color: #707078;
       font-weight: 700;
+    }
+
+    .terminal-name {
+      font-size: 9px;
+      letter-spacing: 3px;
     }
 
     .indicator.interactive { cursor: pointer; transition: background 0.15s, box-shadow 0.15s; }
@@ -398,8 +403,8 @@
 
     .panel-stripe.s1 { width: 48px; background: linear-gradient(90deg, #c4675c, #b85548); }
     .panel-stripe.s2 { width: 48px; background: linear-gradient(90deg, #e8a87c, #d9956a); }
-    .panel-stripe.s3 { width: 48px; background: linear-gradient(90deg, #f5d6a0, #e8c88e); }
-    .panel-stripe.s4 { width: 48px; background: linear-gradient(90deg, #8a8070, #7a7060); }
+    .panel-stripe.s3 { width: 48px; background: linear-gradient(90deg, #c4845a, #e8c88e); }
+    .panel-stripe.s4 { width: 48px; background: linear-gradient(90deg, #707078, #7a7060); }
 
     /* ---- BOTTOM HOUSING ---- */
     .computer-bottom {
@@ -429,7 +434,7 @@
       font-size: 6px;
       letter-spacing: 1.5px;
       text-transform: uppercase;
-      color: #8a8070;
+      color: #707078;
       font-weight: 700;
       font-family: 'Space Mono', monospace;
     }
@@ -498,7 +503,7 @@
       font-size: 6px;
       letter-spacing: 1.5px;
       text-transform: uppercase;
-      color: #8a8070;
+      color: #707078;
       font-weight: 700;
       font-family: 'Space Mono', monospace;
       white-space: nowrap;
@@ -507,8 +512,8 @@
     .floppy-slot.loading {
       box-shadow:
         inset 0 2px 4px rgba(0,0,0,0.5),
-        inset 0 0 8px rgba(255,179,71,0.4),
-        0 0 6px rgba(255,179,71,0.3);
+        inset 0 0 8px rgba(224,138,58,0.4),
+        0 0 6px rgba(224,138,58,0.3);
     }
 
     .floppy-led {
@@ -521,8 +526,8 @@
     }
 
     .floppy-led.active {
-      background: #ffb347;
-      box-shadow: 0 0 6px rgba(255,179,71,0.7);
+      background: #e08a3a;
+      box-shadow: 0 0 6px rgba(224,138,58,0.7);
     }
 
     /* ==========================================
@@ -531,9 +536,9 @@
 
     /* General text */
     .screen-content a {
-      color: #f5d6a0;
+      color: #c4845a;
       text-decoration: none;
-      border-bottom: 1px solid rgba(245,214,160,0.3);
+      border-bottom: 1px solid rgba(196,132,90,0.3);
       transition: color 0.2s, border-color 0.2s;
     }
 
@@ -552,7 +557,7 @@
       display: inline-block;
       width: 10px;
       height: 20px;
-      background: #ffb347;
+      background: #e08a3a;
       margin-left: 4px;
       animation: blink 1s step-end infinite;
       vertical-align: text-bottom;
@@ -567,8 +572,8 @@
       font-family: 'Space Mono', monospace;
       font-size: 32px;
       font-weight: 700;
-      color: #ffb347;
-      text-shadow: 0 0 10px rgba(255,179,71,0.4);
+      color: #e08a3a;
+      text-shadow: 0 0 10px rgba(224,138,58,0.4);
       letter-spacing: 2px;
       text-transform: uppercase;
       margin-bottom: 6px;
@@ -576,7 +581,7 @@
 
     .subtitle {
       font-size: 12px;
-      color: #8a7e5a;
+      color: #706860;
       letter-spacing: 3px;
       text-transform: uppercase;
       margin-bottom: 32px;
@@ -585,11 +590,11 @@
     .reflection {
       font-size: 14px;
       line-height: 1.9;
-      color: #d4a54a;
+      color: #a07040;
       font-style: italic;
       max-width: 540px;
       margin: 0 auto;
-      text-shadow: 0 0 6px rgba(212,165,74,0.15);
+      text-shadow: 0 0 6px rgba(160,112,64,0.15);
     }
 
     /* ---- CONTACT PILLS ---- */
@@ -605,12 +610,12 @@
       display: inline-flex;
       align-items: center;
       gap: 5px;
-      border: 1px solid #ffb347;
+      border: 1px solid #e08a3a;
       border-radius: 2px;
       padding: 6px 14px;
       font-family: 'IBM Plex Mono', monospace;
       font-size: 11px;
-      color: #ffb347;
+      color: #e08a3a;
       text-decoration: none;
       transition: background 0.2s, color 0.2s;
       text-transform: uppercase;
@@ -618,9 +623,9 @@
     }
 
     .pill:hover {
-      background: #ffb347;
-      color: #1c1c18;
-      border-bottom: 1px solid #ffb347;
+      background: #e08a3a;
+      color: #141416;
+      border-bottom: 1px solid #e08a3a;
     }
 
     .pill svg {
@@ -636,7 +641,7 @@
     /* ---- DIVIDERS ---- */
     .divider {
       border: none;
-      border-top: 1px solid #3a3520;
+      border-top: 1px solid #2a2a2e;
       margin: 0;
     }
 
@@ -646,7 +651,7 @@
     }
 
     .section + .section {
-      border-top: 1px solid #3a3520;
+      border-top: 1px solid #2a2a2e;
     }
 
     .section-label {
@@ -660,7 +665,7 @@
 
     /* ---- NOW ---- */
     .now-content {
-      border: 1px solid #3a3520;
+      border: 1px solid #2a2a2e;
       padding: 20px;
       position: relative;
     }
@@ -670,7 +675,7 @@
       position: absolute;
       top: -8px;
       left: 12px;
-      background: #1c1c18;
+      background: #141416;
       padding: 0 8px;
       font-size: 10px;
       color: #6b8f5e;
@@ -678,19 +683,19 @@
     }
 
     .now-content p {
-      color: #c4a44a;
+      color: #a07040;
       font-size: 13px;
       line-height: 1.9;
     }
 
     .now-content strong {
-      color: #ffb347;
+      color: #e08a3a;
     }
 
     .now-updated {
       margin-top: 14px;
       font-size: 10px;
-      color: #5a5530;
+      color: #4a4548;
     }
 
     /* ---- WORK ROWS ---- */
@@ -699,7 +704,7 @@
       justify-content: space-between;
       align-items: baseline;
       padding: 10px 0;
-      border-bottom: 1px solid #2a2820;
+      border-bottom: 1px solid #222226;
     }
 
     .work-row:last-of-type {
@@ -709,18 +714,18 @@
     .work-company {
       font-weight: 700;
       font-size: 14px;
-      color: #ffb347;
+      color: #e08a3a;
     }
 
     .work-role {
       font-size: 11px;
-      color: #8a7e5a;
+      color: #706860;
       margin-top: 1px;
     }
 
     .work-years {
       font-size: 11px;
-      color: #5a5530;
+      color: #4a4548;
       white-space: nowrap;
       margin-left: 12px;
     }
@@ -778,7 +783,7 @@
     .toggle-inner {
       padding: 4px 0 16px;
       font-size: 13px;
-      color: #998e5a;
+      color: #807870;
       line-height: 1.8;
     }
 
@@ -796,7 +801,7 @@
     }
 
     .toggle-inner a {
-      color: #f5d6a0;
+      color: #c4845a;
     }
 
     /* ---- SIDE PROJECTS ---- */
@@ -808,24 +813,24 @@
     .side-projects li {
       padding: 3px 0;
       font-size: 13px;
-      color: #998e5a;
+      color: #807870;
     }
 
     .side-projects li strong {
-      color: #ffb347;
+      color: #e08a3a;
       font-weight: 600;
     }
 
     /* ---- INVESTING ---- */
     .invest-thesis {
       font-size: 13px;
-      color: #c4a44a;
+      color: #a07040;
       line-height: 1.9;
       margin-bottom: 24px;
     }
 
     .invest-thesis em {
-      color: #ffb347;
+      color: #e08a3a;
       font-style: italic;
     }
 
@@ -837,7 +842,7 @@
     }
 
     .invest-card {
-      border: 1px solid #3a3520;
+      border: 1px solid #2a2a2e;
       padding: 12px;
       text-decoration: none;
       color: inherit;
@@ -846,19 +851,19 @@
     }
 
     .invest-card:hover {
-      border-color: #ffb347;
-      background: rgba(255,179,71,0.04);
+      border-color: #e08a3a;
+      background: rgba(224,138,58,0.04);
     }
 
     .invest-card-name {
       font-weight: 700;
       font-size: 13px;
-      color: #ffb347;
+      color: #e08a3a;
     }
 
     .invest-card-desc {
       font-size: 10px;
-      color: #6a6240;
+      color: #555058;
       margin-top: 2px;
     }
 
@@ -871,7 +876,7 @@
 
     .invest-list-item {
       padding: 8px 0;
-      border-bottom: 1px solid #2a2820;
+      border-bottom: 1px solid #222226;
     }
 
     .invest-list-item a {
@@ -888,19 +893,19 @@
     .invest-list-name {
       font-weight: 600;
       font-size: 12px;
-      color: #d4a54a;
+      color: #a07040;
       transition: color 0.2s;
     }
 
     .invest-list-desc {
       font-size: 10px;
-      color: #5a5530;
+      color: #4a4548;
     }
 
     /* ---- WORK THREAD ---- */
     .work-thread {
       font-size: 13px;
-      color: #998e5a;
+      color: #807870;
       font-style: italic;
       line-height: 1.8;
       margin-bottom: 20px;
@@ -909,7 +914,7 @@
     /* ---- THOUGHTS / NEWSLETTER ---- */
     .thoughts-intro {
       font-size: 13px;
-      color: #998e5a;
+      color: #807870;
       line-height: 1.8;
       margin-bottom: 20px;
     }
@@ -922,7 +927,7 @@
     }
 
     .thought-card {
-      border: 1px solid #3a3520;
+      border: 1px solid #2a2a2e;
       padding: 16px;
       position: relative;
     }
@@ -940,19 +945,19 @@
       font-family: 'Space Mono', monospace;
       font-size: 14px;
       font-weight: 700;
-      color: #ffb347;
+      color: #e08a3a;
       margin-top: 6px;
       margin-bottom: 6px;
     }
 
     .thought-desc {
       font-size: 12px;
-      color: #998e5a;
+      color: #807870;
       line-height: 1.7;
     }
 
     .newsletter-signup {
-      border: 1px solid #3a3520;
+      border: 1px solid #2a2a2e;
       padding: 16px;
       text-align: center;
     }
@@ -971,9 +976,9 @@
     }
 
     .newsletter-input {
-      background: #2a2820;
-      border: 1px solid #3a3520;
-      color: #ffb347;
+      background: #222226;
+      border: 1px solid #2a2a2e;
+      color: #e08a3a;
       font-family: 'IBM Plex Mono', monospace;
       font-size: 11px;
       padding: 8px 12px;
@@ -984,16 +989,16 @@
     }
 
     .newsletter-input::placeholder {
-      color: #5a5530;
+      color: #4a4548;
     }
 
     .newsletter-input:focus {
-      border-color: #ffb347;
+      border-color: #e08a3a;
     }
 
     .newsletter-btn {
-      background: #ffb347;
-      color: #1c1c18;
+      background: #e08a3a;
+      color: #141416;
       border: none;
       font-family: 'IBM Plex Mono', monospace;
       font-size: 11px;
@@ -1020,7 +1025,7 @@
     /* ---- CTA ---- */
     .cta-text {
       font-size: 13px;
-      color: #c4a44a;
+      color: #a07040;
       line-height: 1.9;
       margin-bottom: 8px;
     }
@@ -1029,12 +1034,12 @@
     .mantra {
       padding: 36px 0 8px;
       text-align: center;
-      border-top: 1px solid #3a3520;
+      border-top: 1px solid #2a2a2e;
     }
 
     .mantra p {
       font-size: 11px;
-      color: #5a5530;
+      color: #4a4548;
       letter-spacing: 1px;
     }
 
@@ -1046,7 +1051,7 @@
 
     .screen-footer p {
       font-size: 10px;
-      color: #3a3520;
+      color: #2a2a2e;
     }
 
     /* ==========================================
@@ -1085,19 +1090,19 @@
     }
 
     /* -- Brightness levels -- */
-    .screen.bright-low { background: #242420; }
+    .screen.bright-low { background: #1a1a1e; }
     .screen.bright-low .screen-content { opacity: 0.3; filter: contrast(0.7) brightness(0.5); }
     .screen.bright-low h1 { text-shadow: none; }
     .screen.bright-low .reflection { text-shadow: none; }
     .screen.bright-low .section-label { text-shadow: none; }
 
     .screen.bright-high .screen-content { filter: contrast(1.15) brightness(1.35) saturate(1.15); }
-    .screen.bright-high h1 { text-shadow: 0 0 10px rgba(255,179,71,0.8), 0 0 25px rgba(255,179,71,0.5), 0 0 50px rgba(255,179,71,0.25); }
-    .screen.bright-high .reflection { text-shadow: 0 0 12px rgba(212,165,74,0.4), 0 0 30px rgba(212,165,74,0.2); }
-    .screen.bright-high .work-company { text-shadow: 0 0 8px rgba(255,179,71,0.5); }
+    .screen.bright-high h1 { text-shadow: 0 0 10px rgba(224,138,58,0.8), 0 0 25px rgba(224,138,58,0.5), 0 0 50px rgba(224,138,58,0.25); }
+    .screen.bright-high .reflection { text-shadow: 0 0 12px rgba(160,112,64,0.4), 0 0 30px rgba(160,112,64,0.2); }
+    .screen.bright-high .work-company { text-shadow: 0 0 8px rgba(224,138,58,0.5); }
     .screen.bright-high .pill { text-shadow: 0 0 6px currentColor; }
     .screen.bright-high .section-label { text-shadow: 0 0 10px rgba(107,143,94,0.5); }
-    .screen.bright-high { box-shadow: inset 0 0 60px rgba(255,179,71,0.08); }
+    .screen.bright-high { box-shadow: inset 0 0 60px rgba(224,138,58,0.08); }
 
     /* -- Phosphor: Green (P1 — VT100) -- */
     .screen.phosphor-green { background: #0a120a; }
@@ -1261,7 +1266,7 @@
 
     /* RGB color fringing for noisy mode */
     .screen.glitch-noisy h1 {
-      text-shadow: -2px 0 rgba(255,0,0,0.3), 2px 0 rgba(0,150,255,0.3), 0 0 10px rgba(255,179,71,0.4);
+      text-shadow: -2px 0 rgba(255,0,0,0.3), 2px 0 rgba(0,150,255,0.3), 0 0 10px rgba(224,138,58,0.4);
     }
     .screen.glitch-noisy .work-company {
       text-shadow: -1px 0 rgba(255,0,0,0.2), 1px 0 rgba(0,150,255,0.2);
@@ -1437,13 +1442,13 @@
       z-index: 25;
       font-family: 'Space Mono', monospace;
       font-size: 11px;
-      color: #ffb347;
-      border: 2px solid #ffb347;
+      color: #e08a3a;
+      border: 2px solid #e08a3a;
       padding: 16px 20px;
-      background: #1c1c18;
+      background: #141416;
       min-width: 300px;
       max-width: 380px;
-      box-shadow: 0 0 30px rgba(255,179,71,0.15), inset 0 0 20px rgba(0,0,0,0.5);
+      box-shadow: 0 0 30px rgba(224,138,58,0.15), inset 0 0 20px rgba(0,0,0,0.5);
     }
 
     .floppy-modal.active {
@@ -1469,7 +1474,7 @@
       flex: 1;
       font-size: 11px;
       letter-spacing: 0;
-      color: #5a5530;
+      color: #4a4548;
       overflow: hidden;
       position: relative;
       line-height: 14px;
@@ -1479,7 +1484,7 @@
       position: absolute;
       top: 0;
       left: 0;
-      color: #ffb347;
+      color: #e08a3a;
       overflow: hidden;
       white-space: nowrap;
       width: 0;
@@ -1514,7 +1519,7 @@
     }
 
     .floppy-modal-quote {
-      color: #d4a54a;
+      color: #a07040;
       font-style: italic;
       line-height: 1.7;
       opacity: 0;
@@ -1528,7 +1533,7 @@
     .floppy-modal-dismiss {
       margin-top: 14px;
       text-align: center;
-      color: #5a5530;
+      color: #4a4548;
       font-size: 10px;
       letter-spacing: 1px;
       animation: fault-blink 1.5s steps(1) infinite;
@@ -1615,7 +1620,7 @@
 
     .player-title {
       font-size: 6px;
-      color: #8a8070;
+      color: #707078;
       font-family: 'Space Mono', monospace;
       letter-spacing: 1px;
       white-space: nowrap;
@@ -1745,7 +1750,7 @@
       font-size: 7px;
       letter-spacing: 2px;
       text-transform: uppercase;
-      color: #8a8070;
+      color: #707078;
       font-weight: 700;
       font-family: 'Space Mono', monospace;
     }
@@ -2364,7 +2369,7 @@
         <span class="power-led-label">Power</span>
         <div class="power-led" id="power-led"></div>
       </div>
-      <span class="panel-label">PB-9000 &mdash; Personal Terminal v2.6</span>
+      <span class="panel-label terminal-name">PB-9000</span>
     </div>
     <div class="floppy-drive" id="floppy-slot">
       <span class="floppy-label">Drive A:</span>
