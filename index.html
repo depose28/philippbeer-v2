@@ -322,6 +322,110 @@
     .indicator.amber { background: radial-gradient(circle at 40% 35%, #ffcc66, #cc8820); box-shadow: 0 0 8px rgba(224,138,58,0.6), inset 0 1px 2px rgba(0,0,0,0.3); border-color: #997720; }
     .indicator.off { background: radial-gradient(circle at 40% 35%, #666, #3a3a3a); box-shadow: none; border-color: #555; }
 
+    .indicator.pulse-green { animation: ind-pulse-green 0.4s ease infinite; }
+    @keyframes ind-pulse-green {
+      0%,100% { box-shadow: 0 0 8px rgba(107,143,94,0.6), inset 0 1px 2px rgba(0,0,0,0.3); }
+      50% { box-shadow: 0 0 14px rgba(80,200,60,0.9), inset 0 1px 2px rgba(0,0,0,0.3); }
+    }
+    .indicator.pulse-amber { animation: ind-pulse-amber 0.4s ease infinite; }
+    @keyframes ind-pulse-amber {
+      0%,100% { box-shadow: 0 0 8px rgba(224,138,58,0.6), inset 0 1px 2px rgba(0,0,0,0.3); }
+      50% { box-shadow: 0 0 14px rgba(255,200,40,0.9), inset 0 1px 2px rgba(0,0,0,0.3); }
+    }
+
+    /* TV static / grain effect */
+    @keyframes tv-static-bg {
+      0% { background-position: 0 0; }
+      10% { background-position: -5% -10%; }
+      20% { background-position: -15% 5%; }
+      30% { background-position: 7% -25%; }
+      40% { background-position: -20% 15%; }
+      50% { background-position: 13% -5%; }
+      60% { background-position: -7% 20%; }
+      70% { background-position: 18% -15%; }
+      80% { background-position: -10% 10%; }
+      90% { background-position: 5% -20%; }
+      100% { background-position: 0 0; }
+    }
+    @keyframes tv-static-flicker {
+      0%, 100% { opacity: 0.7; }
+      10% { opacity: 0.85; }
+      20% { opacity: 0.6; }
+      30% { opacity: 0.9; }
+      40% { opacity: 0.65; }
+      50% { opacity: 0.8; }
+      60% { opacity: 0.55; }
+      70% { opacity: 0.75; }
+      80% { opacity: 0.9; }
+      90% { opacity: 0.6; }
+    }
+    @keyframes tv-static-jitter {
+      0%, 100% { transform: translateX(0); }
+      10% { transform: translateX(-2px); }
+      20% { transform: translateX(1px); }
+      30% { transform: translateX(-1px); }
+      40% { transform: translateX(3px); }
+      50% { transform: translateX(-1px); }
+      60% { transform: translateX(2px); }
+      70% { transform: translateX(-3px); }
+      80% { transform: translateX(1px); }
+      90% { transform: translateX(-2px); }
+    }
+    .screen.tv-static .screen-content {
+      animation: tv-static-jitter 0.15s steps(2) infinite;
+    }
+    .screen.tv-static::before {
+      background:
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 2px,
+          rgba(0, 0, 0, 0.08) 2px,
+          rgba(0, 0, 0, 0.08) 4px
+        );
+      animation: tv-static-flicker 0.3s steps(3) infinite;
+      z-index: 10;
+    }
+
+    /* CRT glitch effect */
+    @keyframes crt-glitch-tear {
+      0%, 100% { transform: translateX(0); }
+      5% { transform: translateX(-8px); }
+      10% { transform: translateX(6px); }
+      15% { transform: translateX(-4px); }
+      25% { transform: translateX(10px); }
+      30% { transform: translateX(-3px); }
+      40% { transform: translateX(5px); }
+      50% { transform: translateX(-6px); }
+      60% { transform: translateX(3px); }
+      70% { transform: translateX(-7px); }
+      80% { transform: translateX(4px); }
+      90% { transform: translateX(-2px); }
+    }
+    @keyframes crt-glitch-brightness {
+      0%, 100% { filter: brightness(1); }
+      15% { filter: brightness(1.8); }
+      30% { filter: brightness(0.8); }
+      50% { filter: brightness(1.5); }
+      70% { filter: brightness(1); }
+      85% { filter: brightness(1.3); }
+    }
+    .screen.crt-glitch .screen-content {
+      animation: crt-glitch-tear 0.2s steps(2) infinite;
+      text-shadow: -2px 0 #ff0040, 2px 0 #00ffff;
+    }
+    .screen.crt-glitch {
+      animation: crt-glitch-brightness 0.4s steps(3) infinite;
+    }
+
+    .dir-listing { position: absolute; inset: 0; z-index: 15; border-radius: 8px; display: none; flex-direction: column; justify-content: flex-start; padding: 32px 28px; background: rgba(0,0,0,0.92); font-family: 'Courier New', monospace; font-size: 13px; color: #ffcc66; overflow: hidden; line-height: 1.6; }
+    .dir-listing.active { display: flex; }
+    .dir-listing .prompt { color: #e0a030; }
+    .dir-listing .dismiss { margin-top: auto; text-align: center; color: #ffcc66; animation: blink-cursor 1s steps(1) infinite; }
+
+    .speed-burst { position: absolute; inset: 0; z-index: 15; border-radius: 8px; display: none; flex-direction: column; justify-content: center; padding: 32px 28px; background: rgba(0,0,0,0.92); font-family: 'Courier New', monospace; font-size: 14px; color: #66ffcc; overflow: hidden; line-height: 1.8; }
+    .speed-burst.active { display: flex; }
+
     .panel-label {
       font-size: 7px;
       letter-spacing: 2px;
@@ -428,6 +532,7 @@
       display: flex;
       align-items: center;
       gap: 6px;
+      cursor: pointer;
     }
 
     .power-led-label {
@@ -1684,8 +1789,8 @@
     }
 
     .player-screen {
-      width: 160px;
-      height: 28px;
+      width: 220px;
+      height: 32px;
       background: #1a1816;
       border-radius: 3px;
       box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);
@@ -1699,12 +1804,12 @@
     .player-waveform {
       display: flex;
       align-items: flex-end;
-      gap: 2px;
-      height: 18px;
+      gap: 3px;
+      height: 22px;
     }
 
     .wave-bar {
-      width: 3px;
+      width: 5px;
       height: 2px;
       background: #4a6a40;
       border-radius: 1px;
@@ -2088,6 +2193,9 @@
 0x2000: B5 0A 8E 00 D1 36 7C F9
 0x2800: 22 A7 00 93 5B C0 14 68</div></div>
         </div>
+
+        <div class="dir-listing" id="dir-listing"></div>
+        <div class="speed-burst" id="speed-burst"></div>
         <div class="floppy-modal">
           <div class="floppy-modal-title">DRIVE A: READ</div>
           <div class="floppy-modal-loading">
@@ -2112,8 +2220,8 @@
           <!-- Hero -->
           <section class="hero">
             <h1>Philipp Beer<span class="hero-cursor"></span></h1>
-            <p class="subtitle subtitle-full">Builder _ Investor _ Polymath _ Dad _ Amateur Human</p>
-            <p class="subtitle subtitle-mobile">Builder _ Investor _ Amateur Human</p>
+            <p class="subtitle subtitle-full">Builder _ Investor _ Polymath _ Dad</p>
+            <p class="subtitle subtitle-mobile">Builder _ Investor _ Dad</p>
             <p class="reflection">
               Most days I'm somewhere between trying to understand the future
               and investing in it. Sometimes both at once.
@@ -2122,7 +2230,7 @@
 
           <!-- Contact pills -->
           <nav class="reach-out" aria-label="Contact links">
-            <a class="pill" href="mailto:philipp@philippbeer.me">
+            <a class="pill" href="mailto:philippxbeer@gmail.com">
               <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
               Email
             </a>
@@ -2146,8 +2254,7 @@
                 Running <strong>w3.wave</strong>, a liquid token fund. Angel investing across
                 AI, deep tech, and robotics. Vibe coding products in my free
                 time. Raising two kids in Berlin. Reading and writing about
-                markets, technology, and philosophy &mdash; and what it means to be
-                human in the age of it all.
+                markets, technology and what it means to be human in the age of AI.
               </p>
               <p class="now-updated">last_updated: March 2026</p>
             </div>
@@ -2158,85 +2265,16 @@
             <p class="section-label">[ BACKGROUND ]</p>
             <div class="now-content">
               <p>
-                I'm a polymath with a passion for big ideas, culture, and
-                new challenges &mdash; based in Berlin. I spent eight years at
-                Google on the enterprise and hardware side across EMEA, then
-                scaled Nuri (formerly Bitwala) from 10K to 300K users as
-                Chief Growth Officer. Now I run a small digital assets fund,
-                make angel investments in things that sound slightly crazy
-                today, and build AI products on the side. I also co-organize
+                I keep ending up at the intersection of technology and culture.
+                I spent eight years at Google on the enterprise and hardware
+                side across EMEA, then scaled Nuri (formerly Bitwala) from 10K
+                to 300K users as Chief Growth Officer. Now I run a small digital
+                assets fund, make angel investments in things that sound slightly
+                crazy today, and build AI products on the side. I also co-organize
                 two small, private co-investment vehicles alongside friends.
+                Based in Berlin.
               </p>
             </div>
-          </section>
-
-          <!-- Work -->
-          <section class="section fade-in">
-            <p class="section-label">[ WORK ]</p>
-            <p class="work-thread">I follow my curiosity. It's led to some interesting places.</p>
-
-            <div class="work-row">
-              <div class="work-info">
-                <div class="work-company">w3.wave</div>
-                <div class="work-role">General Partner</div>
-              </div>
-              <div class="work-years">2024 &ndash;</div>
-            </div>
-
-            <div class="work-row">
-              <div class="work-info">
-                <div class="work-company">Forager Ventures</div>
-                <div class="work-role">Founder &amp; Angel Investor</div>
-              </div>
-              <div class="work-years">2021 &ndash;</div>
-            </div>
-
-            <div class="work-row">
-              <div class="work-info">
-                <div class="work-company">Cluster Capital</div>
-                <div class="work-role">Syndicate Member</div>
-              </div>
-              <div class="work-years">2017 &ndash;</div>
-            </div>
-
-            <div class="work-row">
-              <div class="work-info">
-                <div class="work-company">Nuri (Bitwala)</div>
-                <div class="work-role">Chief Growth Officer</div>
-              </div>
-              <div class="work-years">2019 &ndash; 22</div>
-            </div>
-
-            <div class="work-row">
-              <div class="work-info">
-                <div class="work-company">Google</div>
-                <div class="work-role">Enterprise &amp; Hardware Marketing, EMEA</div>
-              </div>
-              <div class="work-years">2011 &ndash; 18</div>
-            </div>
-
-            <div class="toggle">
-              <button class="toggle-btn" aria-expanded="false" aria-controls="toggle-google" onclick="toggleContent(this)">
-                <span class="toggle-chevron">&#9654;</span> cat google.log
-              </button>
-              <div class="toggle-content" id="toggle-google">
-                <div class="toggle-inner">
-                  I joined Google in Dublin in 2011 on the enterprise side, working on acquisition and go-to-market for Google's business products across EMEA. Later moved to London and shifted to hardware — leading go-to-market strategy for Pixel, Google Home, and Chromecast across 15+ markets. Managed cross-channel media, co-marketing partnerships, and regional launches through some of Google's biggest consumer hardware pushes in Europe.
-                </div>
-              </div>
-            </div>
-
-            <div class="toggle">
-              <button class="toggle-btn" aria-expanded="false" aria-controls="toggle-nuri" onclick="toggleContent(this)">
-                <span class="toggle-chevron">&#9654;</span> cat nuri.log
-              </button>
-              <div class="toggle-content" id="toggle-nuri">
-                <div class="toggle-inner">
-                  Joined as the first C-level hire to build out marketing, growth, BI, and communications — eventually leading a team of 40+ people. Helped scale the platform from 10K to 300K users and grew assets under management from near-zero to over &euro;500M. Led the rebrand from Bitwala to Nuri and handled fundraising communications through Seed to Series B. It was a wild ride at a crypto-meets-banking startup in Berlin, and I learned a lot about what it takes to scale something fast in a regulated market.
-                </div>
-              </div>
-            </div>
-
           </section>
 
           <!-- Building -->
@@ -2395,7 +2433,7 @@
                     </li>
                     <li class="invest-list-item">
                       <a href="https://maple.finance" target="_blank" rel="noopener noreferrer">
-                        <div class="invest-list-name">Maple</div>
+                        <div class="invest-list-name">Maple Finance</div>
                         <div class="invest-list-desc">Institutional DeFi lending</div>
                       </a>
                     </li>
@@ -2441,6 +2479,75 @@
             </div>
           </section>
 
+          <!-- Work -->
+          <section class="section fade-in">
+            <p class="section-label">[ WORK ]</p>
+            <p class="work-thread">I follow my curiosity. It's led to some interesting places.</p>
+
+            <div class="work-row">
+              <div class="work-info">
+                <div class="work-company">w3.wave</div>
+                <div class="work-role">General Partner</div>
+              </div>
+              <div class="work-years">2024 &ndash;</div>
+            </div>
+
+            <div class="work-row">
+              <div class="work-info">
+                <div class="work-company">Forager Ventures</div>
+                <div class="work-role">Founder &amp; Angel Investor</div>
+              </div>
+              <div class="work-years">2021 &ndash;</div>
+            </div>
+
+            <div class="work-row">
+              <div class="work-info">
+                <div class="work-company">Cluster Capital</div>
+                <div class="work-role">Syndicate Member</div>
+              </div>
+              <div class="work-years">2017 &ndash;</div>
+            </div>
+
+            <div class="work-row">
+              <div class="work-info">
+                <div class="work-company">Nuri (Bitwala)</div>
+                <div class="work-role">Chief Growth Officer</div>
+              </div>
+              <div class="work-years">2019 &ndash; 22</div>
+            </div>
+
+            <div class="work-row">
+              <div class="work-info">
+                <div class="work-company">Google</div>
+                <div class="work-role">Enterprise &amp; Hardware Marketing, EMEA</div>
+              </div>
+              <div class="work-years">2011 &ndash; 18</div>
+            </div>
+
+            <div class="toggle">
+              <button class="toggle-btn" aria-expanded="false" aria-controls="toggle-google" onclick="toggleContent(this)">
+                <span class="toggle-chevron">&#9654;</span> cat google.log
+              </button>
+              <div class="toggle-content" id="toggle-google">
+                <div class="toggle-inner">
+                  I joined Google in Dublin in 2011 on the enterprise side, working on acquisition and go-to-market for Google's business products across EMEA. Later moved to London and shifted to hardware — leading go-to-market strategy for Pixel, Google Home, and Chromecast across 15+ markets. Managed cross-channel media, co-marketing partnerships, and regional launches through some of Google's biggest consumer hardware pushes in Europe.
+                </div>
+              </div>
+            </div>
+
+            <div class="toggle">
+              <button class="toggle-btn" aria-expanded="false" aria-controls="toggle-nuri" onclick="toggleContent(this)">
+                <span class="toggle-chevron">&#9654;</span> cat nuri.log
+              </button>
+              <div class="toggle-content" id="toggle-nuri">
+                <div class="toggle-inner">
+                  Joined as the first C-level hire to build out marketing, growth, BI, and communications — eventually leading a team of 40+ people. Helped scale the platform from 10K to 300K users and grew assets under management from near-zero to over &euro;500M. Led the rebrand from Bitwala to Nuri and handled fundraising communications through Seed to Series B. It was a wild ride at a crypto-meets-banking startup in Berlin, and I learned a lot about what it takes to scale something fast in a regulated market.
+                </div>
+              </div>
+            </div>
+
+          </section>
+
           <!-- Thoughts / Newsletter -->
           <section class="section fade-in">
             <p class="section-label">[ THOUGHTS ]</p>
@@ -2461,7 +2568,7 @@
             <p class="section-label">[ CONTACT ]</p>
 
             <p class="cta-text">
-              You can <a href="mailto:philipp@philippbeer.me">email me directly</a> or reach out on <a href="https://linkedin.com/in/philippbeer" target="_blank" rel="noopener noreferrer">LinkedIn</a>. Happy to connect.
+              You can <a href="mailto:philippxbeer@gmail.com">email me directly</a> or reach out on <a href="https://linkedin.com/in/philippbeer" target="_blank" rel="noopener noreferrer">LinkedIn</a>. Happy to connect.
             </p>
 
             <div class="toggle">
@@ -2473,7 +2580,7 @@
                   <ul>
                     <li>I like to invest in founders I know personally or through investors I trust</li>
                     <li>I'm most drawn to AI infrastructure, fintech, and deep tech — especially where software meets the physical world</li>
-                    <li><a href="mailto:philipp@philippbeer.me">Reach out</a> directly to see if it makes sense to work together</li>
+                    <li><a href="mailto:philippxbeer@gmail.com">Reach out</a> directly to see if it makes sense to work together</li>
                   </ul>
                 </div>
               </div>
@@ -2488,7 +2595,7 @@
                   <ul>
                     <li>I've scaled products from zero to hundreds of thousands of users across EMEA</li>
                     <li>I can help with growth strategy, positioning, channel mix, and European market entry</li>
-                    <li>Happy to do a one-off session or something more ongoing — <a href="mailto:philipp@philippbeer.me">get in touch</a></li>
+                    <li>Happy to do a one-off session or something more ongoing — <a href="mailto:philippxbeer@gmail.com">get in touch</a></li>
                   </ul>
                 </div>
               </div>
@@ -2500,7 +2607,7 @@
               </button>
               <div class="toggle-content" id="toggle-advisory">
                 <div class="toggle-inner">
-                  <p><a href="mailto:philipp@philippbeer.me">Book an advisory call</a> with me.</p>
+                  <p><a href="mailto:philippxbeer@gmail.com">Book an advisory call</a> with me.</p>
                 </div>
               </div>
             </div>
@@ -2530,8 +2637,8 @@
     <div class="panel-divider"></div>
     <div class="panel-section">
       <div class="indicator red interactive" id="ind-fault"></div>
-      <div class="indicator green"></div>
-      <div class="indicator amber"></div>
+      <div class="indicator green interactive" id="ind-cpu"></div>
+      <div class="indicator amber interactive" id="ind-disk"></div>
       <div class="indicator off"></div>
       <div class="indicator off"></div>
     </div>
@@ -2717,26 +2824,41 @@
     }, 1200);
   });
 
-  // -- Dark button: HALT (power off/on) --
-  document.getElementById('btn-halt').addEventListener('click', () => {
+  // -- Power LED: power on/off toggle --
+  document.querySelector('.power-led-wrap').addEventListener('click', () => {
     if (animating) return;
     animating = true;
     const led = document.getElementById('power-led');
     if (powerOn) {
       screen.classList.add('powered-off');
       led.classList.add('off');
+      document.getElementById('ind-cpu').classList.add('off');
+      document.getElementById('ind-disk').classList.add('off');
       powerOn = false;
       setTimeout(() => { animating = false; }, 600);
     } else {
       screen.classList.remove('powered-off');
       screen.classList.add('power-on');
       led.classList.remove('off');
+      document.getElementById('ind-cpu').classList.remove('off');
+      document.getElementById('ind-disk').classList.remove('off');
       powerOn = true;
       setTimeout(() => {
         screen.classList.remove('power-on');
         animating = false;
       }, 800);
     }
+  });
+
+  // -- Dark button: CRT glitch effect --
+  document.getElementById('btn-halt').addEventListener('click', () => {
+    if (!powerOn || animating) return;
+    animating = true;
+    screen.classList.add('crt-glitch');
+    setTimeout(() => {
+      screen.classList.remove('crt-glitch');
+      animating = false;
+    }, 1000);
   });
 
 
@@ -2852,10 +2974,40 @@
     }
   }
 
-  document.querySelector('.panel-stripe-group').addEventListener('dblclick', (e) => {
+  document.querySelector('.panel-stripe-group').addEventListener('click', (e) => {
     e.stopPropagation();
     if (!powerOn || animating) return;
-    togglePlayer();
+    animating = true;
+    const overlay = document.getElementById('speed-burst');
+    overlay.innerHTML = '';
+    overlay.classList.add('active');
+    const cmds = [
+      '> EXEC 0x7F3A:BOOT_VECTOR',
+      '> LOAD MODULE SYS.CORE',
+      '> COMPILE',
+      '> LINK',
+      '> RUN',
+      '',
+      'TASK COMPLETE'
+    ];
+    let cmdIdx = 0;
+    function typeNextCmd() {
+      if (cmdIdx >= cmds.length) {
+        setTimeout(() => { overlay.classList.remove('active'); overlay.innerHTML = ''; animating = false; }, 800);
+        return;
+      }
+      const line = document.createElement('div');
+      overlay.appendChild(line);
+      const text = cmds[cmdIdx];
+      let charIdx = 0;
+      cmdIdx++;
+      if (!text) { typeNextCmd(); return; }
+      const ti = setInterval(() => {
+        line.textContent = text.slice(0, ++charIdx);
+        if (charIdx >= text.length) { clearInterval(ti); setTimeout(typeNextCmd, 120); }
+      }, 20);
+    }
+    typeNextCmd();
   });
 
   panelPlayer.addEventListener('click', (e) => {
@@ -2869,6 +3021,103 @@
     e.stopPropagation();
     if (!powerOn || animating) return;
     togglePlayer();
+  });
+
+  // -- Green indicator: TV static/grain effect --
+  (function() {
+    // Generate a noise texture once via canvas
+    const noiseCanvas = document.createElement('canvas');
+    noiseCanvas.width = 256;
+    noiseCanvas.height = 256;
+    const nctx = noiseCanvas.getContext('2d');
+    const imageData = nctx.createImageData(256, 256);
+    const data = imageData.data;
+    for (let i = 0; i < data.length; i += 4) {
+      const v = Math.random() * 255 | 0;
+      data[i] = v; data[i+1] = v; data[i+2] = v; data[i+3] = 80;
+    }
+    nctx.putImageData(imageData, 0, 0);
+    const noiseUrl = noiseCanvas.toDataURL();
+    // Inject the noise background into the tv-static rule
+    const style = document.createElement('style');
+    style.textContent = `.screen.tv-static { background-image: url(${noiseUrl}); background-size: 256px 256px; animation: tv-static-bg 0.3s steps(4) infinite, tv-static-flicker 0.3s steps(3) infinite; }`;
+    document.head.appendChild(style);
+  })();
+
+  document.getElementById('ind-cpu').addEventListener('click', () => {
+    if (!powerOn || animating) return;
+    animating = true;
+    const ind = document.getElementById('ind-cpu');
+    ind.classList.add('pulse-green');
+    screen.classList.add('tv-static');
+    setTimeout(() => {
+      screen.classList.remove('tv-static');
+      ind.classList.remove('pulse-green');
+      animating = false;
+    }, 2000);
+  });
+
+  // -- Amber indicator: Directory listing overlay --
+  let dirListingActive = false;
+  function dismissDirListing() {
+    if (!dirListingActive) return;
+    const overlay = document.getElementById('dir-listing');
+    overlay.classList.remove('active');
+    overlay.innerHTML = '';
+    document.getElementById('ind-disk').classList.remove('pulse-amber');
+    dirListingActive = false;
+    animating = false;
+    document.removeEventListener('keydown', dismissDirListing);
+    overlay.removeEventListener('click', dismissDirListing);
+  }
+  document.getElementById('ind-disk').addEventListener('click', () => {
+    if (!powerOn || animating) return;
+    animating = true;
+    const ind = document.getElementById('ind-disk');
+    const overlay = document.getElementById('dir-listing');
+    overlay.innerHTML = '';
+    overlay.classList.add('active');
+    ind.classList.add('pulse-amber');
+    const lines = [
+      'A:\\> dir /w',
+      '',
+      ' Volume in drive A is SYSTEM',
+      ' Directory of A:\\',
+      '',
+      'SYSTEM   CFG     1,204  03-15-94  10:22a',
+      'BOOT     ROM    16,384  03-15-94  10:22a',
+      'MEMORY   DAT     8,192  03-15-94  10:23a',
+      'KERNEL   SYS    32,768  03-15-94  10:23a',
+      'CONFIG   INI       512  03-15-94  10:24a',
+      'DISPLAY  DRV     4,096  03-15-94  10:24a',
+      'IO       SYS    24,576  03-15-94  10:25a',
+      'COMMAND  COM     2,048  03-15-94  10:25a',
+      '',
+      '        8 file(s)     89,780 bytes',
+      '                     362,496 bytes free',
+    ];
+    let lineIdx = 0;
+    function typeLine() {
+      if (lineIdx >= lines.length) {
+        setTimeout(() => {
+          const dismiss = document.createElement('div');
+          dismiss.className = 'dismiss';
+          dismiss.textContent = '[ PRESS ANY KEY ]';
+          overlay.appendChild(dismiss);
+          dirListingActive = true;
+          document.addEventListener('keydown', dismissDirListing);
+          overlay.addEventListener('click', dismissDirListing);
+        }, 1000);
+        return;
+      }
+      const div = document.createElement('div');
+      div.textContent = lines[lineIdx];
+      if (lineIdx === 0) div.className = 'prompt';
+      overlay.appendChild(div);
+      lineIdx++;
+      setTimeout(typeLine, 120);
+    }
+    typeLine();
   });
 </script>
 
