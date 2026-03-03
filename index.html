@@ -419,18 +419,20 @@
 
     .flip-card-back .flip-back-header {
       display: flex;
-      justify-content: space-between;
       align-items: flex-start;
-      margin-bottom: 20px;
+      gap: 20px;
+      margin-bottom: auto;
     }
 
     .flip-card-back .flip-back-logo {
-      width: 48px;
-      height: 48px;
+      width: 100px;
+      height: 100px;
       object-fit: contain;
       filter: brightness(0) invert(1);
-      opacity: 0.9;
-      flex-shrink: 0;
+      opacity: 0.12;
+      position: absolute;
+      bottom: 24px;
+      right: 24px;
     }
 
     .flip-card-back .flip-back-category {
@@ -439,21 +441,21 @@
       letter-spacing: 2px;
       text-transform: uppercase;
       opacity: 0.4;
-      padding-top: 4px;
     }
 
     .flip-card-back .flip-back-name {
       font-family: var(--font-display);
-      font-size: 26px;
+      font-size: 28px;
       font-weight: 400;
       letter-spacing: 0.5px;
-      margin-bottom: 14px;
+      margin-bottom: 16px;
     }
 
     .flip-card-back .flip-back-desc {
       font-size: 14px;
       line-height: 1.7;
       opacity: 0.65;
+      max-width: 85%;
     }
 
     .flip-card-back .flip-back-link {
