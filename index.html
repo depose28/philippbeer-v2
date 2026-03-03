@@ -126,7 +126,8 @@
       height: 40px;
       opacity: 0.2;
       cursor: pointer;
-      transition: opacity 0.2s, transform 0.15s;
+      transition: opacity 0.2s, transform 0.15s, color 0.4s;
+      color: var(--text);
     }
 
     .sidebar-doodles svg:hover {
@@ -1011,6 +1012,8 @@
     .site.phosphor-green .footer-name { color: #1a3a1a; }
     .site.phosphor-green .hero-image { background: #0e1a0e; }
     .site.phosphor-green .flip-card-front { background: #0e1a0e; }
+    .site.phosphor-green .sidebar-doodles svg { opacity: 0.5; }
+    .site.phosphor-green .sidebar-doodles svg:hover { opacity: 0.8; }
 
     /* Amber terminal */
     .site.phosphor-amber {
@@ -1031,6 +1034,8 @@
     .site.phosphor-amber .footer-name { color: #3a2a1a; }
     .site.phosphor-amber .hero-image { background: #1a150e; }
     .site.phosphor-amber .flip-card-front { background: #1a150e; }
+    .site.phosphor-amber .sidebar-doodles svg { opacity: 0.5; }
+    .site.phosphor-amber .sidebar-doodles svg:hover { opacity: 0.8; }
 
     /* Dark mode */
     .site.mode-dark {
@@ -1053,6 +1058,8 @@
     .site.mode-dark .flip-card-front { background: #1e1e22; }
     .site.mode-dark .flip-card-front .flip-name { color: #807870; }
     .site.mode-dark .flip-back-logo { filter: brightness(0) invert(1); opacity: 0.15; }
+    .site.mode-dark .sidebar-doodles svg { opacity: 0.5; }
+    .site.mode-dark .sidebar-doodles svg:hover { opacity: 0.8; }
 
     /* Body + nav backgrounds for phosphor modes */
     body.phosphor-green { background: #0a120a; }
