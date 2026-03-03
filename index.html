@@ -413,45 +413,63 @@
       transform: rotateY(180deg);
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      padding: 28px 24px;
-      gap: 12px;
+      padding: 28px 28px 24px;
+      gap: 0;
+    }
+
+    .flip-card-back .flip-back-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 20px;
+    }
+
+    .flip-card-back .flip-back-logo {
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
+      filter: brightness(0) invert(1);
+      opacity: 0.9;
+      flex-shrink: 0;
+    }
+
+    .flip-card-back .flip-back-category {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      opacity: 0.4;
+      padding-top: 4px;
     }
 
     .flip-card-back .flip-back-name {
-      display: none;
+      font-family: var(--font-display);
+      font-size: 26px;
+      font-weight: 400;
+      letter-spacing: 0.5px;
+      margin-bottom: 14px;
     }
 
     .flip-card-back .flip-back-desc {
-      font-size: 13px;
-      line-height: 1.6;
-      opacity: 0.7;
+      font-size: 14px;
+      line-height: 1.7;
+      opacity: 0.65;
     }
 
     .flip-card-back .flip-back-link {
       font-family: var(--font-mono);
-      font-size: 11px;
+      font-size: 12px;
       color: var(--bg);
       opacity: 0.5;
       text-decoration: none;
       letter-spacing: 0.5px;
       margin-top: auto;
+      padding-top: 20px;
       transition: opacity 0.2s;
     }
 
     .flip-card-back .flip-back-link:hover {
       opacity: 1;
-    }
-
-    .flip-card-back .flip-back-logo {
-      width: 60px;
-      height: 60px;
-      object-fit: contain;
-      filter: brightness(0) invert(1);
-      opacity: 0.9;
-      position: absolute;
-      top: 20px;
-      right: 20px;
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -1836,8 +1854,12 @@
               <img src="screenshots/refound.png" alt="Refound AI landing page">
             </div>
             <div class="flip-card-back">
-              <img class="flip-back-logo" src="logos/refound.png" alt="Refound AI">
-              <div class="flip-back-desc">AI commerce readiness scoring. Runs 15 deep checks on any e-commerce site and surfaces what's broken before customers notice.</div>
+              <div class="flip-back-header">
+                <span class="flip-back-category">AI Commerce</span>
+                <img class="flip-back-logo" src="logos/refound.png" alt="Refound AI">
+              </div>
+              <div class="flip-back-name">Refound AI</div>
+              <div class="flip-back-desc">AI-powered commerce readiness scoring. Paste any e-commerce URL and Refound runs 15 deep checks across SEO, performance, accessibility, and conversion &mdash; surfacing what's broken before customers notice. Built to help brands fix what they can't see.</div>
               <a class="flip-back-link" href="https://getrefound.ai" target="_blank" rel="noopener noreferrer">getrefound.ai &rarr;</a>
             </div>
           </div>
@@ -1855,8 +1877,12 @@
               <img src="screenshots/fragmilo.png" alt="FragMilo landing page">
             </div>
             <div class="flip-card-back">
-              <img class="flip-back-logo" src="logos/fragmilo.png" alt="FragMilo">
-              <div class="flip-back-desc">AI tenant concierge for German renters. Agentic workflows on WhatsApp &mdash; tenants describe a problem, the bot triages and resolves it.</div>
+              <div class="flip-back-header">
+                <span class="flip-back-category">AI Concierge</span>
+                <img class="flip-back-logo" src="logos/fragmilo.png" alt="FragMilo">
+              </div>
+              <div class="flip-back-name">FragMilo</div>
+              <div class="flip-back-desc">AI tenant concierge for German renters. Tenants describe a problem on WhatsApp, and FragMilo's agentic workflows triage, classify, and resolve it &mdash; coordinating with property managers automatically. Turning a broken process into a conversation.</div>
               <a class="flip-back-link" href="https://fragmilo.de" target="_blank" rel="noopener noreferrer">fragmilo.de &rarr;</a>
             </div>
           </div>
@@ -1874,8 +1900,12 @@
               <img src="screenshots/beaches.png" alt="Beaches of Mallorca landing page">
             </div>
             <div class="flip-card-back">
-              <img class="flip-back-logo" src="logos/beaches.png" alt="Beaches of Mallorca">
-              <div class="flip-back-desc">Real-time beach conditions for every beach on the island. Live weather, wave, and UV data in a clean map interface.</div>
+              <div class="flip-back-header">
+                <span class="flip-back-category">Travel App</span>
+                <img class="flip-back-logo" src="logos/beaches.png" alt="Beaches of Mallorca">
+              </div>
+              <div class="flip-back-name">Beaches of Mallorca</div>
+              <div class="flip-back-desc">Real-time beach conditions for every beach on the island. Live weather, wave height, wind, and UV data pulled fresh and displayed on a clean map interface. Pick a beach, check the conditions, go. Built for anyone who's tired of showing up to a windy shore.</div>
               <a class="flip-back-link" href="https://beachesofmallorca.com" target="_blank" rel="noopener noreferrer">beachesofmallorca.com &rarr;</a>
             </div>
           </div>
@@ -1893,9 +1923,13 @@
               <img src="screenshots/portfolio-tools.png" alt="Portfolio Tools dashboard">
             </div>
             <div class="flip-card-back">
-              <img class="flip-back-logo" src="logos/w3group.png" alt="w3.wave">
-              <div class="flip-back-desc">Dashboards and AI agents for tracking investments and macro signals across a liquid investment portfolio.</div>
-              <span class="flip-back-link" style="opacity: 0.3;">w3.wave (internal)</span>
+              <div class="flip-back-header">
+                <span class="flip-back-category">Internal Tools</span>
+                <img class="flip-back-logo" src="logos/w3group.png" alt="w3.wave">
+              </div>
+              <div class="flip-back-name">Portfolio Tools</div>
+              <div class="flip-back-desc">Custom dashboards and AI agents for tracking investments and macro signals across a liquid token portfolio. Automated short scanners, funding rate monitors, and position analytics &mdash; built internally for w3.wave to make better decisions faster.</div>
+              <span class="flip-back-link" style="opacity: 0.3;">w3.wave &middot; internal</span>
             </div>
           </div>
         </div>
@@ -2434,7 +2468,8 @@
   // Flip cards — click to flip, click again to unflip
   // ==========================================
   document.querySelectorAll('.flip-card').forEach(card => {
-    card.addEventListener('click', () => {
+    card.addEventListener('click', (e) => {
+      if (e.target.closest('a')) return;
       card.classList.toggle('flipped');
     });
   });
