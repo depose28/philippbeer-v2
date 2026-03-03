@@ -49,61 +49,58 @@
     }
 
     /* ==========================================
-       LAYOUT: Three-column grid
+       LAYOUT: Three-column grid (seb-astian style)
        ========================================== */
     .site {
       display: grid;
-      grid-template-columns: 240px 360px 1fr;
+      grid-template-columns: 260px 1fr 1fr;
       min-height: 100vh;
     }
 
-    /* ---- SIDEBAR ---- */
+    /* ---- SIDEBAR (left) ---- */
     .sidebar {
       position: sticky;
       top: 0;
       height: 100vh;
       border-right: 1px solid var(--border);
-      padding: 40px 28px;
+      padding: 16px 20px;
       display: flex;
       flex-direction: column;
       overflow-y: auto;
     }
 
     .sidebar-logo {
-      font-family: var(--font-display);
-      font-size: 36px;
-      font-weight: 400;
-      color: var(--text);
-      letter-spacing: -1px;
-      margin-bottom: 48px;
-      text-decoration: none;
-      display: block;
+      display: none;
     }
 
     .sidebar-nav {
       display: flex;
       flex-direction: column;
-      gap: 4px;
-      margin-bottom: 40px;
+      align-items: center;
+      gap: 20px;
+      flex: 1;
+      justify-content: center;
     }
 
     .sidebar-nav a {
-      font-family: var(--font-mono);
+      font-family: var(--font-body);
       font-size: 12px;
+      font-weight: 500;
       text-transform: uppercase;
       letter-spacing: 1.5px;
-      color: var(--text-muted);
+      color: var(--text);
       text-decoration: none;
-      padding: 8px 0;
-      border-bottom: 1.5px solid transparent;
-      transition: color 0.2s, border-color 0.2s;
-      width: fit-content;
+      padding: 0;
+      transition: color 0.2s;
     }
 
-    .sidebar-nav a:hover,
-    .sidebar-nav a.active {
+    .sidebar-nav a:hover {
       color: var(--accent);
-      border-bottom-color: var(--accent);
+    }
+
+    .sidebar-nav a.active {
+      text-decoration: underline;
+      text-underline-offset: 4px;
     }
 
     .sidebar-nav a:focus-visible {
@@ -151,52 +148,78 @@
       margin-top: auto;
       display: flex;
       flex-direction: column;
-      gap: 8px;
-      padding-top: 24px;
-      border-top: 1px solid var(--border);
+      gap: 6px;
+      padding-top: 0;
+      border-top: none;
     }
 
-    .sidebar-bottom a {
+    .sidebar-contact-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
       font-family: var(--font-mono);
       font-size: 11px;
-      color: var(--text-muted);
-      text-decoration: none;
       letter-spacing: 0.5px;
-      transition: color 0.2s;
-      display: flex;
-      align-items: center;
-      gap: 8px;
     }
 
-    .sidebar-bottom a:hover {
+    .sidebar-contact-row .row-label {
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    .sidebar-contact-row a {
+      color: var(--text);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      text-decoration-color: var(--border);
+      transition: color 0.2s, text-decoration-color 0.2s;
+      font-family: var(--font-mono);
+      font-size: 11px;
+    }
+
+    .sidebar-contact-row a:hover {
       color: var(--accent);
+      text-decoration-color: var(--accent);
     }
 
-    .sidebar-bottom a:focus-visible {
+    .sidebar-contact-row a:focus-visible {
       outline: 2px solid var(--accent);
-      outline-offset: 4px;
+      outline-offset: 2px;
     }
 
-    .sidebar-bottom svg {
-      width: 14px;
-      height: 14px;
-      stroke: currentColor;
-      fill: none;
-      stroke-width: 2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
+    .sidebar-contact-row .row-links {
+      display: flex;
+      gap: 10px;
+    }
+
+    .sidebar-subscribe {
+      margin-top: 12px;
+      border: 1px solid var(--border);
+      background: none;
+      padding: 10px;
+      cursor: pointer;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      text-align: center;
+      transition: color 0.2s, border-color 0.2s;
+      width: 100%;
+    }
+
+    .sidebar-subscribe:hover {
+      color: var(--accent);
+      border-color: var(--accent);
     }
 
     .sidebar-player {
-      margin-top: 16px;
-      padding-top: 16px;
-      border-top: 1px solid var(--border);
+      margin-top: 8px;
     }
 
     .player-btn {
       background: none;
       border: 1px solid var(--border);
-      border-radius: 4px;
       padding: 6px 12px;
       cursor: pointer;
       display: flex;
@@ -252,26 +275,20 @@
 
     .hero-image {
       width: 100%;
-      aspect-ratio: 4 / 5;
+      aspect-ratio: 3 / 4;
       background: var(--bg-alt);
-      border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
       overflow: hidden;
       position: relative;
-    }
-
-    .hero-image svg {
-      width: 120px;
-      height: 120px;
-      opacity: 0.15;
+      border: 1px solid var(--border);
     }
 
     .project-images {
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 8px;
     }
 
     /* Flip card container */
@@ -299,7 +316,6 @@
       position: absolute;
       inset: 0;
       backface-visibility: hidden;
-      border-radius: 6px;
       border: 1px solid var(--border);
       overflow: hidden;
     }
@@ -341,7 +357,6 @@
       opacity: 0;
       transition: opacity 0.3s;
       pointer-events: none;
-      border-radius: 6px;
     }
 
     .flip-card:not(.flipped):hover .flip-card-front::after {
@@ -351,23 +366,33 @@
 
     /* Small label on front */
     .flip-card-front .flip-name {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      font-family: var(--font-mono);
-      font-size: 10px;
-      color: #fff;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      padding: 8px 12px;
-      background: linear-gradient(transparent, rgba(0,0,0,0.5));
-      border-radius: 0 0 6px 6px;
-      transition: opacity 0.3s;
+      display: none;
     }
 
-    .flip-card:not(.flipped):hover .flip-name {
-      opacity: 0;
+    /* Project label below card */
+    .project-label {
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 6px 0 8px;
+      color: var(--text);
+    }
+
+    .project-label .project-type {
+      color: var(--text-muted);
+    }
+
+    .project-label a {
+      color: inherit;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .project-label a:hover {
+      color: var(--accent);
     }
 
     /* Back: description + link */
@@ -427,55 +452,139 @@
       }
     }
 
-    /* ---- CENTER COLUMN (images/projects) ---- */
+    /* ---- CENTER COLUMN (big headers + images) ---- */
     .center-col {
       position: sticky;
       top: 0;
       height: 100vh;
       overflow-y: auto;
-      border-right: 1px solid var(--border);
-      padding: 40px 28px;
+      padding: 16px 24px 40px;
       display: flex;
       flex-direction: column;
-      gap: 24px;
+      gap: 12px;
+      border-right: 1px solid var(--border);
     }
 
-    /* ---- CONTENT (center column) ---- */
+    .center-subtitle {
+      font-family: var(--font-display);
+      font-size: clamp(20px, 2.5vw, 32px);
+      font-weight: 300;
+      color: var(--text);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 8px 0 0;
+    }
+
+    .center-spacer {
+      height: 30vh;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .center-hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(32px, 4vw, 48px);
+      font-weight: 300;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      line-height: 1.1;
+      color: var(--text);
+      padding: 4px 0 12px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .center-hero-title .name-prefix,
+    .center-hero-title .name-suffix {
+      font-family: var(--font-mono);
+      font-weight: 400;
+      opacity: 0.3;
+    }
+
+    .center-footer-name {
+      font-family: var(--font-display);
+      font-size: clamp(32px, 4vw, 48px);
+      font-weight: 300;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      line-height: 1.1;
+      color: var(--text);
+      margin-top: auto;
+      padding-top: 24px;
+      opacity: 0.12;
+    }
+
+    .center-footer-name .dash-line {
+      display: inline-block;
+      width: 40px;
+      height: 1px;
+      background: var(--text);
+      vertical-align: middle;
+      margin: 0 8px;
+      opacity: 0.25;
+    }
+
+    /* ---- CONTENT (right column) ---- */
     .content {
-      padding: 40px 48px 80px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
       overflow-y: auto;
-      max-width: 680px;
+      padding: 16px 28px 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+
+    .content-footer-cta {
+      background: var(--text);
+      color: var(--bg);
+      padding: 14px 24px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      text-align: center;
+      text-decoration: none;
+      display: block;
+      transition: background 0.2s;
+      margin: 0 -28px;
+      width: calc(100% + 56px);
+    }
+
+    .content-footer-cta:hover {
+      background: var(--accent);
+    }
+
+    .content-footer-meta {
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text-muted);
+      padding: 8px 28px 12px;
+      margin: 0 -28px;
     }
 
     /* ---- Section pattern ---- */
     .section-label {
       font-family: var(--font-mono);
-      font-size: 11px;
+      font-size: 12px;
       text-transform: uppercase;
-      letter-spacing: 2px;
-      color: var(--text-muted);
-      margin-bottom: 8px;
+      letter-spacing: 1px;
+      color: var(--text);
+      margin-bottom: 12px;
+      font-weight: 500;
     }
 
     .section-title {
-      font-family: var(--font-display);
-      font-size: 32px;
-      font-weight: 300;
-      color: var(--text);
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      margin-bottom: 20px;
-      line-height: 1.2;
-      text-wrap: balance;
-    }
-
-    .section-title span.dash {
-      color: var(--text-muted);
-      margin: 0 2px;
+      display: none; /* Section titles now handled by labels only, like seb-astian */
     }
 
     section {
-      padding: 36px 0;
+      padding: 28px 0;
       border-bottom: 1px solid var(--border);
     }
 
@@ -485,89 +594,77 @@
 
     /* ---- HERO INTRO ---- */
     .intro {
-      padding-bottom: 36px;
+      padding-bottom: 28px;
       border-bottom: 1px solid var(--border);
     }
 
     .intro h1 {
-      font-family: var(--font-display);
-      font-size: 42px;
-      font-weight: 300;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      line-height: 1.1;
-      margin-bottom: 8px;
-      text-wrap: balance;
-    }
-
-    .intro h1 span.dash {
-      color: var(--text-muted);
-      margin: 0 4px;
+      display: none; /* Big name is now in center column */
     }
 
     .intro-subtitle {
       font-family: var(--font-mono);
       font-size: 12px;
-      color: var(--text-muted);
-      letter-spacing: 2px;
+      color: var(--text);
+      letter-spacing: 1px;
       text-transform: uppercase;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
+      font-weight: 500;
     }
 
     .intro-tagline {
       font-family: var(--font-body);
-      font-size: 16px;
-      color: var(--text-muted);
-      line-height: 1.7;
-      max-width: 340px;
+      font-size: 15px;
+      color: var(--text);
+      line-height: 1.75;
     }
 
     /* ---- STATS ---- */
     .stats-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1px;
-      background: var(--border);
-      border: 1px solid var(--border);
-      margin: 24px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      margin: 20px 0;
+      border-top: 1px solid var(--border);
     }
 
     .stat {
-      background: var(--bg);
-      padding: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
     }
 
     .stat-label {
       font-family: var(--font-mono);
-      font-size: 10px;
+      font-size: 11px;
       text-transform: uppercase;
-      letter-spacing: 1.5px;
+      letter-spacing: 1px;
       color: var(--text-muted);
-      margin-bottom: 4px;
     }
 
     .stat-value {
-      font-family: var(--font-display);
-      font-size: 18px;
-      font-weight: 400;
+      font-family: var(--font-mono);
+      font-size: 11px;
       color: var(--text);
       font-variant-numeric: tabular-nums;
+      text-align: right;
     }
 
     /* ---- TEXT BLOCKS ---- */
     .body-text {
-      font-size: 15px;
-      line-height: 1.8;
-      color: var(--text-muted);
+      font-size: 14px;
+      line-height: 1.75;
+      color: var(--text);
     }
 
     .body-text strong {
-      color: var(--text);
-      font-weight: 500;
+      font-weight: 600;
     }
 
     .body-text em {
-      color: var(--text);
+      font-style: italic;
     }
 
     .body-text a {
@@ -597,12 +694,8 @@
 
     /* ---- BUILDING ---- */
     .build-row {
-      padding: 12px 0;
+      padding: 10px 0;
       border-bottom: 1px solid var(--border);
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      gap: 12px;
     }
 
     .build-row:last-of-type {
@@ -610,20 +703,23 @@
     }
 
     .build-name {
-      font-family: var(--font-display);
-      font-size: 18px;
-      font-weight: 400;
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 600;
       color: var(--text);
     }
 
     .build-name a {
       color: inherit;
-      text-decoration: none;
-      transition: color 0.2s;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      text-decoration-color: var(--border);
+      transition: color 0.2s, text-decoration-color 0.2s;
     }
 
     .build-name a:hover {
       color: var(--accent);
+      text-decoration-color: var(--accent);
     }
 
     .build-name a:focus-visible {
@@ -635,6 +731,7 @@
       font-size: 13px;
       color: var(--text-muted);
       line-height: 1.5;
+      margin-top: 2px;
     }
 
     .build-url {
@@ -643,6 +740,7 @@
       color: var(--text-muted);
       white-space: nowrap;
       opacity: 0.6;
+      margin-top: 2px;
     }
 
     /* ---- INVESTMENT GRID ---- */
@@ -655,14 +753,13 @@
 
     .invest-card {
       border: 1px solid var(--border);
-      padding: 14px;
+      padding: 12px;
       text-decoration: none;
       color: inherit;
       display: block;
       position: relative;
       overflow: hidden;
       transition: border-color 0.2s, background 0.2s;
-      border-radius: 4px;
     }
 
     .invest-card:hover {
@@ -698,9 +795,9 @@
     }
 
     .invest-card-name {
-      font-family: var(--font-display);
-      font-weight: 500;
-      font-size: 15px;
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 13px;
       color: var(--text);
     }
 
@@ -828,7 +925,7 @@
       display: flex;
       justify-content: space-between;
       align-items: baseline;
-      padding: 12px 0;
+      padding: 10px 0;
       border-bottom: 1px solid var(--border);
       gap: 12px;
     }
@@ -838,14 +935,14 @@
     }
 
     .work-company {
-      font-family: var(--font-display);
+      font-family: var(--font-body);
       font-weight: 600;
-      font-size: 17px;
+      font-size: 14px;
       color: var(--text);
     }
 
     .work-role {
-      font-size: 13px;
+      font-size: 12px;
       color: var(--text-muted);
       margin-top: 1px;
     }
@@ -958,25 +1055,13 @@
       outline-offset: 2px;
     }
 
-    /* ---- FOOTER ---- */
+    /* ---- FOOTER (in right column) ---- */
     .site-footer {
-      padding: 60px 0 24px;
+      padding: 24px 0 0;
     }
 
     .footer-name {
-      font-family: var(--font-display);
-      font-size: 64px;
-      font-weight: 300;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      color: var(--border);
-      line-height: 1;
-      margin-bottom: 12px;
-    }
-
-    .footer-name span.dash {
-      color: var(--border);
-      opacity: 0.5;
+      display: none; /* Big name is now in center column */
     }
 
     .footer-copy {
@@ -1010,6 +1095,8 @@
     .site.phosphor-green .invest-card:hover { background: rgba(51,255,51,0.06); }
     .site.phosphor-green .newsletter-input { background: #0e1a0e; }
     .site.phosphor-green .footer-name { color: #1a3a1a; }
+    .site.phosphor-green .center-footer-name { color: #1a3a1a; }
+    .site.phosphor-green .content-footer-cta { background: #33ff33; color: #0a120a; }
     .site.phosphor-green .hero-image { background: #0e1a0e; }
     .site.phosphor-green .flip-card-front { background: #0e1a0e; }
     .site.phosphor-green .sidebar-doodles svg { opacity: 0.5; }
@@ -1032,6 +1119,8 @@
     .site.phosphor-amber .invest-card:hover { background: rgba(255,204,51,0.06); }
     .site.phosphor-amber .newsletter-input { background: #1a150e; }
     .site.phosphor-amber .footer-name { color: #3a2a1a; }
+    .site.phosphor-amber .center-footer-name { color: #3a2a1a; }
+    .site.phosphor-amber .content-footer-cta { background: #ffcc33; color: #12100a; }
     .site.phosphor-amber .hero-image { background: #1a150e; }
     .site.phosphor-amber .flip-card-front { background: #1a150e; }
     .site.phosphor-amber .sidebar-doodles svg { opacity: 0.5; }
@@ -1054,6 +1143,8 @@
     .site.mode-dark .invest-card:hover { background: rgba(196,132,90,0.08); }
     .site.mode-dark .newsletter-input { background: #1e1e22; }
     .site.mode-dark .footer-name { color: #2a2a2e; }
+    .site.mode-dark .center-footer-name { color: #2a2a2e; }
+    .site.mode-dark .content-footer-cta { background: #e0ddd4; color: #141416; }
     .site.mode-dark .hero-image { background: #1e1e22; }
     .site.mode-dark .flip-card-front { background: #1e1e22; }
     .site.mode-dark .flip-card-front .flip-name { color: #807870; }
@@ -1066,11 +1157,14 @@
     body.phosphor-amber { background: #12100a; }
     body.mode-dark { background: #141416; }
     body.phosphor-green .top-nav,
-    body.phosphor-green .bottom-nav { background: #0a120a; }
+    body.phosphor-green .bottom-nav,
+    body.phosphor-green .mobile-menu-overlay { background: #0a120a; }
     body.phosphor-amber .top-nav,
-    body.phosphor-amber .bottom-nav { background: #12100a; }
+    body.phosphor-amber .bottom-nav,
+    body.phosphor-amber .mobile-menu-overlay { background: #12100a; }
     body.mode-dark .top-nav,
-    body.mode-dark .bottom-nav { background: #141416; }
+    body.mode-dark .bottom-nav,
+    body.mode-dark .mobile-menu-overlay { background: #141416; }
     body { transition: background-color 0.4s ease; }
 
     /* Smooth transition between modes */
@@ -1223,7 +1317,8 @@
        MOBILE NAV (tablet + mobile)
        ========================================== */
     .top-nav,
-    .bottom-nav {
+    .bottom-nav,
+    .mobile-menu-overlay {
       display: none;
     }
 
@@ -1240,6 +1335,19 @@
       }
 
       .center-col {
+        position: static;
+        height: auto;
+        overflow: visible;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+        padding: 20px 24px 32px;
+      }
+
+      .center-hero-title {
+        font-size: 48px;
+      }
+
+      .center-footer-name {
         display: none;
       }
 
@@ -1294,11 +1402,19 @@
       }
 
       .content {
+        position: static;
+        height: auto;
+        overflow: visible;
         padding: 32px 24px 80px;
       }
 
-      .footer-name {
-        font-size: 42px;
+      .intro h1 {
+        display: none;
+      }
+
+      .content-footer-cta,
+      .content-footer-meta {
+        display: none;
       }
     }
 
@@ -1310,69 +1426,71 @@
         display: none;
       }
 
-      .bottom-nav {
-        display: flex;
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background: var(--bg);
-        border-top: 1px solid var(--border);
-        padding: 10px 16px;
-        justify-content: space-around;
-        align-items: center;
-        z-index: 100;
-        gap: 4px;
+      .site {
+        display: block;
       }
 
-      .bottom-nav a {
-        font-family: var(--font-mono);
-        font-size: 10px;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        color: var(--text-muted);
-        text-decoration: none;
-        padding: 6px 8px;
-        transition: color 0.2s;
+      .sidebar {
+        display: none;
       }
 
-      .bottom-nav a:hover,
-      .bottom-nav a.active {
-        color: var(--accent);
+      /* Show center column inline on mobile */
+      .center-col {
+        display: block;
+        position: static !important;
+        height: auto !important;
+        overflow: visible !important;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+        padding: 20px 18px;
       }
 
-      .bottom-nav a:focus-visible {
-        outline: 2px solid var(--accent);
-        outline-offset: 2px;
+      .center-hero-title {
+        font-size: 38px;
+        padding-bottom: 12px;
       }
 
-      .bottom-nav .player-toggle-mobile {
-        background: none;
-        border: 1px solid var(--border);
-        border-radius: 4px;
-        padding: 6px 8px;
-        cursor: pointer;
-        font-family: var(--font-mono);
-        font-size: 10px;
-        color: var(--text-muted);
-        transition: color 0.2s, border-color 0.2s;
+      .center-hero-title .dash-line {
+        width: 40px;
+        margin: 0 8px;
       }
 
-      .bottom-nav .player-toggle-mobile.playing {
-        color: var(--accent);
-        border-color: var(--accent);
+      .center-footer-name {
+        display: none;
+      }
+
+      .intro h1 {
+        display: none;
+      }
+
+      .content-footer-cta,
+      .content-footer-meta {
+        display: none;
+      }
+
+      .hero-image {
+        aspect-ratio: 1 / 1;
+        margin-bottom: 16px;
+      }
+
+      .flip-card {
+        aspect-ratio: 4 / 3;
       }
 
       .content {
         padding: 24px 18px 100px;
+        max-width: 100%;
       }
 
+      /* Big bold headers on mobile like seb-astian */
       .intro h1 {
-        font-size: 30px;
+        font-size: 38px;
+        letter-spacing: 3px;
       }
 
       .section-title {
-        font-size: 24px;
+        font-size: 28px;
+        letter-spacing: 2px;
       }
 
       .invest-grid {
@@ -1387,12 +1505,235 @@
         flex-direction: column;
       }
 
-      .footer-name {
-        font-size: 28px;
+      .stats-grid {
+        /* Already flex column from base styles */
       }
 
-      .stats-grid {
-        grid-template-columns: 1fr;
+      .footer-name {
+        font-size: 36px;
+      }
+
+      /* ---- Bottom bar: hamburger | PHILIPP — BEER ---- */
+      .bottom-nav {
+        display: flex;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: var(--bg);
+        border-top: 1px solid var(--border);
+        padding: 12px 18px;
+        align-items: center;
+        z-index: 300;
+        gap: 14px;
+      }
+
+      .bottom-nav .bottom-nav-links {
+        display: none;
+      }
+
+      .bottom-nav-hamburger {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 4px;
+        color: var(--text);
+        width: 28px;
+        height: 28px;
+        flex-shrink: 0;
+      }
+
+      .bottom-nav-hamburger svg {
+        width: 22px;
+        height: 22px;
+        stroke: currentColor;
+        fill: none;
+        stroke-width: 2;
+        stroke-linecap: round;
+      }
+
+      .bottom-nav-brand {
+        font-family: var(--font-display);
+        font-size: 22px;
+        font-weight: 400;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        color: var(--text);
+        line-height: 1;
+        white-space: nowrap;
+      }
+
+      .bottom-nav-brand .dash {
+        color: var(--text-muted);
+        margin: 0 4px;
+      }
+
+      /* Hide old mobile elements */
+      .bottom-nav > a,
+      .bottom-nav .player-toggle-mobile {
+        display: none;
+      }
+
+      /* ---- Full-screen menu overlay ---- */
+      .mobile-menu-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: var(--bg);
+        z-index: 200;
+        flex-direction: column;
+        padding: 40px 24px 100px;
+        overflow-y: auto;
+      }
+
+      .mobile-menu-overlay.open {
+        display: flex;
+      }
+
+      .mobile-menu-overlay nav {
+        display: flex;
+        flex-direction: column;
+        border-top: 1px solid var(--border);
+      }
+
+      .mobile-menu-overlay nav a {
+        font-family: var(--font-body);
+        font-size: 16px;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        color: var(--text);
+        text-decoration: none;
+        padding: 16px 0;
+        border-bottom: 1px solid var(--border);
+        transition: color 0.2s;
+      }
+
+      .mobile-menu-overlay nav a:hover {
+        color: var(--accent);
+      }
+
+      .mobile-menu-section {
+        margin-top: 24px;
+        border-top: 1px solid var(--border);
+        padding-top: 16px;
+      }
+
+      .mobile-menu-section-label {
+        font-family: var(--font-body);
+        font-size: 16px;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        color: var(--text);
+        margin-bottom: 12px;
+      }
+
+      .mobile-menu-section .menu-items {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        padding-left: 8px;
+      }
+
+      .mobile-menu-section .menu-items a {
+        font-family: var(--font-mono);
+        font-size: 13px;
+        color: var(--text-muted);
+        text-decoration: none;
+        display: flex;
+        align-items: baseline;
+        gap: 20px;
+        transition: color 0.2s;
+      }
+
+      .mobile-menu-section .menu-items a:hover {
+        color: var(--accent);
+      }
+
+      .mobile-menu-section .menu-items .menu-num {
+        font-size: 12px;
+        color: var(--text-muted);
+        opacity: 0.5;
+      }
+
+      .mobile-menu-section .menu-items .menu-label {
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .mobile-menu-footer {
+        margin-top: auto;
+        padding-top: 32px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .mobile-menu-footer-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        font-family: var(--font-mono);
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .mobile-menu-footer-row .footer-label {
+        color: var(--text-muted);
+      }
+
+      .mobile-menu-footer-row a {
+        color: var(--text);
+        text-decoration: none;
+        text-decoration: underline;
+        text-underline-offset: 3px;
+        text-decoration-color: var(--border);
+        transition: color 0.2s;
+      }
+
+      .mobile-menu-footer-row a:hover {
+        color: var(--accent);
+      }
+
+      .mobile-menu-footer-row .footer-links {
+        display: flex;
+        gap: 12px;
+      }
+
+      .mobile-menu-player {
+        margin-top: 20px;
+        padding-top: 16px;
+        border-top: 1px solid var(--border);
+      }
+
+      .mobile-menu-player button {
+        background: none;
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        padding: 10px 16px;
+        cursor: pointer;
+        font-family: var(--font-mono);
+        font-size: 11px;
+        color: var(--text-muted);
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        width: 100%;
+        transition: color 0.2s, border-color 0.2s;
+      }
+
+      .mobile-menu-player button:hover {
+        color: var(--accent);
+        border-color: var(--accent);
+      }
+
+      .mobile-menu-player button.playing {
+        color: var(--accent);
+        border-color: var(--accent);
       }
     }
   </style>
@@ -1417,7 +1758,10 @@
 
     <nav class="sidebar-nav" aria-label="Main navigation">
       <a href="#about">About</a>
-      <a href="#portfolio">Portfolio</a>
+      <a href="#investments">Investments</a>
+      <a href="#work">Work</a>
+      <a href="#thoughts">Thoughts</a>
+      <a href="#portfolio">Building</a>
       <a href="#contact">Contact</a>
     </nav>
 
@@ -1449,18 +1793,18 @@
     </div>
 
     <div class="sidebar-bottom">
-      <a href="mailto:philippxbeer@gmail.com">
-        <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-        Email
-      </a>
-      <a href="https://linkedin.com/in/philippbeer" target="_blank" rel="noopener noreferrer">
-        <svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
-        LinkedIn
-      </a>
-      <a href="https://github.com/depose28" target="_blank" rel="noopener noreferrer">
-        <svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
-        GitHub
-      </a>
+      <div class="sidebar-contact-row">
+        <span class="row-label">[EMAIL]</span>
+        <a href="mailto:philippxbeer@gmail.com">philippxbeer@gmail.com</a>
+      </div>
+      <div class="sidebar-contact-row">
+        <span class="row-label">[SOCIAL]</span>
+        <div class="row-links">
+          <a href="https://linkedin.com/in/philippbeer" target="_blank" rel="noopener noreferrer">LI</a>
+          <a href="https://github.com/depose28" target="_blank" rel="noopener noreferrer">GH</a>
+        </div>
+      </div>
+      <button class="sidebar-subscribe" onclick="document.getElementById('newsletter-form').scrollIntoView({behavior:'smooth'})">Subscribe to Newsletter</button>
 
       <div class="sidebar-player">
         <button class="player-btn" id="player-btn" type="button" aria-label="Toggle music">
@@ -1472,90 +1816,112 @@
     </div>
   </aside>
 
-  <!-- ======== CENTER COLUMN (images/projects) ======== -->
+  <!-- ======== CENTER COLUMN (big headers + images) ======== -->
   <div class="center-col">
-    <div class="hero-image">
-      <svg viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity="0.3">
-        <circle cx="60" cy="45" r="20"/>
-        <path d="M30 100c0-22 13-35 30-35s30 13 30 35"/>
-        <path d="M45 42c0-1.5 1-3 3-3s3 1.5 3 3"/>
-        <path d="M69 42c0-1.5 1-3 3-3s3 1.5 3 3"/>
-        <path d="M52 55c2 3 10 3 16 0"/>
-      </svg>
+    <div class="center-hero-title">
+      <span class="name-prefix">[</span><span class="name-left">Philipp</span>
+      <span class="name-right">Beer</span><span class="name-suffix">]</span>
+    </div>
+    <div id="portrait-frame" style="width:100%;border:1px solid var(--border);background:#fff;padding:20px;display:flex;align-items:center;justify-content:center;">
+      <img id="portrait-img" alt="Philipp Beer — sketch portrait" style="max-width:100%;height:auto;display:block;">
+    </div>
+    <div class="center-spacer">
+      <p class="center-subtitle">Builder _ Investor _ Polymath _ Dad</p>
     </div>
 
     <div class="project-images">
-      <div class="flip-card">
-        <div class="flip-card-inner">
-          <div class="flip-card-front">
-            <img src="screenshots/refound.png" alt="Refound AI landing page">
-            <span class="flip-name">Refound AI</span>
+      <div>
+        <div class="flip-card">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <img src="screenshots/refound.png" alt="Refound AI landing page">
+            </div>
+            <div class="flip-card-back">
+              <img class="flip-back-logo" src="logos/refound.png" alt="">
+              <div class="flip-back-name">Refound AI</div>
+              <div class="flip-back-desc">AI commerce readiness scoring. Runs 15 deep checks on any e-commerce site and surfaces what's broken before customers notice.</div>
+              <a class="flip-back-link" href="https://getrefound.ai" target="_blank" rel="noopener noreferrer">getrefound.ai &rarr;</a>
+            </div>
           </div>
-          <div class="flip-card-back">
-            <img class="flip-back-logo" src="logos/refound.png" alt="">
-            <div class="flip-back-name">Refound AI</div>
-            <div class="flip-back-desc">AI commerce readiness scoring. Runs 15 deep checks on any e-commerce site and surfaces what's broken before customers notice.</div>
-            <a class="flip-back-link" href="https://getrefound.ai" target="_blank" rel="noopener noreferrer">getrefound.ai &rarr;</a>
-          </div>
+        </div>
+        <div class="project-label">
+          <span><a href="https://getrefound.ai" target="_blank" rel="noopener noreferrer">Refound AI &nearr;</a></span>
+          <span class="project-type">AI Commerce</span>
         </div>
       </div>
 
-      <div class="flip-card">
-        <div class="flip-card-inner">
-          <div class="flip-card-front">
-            <img src="screenshots/fragmilo.png" alt="FragMilo landing page">
-            <span class="flip-name">FragMilo</span>
+      <div>
+        <div class="flip-card">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <img src="screenshots/fragmilo.png" alt="FragMilo landing page">
+            </div>
+            <div class="flip-card-back">
+              <img class="flip-back-logo" src="logos/fragmilo.png" alt="">
+              <div class="flip-back-name">FragMilo</div>
+              <div class="flip-back-desc">AI tenant concierge for German renters. Agentic workflows on WhatsApp &mdash; tenants describe a problem, the bot triages and resolves it.</div>
+              <a class="flip-back-link" href="https://fragmilo.de" target="_blank" rel="noopener noreferrer">fragmilo.de &rarr;</a>
+            </div>
           </div>
-          <div class="flip-card-back">
-            <img class="flip-back-logo" src="logos/fragmilo.png" alt="">
-            <div class="flip-back-name">FragMilo</div>
-            <div class="flip-back-desc">AI tenant concierge for German renters. Agentic workflows on WhatsApp &mdash; tenants describe a problem, the bot triages and resolves it.</div>
-            <a class="flip-back-link" href="https://fragmilo.de" target="_blank" rel="noopener noreferrer">fragmilo.de &rarr;</a>
-          </div>
+        </div>
+        <div class="project-label">
+          <span><a href="https://fragmilo.de" target="_blank" rel="noopener noreferrer">FragMilo &nearr;</a></span>
+          <span class="project-type">AI Concierge</span>
         </div>
       </div>
 
-      <div class="flip-card">
-        <div class="flip-card-inner">
-          <div class="flip-card-front">
-            <img src="screenshots/beaches.png" alt="Beaches of Mallorca landing page">
-            <span class="flip-name">Beaches of Mallorca</span>
+      <div>
+        <div class="flip-card">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <img src="screenshots/beaches.png" alt="Beaches of Mallorca landing page">
+            </div>
+            <div class="flip-card-back">
+              <img class="flip-back-logo" src="logos/beaches.png" alt="">
+              <div class="flip-back-name">Beaches of Mallorca</div>
+              <div class="flip-back-desc">Real-time beach conditions for every beach on the island. Live weather, wave, and UV data in a clean map interface.</div>
+              <a class="flip-back-link" href="https://beachesofmallorca.com" target="_blank" rel="noopener noreferrer">beachesofmallorca.com &rarr;</a>
+            </div>
           </div>
-          <div class="flip-card-back">
-            <img class="flip-back-logo" src="logos/beaches.png" alt="">
-            <div class="flip-back-name">Beaches of Mallorca</div>
-            <div class="flip-back-desc">Real-time beach conditions for every beach on the island. Live weather, wave, and UV data in a clean map interface.</div>
-            <a class="flip-back-link" href="https://beachesofmallorca.com" target="_blank" rel="noopener noreferrer">beachesofmallorca.com &rarr;</a>
-          </div>
+        </div>
+        <div class="project-label">
+          <span><a href="https://beachesofmallorca.com" target="_blank" rel="noopener noreferrer">Beaches of Mallorca &nearr;</a></span>
+          <span class="project-type">Travel App</span>
         </div>
       </div>
 
-      <div class="flip-card">
-        <div class="flip-card-inner">
-          <div class="flip-card-front">
-            <img src="logos/w3group.png" alt="w3.wave logo" style="object-fit: contain; padding: 24px; background: var(--bg-alt);">
-            <span class="flip-name">Portfolio Tools</span>
-          </div>
-          <div class="flip-card-back">
-            <img class="flip-back-logo" src="logos/w3group.png" alt="">
-            <div class="flip-back-name">Portfolio Tools</div>
-            <div class="flip-back-desc">Dashboards and AI agents for tracking investments and macro signals across a liquid investment portfolio.</div>
-            <span class="flip-back-link" style="opacity: 0.3;">w3.wave (internal)</span>
+      <div>
+        <div class="flip-card">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <img src="logos/w3group.png" alt="w3.wave logo" style="object-fit: contain; padding: 24px; background: var(--bg-alt);">
+            </div>
+            <div class="flip-card-back">
+              <img class="flip-back-logo" src="logos/w3group.png" alt="">
+              <div class="flip-back-name">Portfolio Tools</div>
+              <div class="flip-back-desc">Dashboards and AI agents for tracking investments and macro signals across a liquid investment portfolio.</div>
+              <span class="flip-back-link" style="opacity: 0.3;">w3.wave (internal)</span>
+            </div>
           </div>
         </div>
+        <div class="project-label">
+          <span>Portfolio Tools</span>
+          <span class="project-type">Internal</span>
+        </div>
       </div>
+    </div>
+
+    <div class="center-footer-name">
+      Philipp <span class="dash-line"></span> Beer
     </div>
   </div>
 
   <!-- ======== RIGHT COLUMN (content/text) ======== -->
   <main class="content" id="about">
-
-
     <!-- Intro -->
     <div class="intro fade-in">
       <p class="section-label">[HI]</p>
       <h1>Philipp <span class="dash">&mdash;</span> Beer</h1>
-      <p class="intro-subtitle">Builder _ Investor _ Polymath _ Dad</p>
       <p class="intro-tagline">
         Most days I'm somewhere between trying to understand the future
         and investing in it. Sometimes both at once.
@@ -1923,20 +2289,67 @@
 
     <!-- Footer -->
     <footer class="site-footer fade-in">
-      <div class="footer-name">Philipp <span class="dash">&mdash;</span> Beer</div>
       <p class="footer-copy">&copy; 2026 Philipp Beer &middot; Berlin &middot; vibe-coded with Claude</p>
     </footer>
+
+    <a class="content-footer-cta" href="mailto:philippxbeer@gmail.com">Get in Touch</a>
+    <div class="content-footer-meta">
+      <span>2026</span>
+      <span>Berlin</span>
+    </div>
 
   </main>
 
 </div><!-- /site -->
 
-<!-- Bottom nav (mobile) -->
+<!-- Full-screen mobile menu overlay -->
+<div class="mobile-menu-overlay" id="mobile-menu">
+  <nav>
+    <a href="#about" class="mobile-menu-link">About</a>
+    <a href="#portfolio" class="mobile-menu-link">Portfolio</a>
+    <a href="#contact" class="mobile-menu-link">Contact</a>
+  </nav>
+
+  <div class="mobile-menu-section">
+    <div class="mobile-menu-section-label">Sections</div>
+    <div class="menu-items">
+      <a href="#now" class="mobile-menu-link"><span class="menu-num">[1]</span> <span class="menu-label">Now</span></a>
+      <a href="#background" class="mobile-menu-link"><span class="menu-num">[2]</span> <span class="menu-label">Background</span></a>
+      <a href="#building" class="mobile-menu-link"><span class="menu-num">[3]</span> <span class="menu-label">Building</span></a>
+      <a href="#work" class="mobile-menu-link"><span class="menu-num">[4]</span> <span class="menu-label">Work</span></a>
+      <a href="#thoughts" class="mobile-menu-link"><span class="menu-num">[5]</span> <span class="menu-label">Thoughts</span></a>
+    </div>
+  </div>
+
+  <div class="mobile-menu-footer">
+    <div class="mobile-menu-footer-row">
+      <span class="footer-label">[EMAIL]</span>
+      <a href="mailto:philippxbeer@gmail.com">philippxbeer@gmail.com</a>
+    </div>
+    <div class="mobile-menu-footer-row">
+      <span class="footer-label">[SOCIAL]</span>
+      <div class="footer-links">
+        <a href="https://linkedin.com/in/philippbeer" target="_blank" rel="noopener noreferrer">LI</a>
+        <a href="https://github.com/depose28" target="_blank" rel="noopener noreferrer">GH</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="mobile-menu-player">
+    <button type="button" id="menu-player-btn" aria-label="Toggle music">Play Music</button>
+  </div>
+</div>
+
+<!-- Bottom bar (mobile) -->
 <nav class="bottom-nav" aria-label="Main navigation (mobile)">
-  <a href="#about">About</a>
-  <a href="#portfolio">Portfolio</a>
-  <a href="#contact">Contact</a>
-  <button class="player-toggle-mobile" id="player-toggle-mobile" type="button" aria-label="Toggle music">&#9654;</button>
+  <button class="bottom-nav-hamburger" id="mobile-menu-toggle" type="button" aria-label="Open menu">
+    <svg viewBox="0 0 24 24" id="hamburger-icon">
+      <line x1="3" y1="6" x2="21" y2="6"/>
+      <line x1="3" y1="12" x2="21" y2="12"/>
+      <line x1="3" y1="18" x2="21" y2="18"/>
+    </svg>
+  </button>
+  <span class="bottom-nav-brand">Philipp <span class="dash">&mdash;</span> Beer</span>
 </nav>
 
 <script>
@@ -2121,6 +2534,68 @@
     site.classList.toggle('scanlines-on');
     fxScanlines.classList.toggle('effect-active');
   });
+
+  // ==========================================
+  // Portrait image loader
+  // ==========================================
+  (function() {
+    const img = document.getElementById('portrait-img');
+    if (img) {
+      img.src = 'portrait.png?' + Date.now();
+      img.onerror = function() {
+        // Fallback: try without cache bust
+        img.src = 'portrait.png';
+      };
+    }
+  })();
+
+  // ==========================================
+  // Mobile menu overlay
+  // ==========================================
+  const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const hamburgerIcon = document.getElementById('hamburger-icon');
+
+  if (mobileMenuToggle && mobileMenu) {
+    mobileMenuToggle.addEventListener('click', () => {
+      const isOpen = mobileMenu.classList.toggle('open');
+      // Swap hamburger ↔ X icon
+      if (isOpen) {
+        hamburgerIcon.innerHTML = '<line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/>';
+        mobileMenuToggle.setAttribute('aria-label', 'Close menu');
+        document.body.style.overflow = 'hidden';
+      } else {
+        hamburgerIcon.innerHTML = '<line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>';
+        mobileMenuToggle.setAttribute('aria-label', 'Open menu');
+        document.body.style.overflow = '';
+      }
+    });
+
+    // Close menu when a link is clicked
+    document.querySelectorAll('.mobile-menu-link').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.remove('open');
+        hamburgerIcon.innerHTML = '<line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>';
+        mobileMenuToggle.setAttribute('aria-label', 'Open menu');
+        document.body.style.overflow = '';
+      });
+    });
+
+    // Menu player button
+    const menuPlayerBtn = document.getElementById('menu-player-btn');
+    if (menuPlayerBtn) {
+      menuPlayerBtn.addEventListener('click', toggleMusic);
+      // Keep in sync with player state
+      const origUpdate = updatePlayerUI;
+      updatePlayerUI = function() {
+        origUpdate();
+        if (menuPlayerBtn) {
+          menuPlayerBtn.textContent = playing ? 'Pause Music' : 'Play Music';
+          menuPlayerBtn.classList.toggle('playing', playing);
+        }
+      };
+    }
+  }
 </script>
 
 </body>
