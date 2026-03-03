@@ -1450,7 +1450,35 @@
       }
 
       .flip-card {
-        aspect-ratio: 4 / 3;
+        aspect-ratio: auto;
+        perspective: none;
+      }
+
+      .flip-card-inner {
+        height: auto;
+      }
+
+      .flip-card-front,
+      .flip-card-back {
+        position: relative;
+        inset: auto;
+      }
+
+      .flip-card-front img {
+        height: auto;
+        object-fit: initial;
+      }
+
+      .flip-card-back {
+        display: none;
+      }
+
+      .flip-card.flipped .flip-card-inner {
+        transform: none;
+      }
+
+      .flip-card-front::after {
+        display: none;
       }
 
       .content {
