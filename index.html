@@ -586,6 +586,9 @@
       text-transform: uppercase;
       margin-bottom: 32px;
     }
+    .subtitle-mobile {
+      display: none;
+    }
 
     .reflection {
       font-size: 14px;
@@ -1827,6 +1830,13 @@
         letter-spacing: 1px;
       }
 
+      .subtitle-full {
+        display: none;
+      }
+      .subtitle-mobile {
+        display: block;
+      }
+
       .reflection {
         font-size: 13px;
       }
@@ -1971,7 +1981,8 @@
           <!-- Hero -->
           <section class="hero">
             <h1>Philipp Beer<span class="hero-cursor"></span></h1>
-            <p class="subtitle">Builder _ Investor _ Polymath _ Dad _ Amateur Human</p>
+            <p class="subtitle subtitle-full">Builder _ Investor _ Polymath _ Dad _ Amateur Human</p>
+            <p class="subtitle subtitle-mobile">Builder _ Investor _ Dad _ Amateur Human</p>
             <p class="reflection">
               Most days I'm somewhere between trying to understand the future
               and investing in it. Sometimes both at once.
