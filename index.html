@@ -1878,16 +1878,27 @@
         justify-content: center;
       }
 
-      .panel-player {
+      .panel-stripe-group {
         display: none;
+      }
+
+      .panel-spacer {
+        display: none;
+      }
+
+      .panel-player {
+        order: 10;
+        width: 100%;
+        margin-top: 4px;
+      }
+
+      .player-screen {
+        width: 100% !important;
+        max-width: none !important;
       }
 
       .music-toggle-wrap {
-        display: none;
-      }
-
-      .panel-stripe-group {
-        display: none;
+        order: 11;
       }
 
       .monitor {
@@ -2398,13 +2409,14 @@
       <div class="panel-btn dark" id="btn-halt"></div>
     </div>
     <div class="panel-divider"></div>
+    <div class="panel-spacer" style="flex:1"></div>
     <div class="panel-stripe-group">
       <div class="panel-stripe s1"></div>
       <div class="panel-stripe s2"></div>
       <div class="panel-stripe s3"></div>
       <div class="panel-stripe s4"></div>
     </div>
-    <div style="flex:1"></div>
+    <div class="panel-spacer" style="flex:1"></div>
     <div class="panel-player" id="panel-player">
       <div class="player-screen">
         <div class="player-waveform" id="player-waveform">
@@ -2415,7 +2427,7 @@
         <div class="player-title" id="player-title"></div>
       </div>
     </div>
-    <div style="flex:1"></div>
+    <div class="panel-spacer" style="flex:0.5"></div>
     <div class="music-toggle-wrap">
       <div class="music-toggle" id="music-toggle">
         <div class="music-toggle-track">
