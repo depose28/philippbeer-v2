@@ -2276,18 +2276,19 @@
 <div class="mobile-menu-overlay" id="mobile-menu">
   <nav>
     <a href="#about" class="mobile-menu-link">About</a>
-    <a href="#portfolio" class="mobile-menu-link">Portfolio</a>
+    <a href="#building" class="mobile-menu-link">Building</a>
     <a href="#contact" class="mobile-menu-link">Contact</a>
   </nav>
 
   <div class="mobile-menu-section">
     <div class="mobile-menu-section-label">Sections</div>
     <div class="menu-items">
-      <a href="#now" class="mobile-menu-link"><span class="menu-num">[1]</span> <span class="menu-label">Now</span></a>
-      <a href="#background" class="mobile-menu-link"><span class="menu-num">[2]</span> <span class="menu-label">Background</span></a>
-      <a href="#building" class="mobile-menu-link"><span class="menu-num">[3]</span> <span class="menu-label">Building</span></a>
+      <a href="#about" class="mobile-menu-link"><span class="menu-num">[1]</span> <span class="menu-label">About</span></a>
+      <a href="#building" class="mobile-menu-link"><span class="menu-num">[2]</span> <span class="menu-label">Building</span></a>
+      <a href="#investments" class="mobile-menu-link"><span class="menu-num">[3]</span> <span class="menu-label">Investments</span></a>
       <a href="#work" class="mobile-menu-link"><span class="menu-num">[4]</span> <span class="menu-label">Work</span></a>
       <a href="#thoughts" class="mobile-menu-link"><span class="menu-num">[5]</span> <span class="menu-label">Thoughts</span></a>
+      <a href="#contact" class="mobile-menu-link"><span class="menu-num">[6]</span> <span class="menu-label">Contact</span></a>
     </div>
   </div>
 
@@ -2327,12 +2328,16 @@
   // Smooth scroll for nav links
   // ==========================================
   const contentCol = document.querySelector('.content');
+  const isMobile = () => window.innerWidth <= 600;
 
   document.querySelectorAll('a[href^="#"]').forEach(a => {
     a.addEventListener('click', e => {
       const target = document.querySelector(a.getAttribute('href'));
-      if (target && contentCol) {
-        e.preventDefault();
+      if (!target) return;
+      e.preventDefault();
+      if (isMobile()) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else if (contentCol) {
         const top = target.offsetTop - contentCol.offsetTop;
         contentCol.scrollTo({ top, behavior: 'smooth' });
       }
@@ -2558,6 +2563,18 @@
       };
     }
   }
+
+  // ==========================================
+  // Move project images into Building section on mobile
+  // ==========================================
+  (function() {
+    if (window.innerWidth > 600) return;
+    const projectImages = document.querySelector('.project-images');
+    const buildingSection = document.getElementById('building');
+    if (projectImages && buildingSection) {
+      buildingSection.appendChild(projectImages);
+    }
+  })();
 </script>
 
 </body>
