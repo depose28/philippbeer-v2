@@ -419,10 +419,7 @@
     }
 
     .flip-card-back .flip-back-name {
-      font-family: var(--font-display);
-      font-size: 22px;
-      font-weight: 400;
-      letter-spacing: 0.5px;
+      display: none;
     }
 
     .flip-card-back .flip-back-desc {
@@ -447,11 +444,11 @@
     }
 
     .flip-card-back .flip-back-logo {
-      width: 28px;
-      height: 28px;
+      width: 60px;
+      height: 60px;
       object-fit: contain;
       filter: brightness(0) invert(1);
-      opacity: 0.25;
+      opacity: 0.9;
       position: absolute;
       top: 20px;
       right: 20px;
@@ -1401,6 +1398,10 @@
         display: none;
       }
 
+      .hide-mobile {
+        display: none;
+      }
+
       /* Show center column inline on mobile */
       .center-col {
         display: block;
@@ -1796,19 +1797,18 @@
       <img id="portrait-img" alt="Philipp Beer — sketch portrait" style="max-width:100%;height:auto;display:block;">
     </div>
     <div class="center-spacer" style="margin-bottom:auto;padding-bottom:15vh;">
-      <p class="center-subtitle">Builder _ Investor _ Polymath _ Dad</p>
+      <p class="center-subtitle">Builder _ Investor _ <span class="hide-mobile">Polymath _ </span>Dad</p>
     </div>
 
     <div class="project-images">
-      <div>
+      <div class="project-card" data-project="refound">
         <div class="flip-card">
           <div class="flip-card-inner">
             <div class="flip-card-front">
               <img src="screenshots/refound.png" alt="Refound AI landing page">
             </div>
             <div class="flip-card-back">
-              <img class="flip-back-logo" src="logos/refound.png" alt="">
-              <div class="flip-back-name">Refound AI</div>
+              <img class="flip-back-logo" src="logos/refound.png" alt="Refound AI">
               <div class="flip-back-desc">AI commerce readiness scoring. Runs 15 deep checks on any e-commerce site and surfaces what's broken before customers notice.</div>
               <a class="flip-back-link" href="https://getrefound.ai" target="_blank" rel="noopener noreferrer">getrefound.ai &rarr;</a>
             </div>
@@ -1820,15 +1820,14 @@
         </div>
       </div>
 
-      <div>
+      <div class="project-card" data-project="fragmilo">
         <div class="flip-card">
           <div class="flip-card-inner">
             <div class="flip-card-front">
               <img src="screenshots/fragmilo.png" alt="FragMilo landing page">
             </div>
             <div class="flip-card-back">
-              <img class="flip-back-logo" src="logos/fragmilo.png" alt="">
-              <div class="flip-back-name">FragMilo</div>
+              <img class="flip-back-logo" src="logos/fragmilo.png" alt="FragMilo">
               <div class="flip-back-desc">AI tenant concierge for German renters. Agentic workflows on WhatsApp &mdash; tenants describe a problem, the bot triages and resolves it.</div>
               <a class="flip-back-link" href="https://fragmilo.de" target="_blank" rel="noopener noreferrer">fragmilo.de &rarr;</a>
             </div>
@@ -1840,15 +1839,14 @@
         </div>
       </div>
 
-      <div>
+      <div class="project-card" data-project="beaches">
         <div class="flip-card">
           <div class="flip-card-inner">
             <div class="flip-card-front">
               <img src="screenshots/beaches.png" alt="Beaches of Mallorca landing page">
             </div>
             <div class="flip-card-back">
-              <img class="flip-back-logo" src="logos/beaches.png" alt="">
-              <div class="flip-back-name">Beaches of Mallorca</div>
+              <img class="flip-back-logo" src="logos/beaches.png" alt="Beaches of Mallorca">
               <div class="flip-back-desc">Real-time beach conditions for every beach on the island. Live weather, wave, and UV data in a clean map interface.</div>
               <a class="flip-back-link" href="https://beachesofmallorca.com" target="_blank" rel="noopener noreferrer">beachesofmallorca.com &rarr;</a>
             </div>
@@ -1860,15 +1858,14 @@
         </div>
       </div>
 
-      <div>
+      <div class="project-card" data-project="portfolio-tools">
         <div class="flip-card">
           <div class="flip-card-inner">
             <div class="flip-card-front">
-              <img src="logos/w3group.png" alt="w3.wave logo" style="object-fit: contain; padding: 24px; background: var(--bg-alt);">
+              <img src="screenshots/portfolio-tools.png" alt="Portfolio Tools dashboard">
             </div>
             <div class="flip-card-back">
-              <img class="flip-back-logo" src="logos/w3group.png" alt="">
-              <div class="flip-back-name">Portfolio Tools</div>
+              <img class="flip-back-logo" src="logos/w3group.png" alt="w3.wave">
               <div class="flip-back-desc">Dashboards and AI agents for tracking investments and macro signals across a liquid investment portfolio.</div>
               <span class="flip-back-link" style="opacity: 0.3;">w3.wave (internal)</span>
             </div>
@@ -1953,7 +1950,7 @@
       <h2 class="section-title">Build <span class="dash">&mdash;</span> ing</h2>
       <p class="body-text" style="margin-bottom: 16px;">I build things quickly using AI-assisted tools. A few things I've shipped:</p>
 
-      <div class="build-row">
+      <div class="build-row" data-project="refound">
         <div>
           <div class="build-name"><a href="https://getrefound.ai" target="_blank" rel="noopener noreferrer">Refound AI</a></div>
           <div class="build-desc">AI commerce readiness scoring. Runs 15 deep checks on any e-commerce site and surfaces what's broken before customers notice.</div>
@@ -1961,7 +1958,7 @@
         <div class="build-url">getrefound.ai</div>
       </div>
 
-      <div class="build-row">
+      <div class="build-row" data-project="fragmilo">
         <div>
           <div class="build-name"><a href="https://fragmilo.de" target="_blank" rel="noopener noreferrer">FragMilo</a></div>
           <div class="build-desc">AI tenant concierge for German renters. Agentic workflows on WhatsApp &mdash; tenants describe a problem, the bot triages and resolves it.</div>
@@ -1969,7 +1966,7 @@
         <div class="build-url">fragmilo.de</div>
       </div>
 
-      <div class="build-row">
+      <div class="build-row" data-project="beaches">
         <div>
           <div class="build-name"><a href="https://beachesofmallorca.com" target="_blank" rel="noopener noreferrer">Beaches of Mallorca</a></div>
           <div class="build-desc">Real-time beach conditions for every beach on the island. Live weather, wave, and UV data in a clean map interface.</div>
@@ -1977,7 +1974,7 @@
         <div class="build-url">beachesofmallorca.com</div>
       </div>
 
-      <div class="build-row">
+      <div class="build-row" data-project="portfolio-tools">
         <div>
           <div class="build-name">Portfolio Tools</div>
           <div class="build-desc">Dashboards and AI agents for tracking investments and macro signals across a liquid investment portfolio.</div>
@@ -2565,15 +2562,20 @@
   }
 
   // ==========================================
-  // Move project images into Building section on mobile
+  // Move project cards under matching build rows on mobile
   // ==========================================
   (function() {
     if (window.innerWidth > 600) return;
-    const projectImages = document.querySelector('.project-images');
-    const buildingSection = document.getElementById('building');
-    if (projectImages && buildingSection) {
-      buildingSection.appendChild(projectImages);
-    }
+    document.querySelectorAll('.project-card[data-project]').forEach(card => {
+      const key = card.dataset.project;
+      const buildRow = document.querySelector('.build-row[data-project="' + key + '"]');
+      if (buildRow) {
+        buildRow.after(card);
+      }
+    });
+    // Hide the now-empty project-images container
+    const pi = document.querySelector('.project-images');
+    if (pi) pi.style.display = 'none';
   })();
 </script>
 
