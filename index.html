@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Philipp Beer — Builder, Investor, Dad</title>
+  <title>Philipp Beer — Builder, Investor, Amateur Human</title>
   <meta name="description" content="Philipp Beer is a builder, investor, and growth operator based in Berlin. General Partner at w3.wave, angel investor, and maker of AI-powered tools.">
-  <meta property="og:title" content="Philipp Beer — Builder, Investor, Dad">
+  <meta property="og:title" content="Philipp Beer — Builder, Investor, Amateur Human">
   <meta property="og:description" content="Builder, investor, and growth operator based in Berlin. Thinking about what happens when the cost of building drops to nearly zero.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://philippbeer.me">
@@ -849,10 +849,11 @@
       padding: 12px;
       text-decoration: none;
       color: inherit;
-      transition: border-color 0.2s, background 0.2s;
+      transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
       display: block;
       position: relative;
       overflow: hidden;
+      box-shadow: none;
     }
     .invest-card-logo {
       position: absolute;
@@ -874,9 +875,12 @@
       filter: grayscale(1) invert(1) brightness(0.35);
     }
 
-    .invest-card:hover {
+    a.invest-card:hover,
+    span.invest-card:hover {
       border-color: #e08a3a;
-      background: rgba(224,138,58,0.04);
+      background: rgba(224,138,58,0.06);
+      box-shadow: 0 0 12px rgba(224,138,58,0.35), 0 0 30px rgba(224,138,58,0.12), inset 0 0 12px rgba(224,138,58,0.06);
+      color: inherit;
     }
 
     .invest-card-name {
@@ -924,6 +928,92 @@
     .invest-list-desc {
       font-size: 10px;
       color: #4a4548;
+    }
+
+    /* ---- BUILD CARDS ---- */
+    .build-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+    .build-card {
+      border: 1px solid #2a2a2e;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+      box-shadow: none;
+    }
+    a.build-card:hover {
+      border-color: #e08a3a;
+      background: rgba(224,138,58,0.06);
+      box-shadow: 0 0 12px rgba(224,138,58,0.35), 0 0 30px rgba(224,138,58,0.12), inset 0 0 12px rgba(224,138,58,0.06);
+      color: inherit;
+    }
+    .build-card-header {
+      height: 80px;
+      background: #141416;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .build-card-header img {
+      max-width: 70%;
+      max-height: 44px;
+      object-fit: contain;
+      filter: grayscale(1) brightness(0.6);
+      opacity: 0.55;
+      transition: all 0.3s;
+    }
+    .build-card-header img.invert {
+      filter: grayscale(1) invert(1) brightness(0.45);
+    }
+    .build-card-header img.logo-bright {
+      filter: grayscale(0.5) brightness(0.75);
+      opacity: 0.65;
+    }
+    .build-card-header img.logo-sm {
+      max-height: 32px;
+    }
+    .build-card-header img.logo-lg {
+      max-height: 52px;
+      max-width: 80%;
+      opacity: 0.6;
+    }
+    .build-card:hover .build-card-header img {
+      opacity: 0.8;
+      filter: grayscale(0.3) brightness(0.7);
+    }
+    .build-card:hover .build-card-header img.invert {
+      opacity: 0.8;
+      filter: grayscale(0.3) invert(1) brightness(0.55);
+    }
+    .build-card:hover .build-card-header img.logo-bright {
+      opacity: 0.85;
+      filter: grayscale(0.2) brightness(0.85);
+    }
+    .build-card-body {
+      padding: 10px 12px;
+    }
+    .build-card-name {
+      font-weight: 700;
+      font-size: 13px;
+      color: #e08a3a;
+    }
+    .build-card-url {
+      font-size: 10px;
+      color: #4a4548;
+      margin-top: 1px;
+    }
+    .build-card-desc {
+      font-size: 10px;
+      color: #555058;
+      margin-top: 4px;
+      line-height: 1.45;
     }
 
     /* ---- WORK THREAD ---- */
@@ -1155,10 +1245,16 @@
     .screen.phosphor-green .toggle-btn:hover { color: #33ff33; }
     .screen.phosphor-green .toggle-inner { color: #18881a; }
     .screen.phosphor-green .toggle-inner li::marker { color: #1a9a1a; }
+    .screen.phosphor-green .build-card { border-color: #1a3a1a; }
+    .screen.phosphor-green .build-card:hover { border-color: #33ff33; background: rgba(51,255,51,0.06); box-shadow: 0 0 12px rgba(51,255,51,0.4), 0 0 30px rgba(51,255,51,0.15), inset 0 0 12px rgba(51,255,51,0.06); }
+    .screen.phosphor-green .build-card-header { background: #0a120a; }
+    .screen.phosphor-green .build-card-name { color: #33ff33; }
+    .screen.phosphor-green .build-card-url { color: #0e550e; }
+    .screen.phosphor-green .build-card-desc { color: #0e550e; }
     .screen.phosphor-green .invest-thesis { color: #20aa20; }
     .screen.phosphor-green .invest-thesis em { color: #33ff33; }
     .screen.phosphor-green .invest-card { border-color: #1a3a1a; }
-    .screen.phosphor-green .invest-card:hover { border-color: #33ff33; background: rgba(51,255,51,0.04); }
+    .screen.phosphor-green .invest-card:hover { border-color: #33ff33; background: rgba(51,255,51,0.06); box-shadow: 0 0 12px rgba(51,255,51,0.4), 0 0 30px rgba(51,255,51,0.15), inset 0 0 12px rgba(51,255,51,0.06); }
     .screen.phosphor-green .invest-card-name { color: #33ff33; }
     .screen.phosphor-green .invest-card-desc { color: #0e550e; }
     .screen.phosphor-green .invest-list-name { color: #22cc22; }
@@ -1213,10 +1309,16 @@
     .screen.phosphor-white .toggle-btn:hover { color: #bbb; }
     .screen.phosphor-white .toggle-inner { color: #888; }
     .screen.phosphor-white .toggle-inner li::marker { color: #777; }
+    .screen.phosphor-white .build-card { border-color: #333; }
+    .screen.phosphor-white .build-card:hover { border-color: #e0e0e0; background: rgba(224,224,224,0.05); box-shadow: 0 0 12px rgba(224,224,224,0.3), 0 0 30px rgba(224,224,224,0.1), inset 0 0 12px rgba(224,224,224,0.04); }
+    .screen.phosphor-white .build-card-header { background: #1a1a1a; }
+    .screen.phosphor-white .build-card-name { color: #e0e0e0; }
+    .screen.phosphor-white .build-card-url { color: #555; }
+    .screen.phosphor-white .build-card-desc { color: #555; }
     .screen.phosphor-white .invest-thesis { color: #999; }
     .screen.phosphor-white .invest-thesis em { color: #e0e0e0; }
     .screen.phosphor-white .invest-card { border-color: #333; }
-    .screen.phosphor-white .invest-card:hover { border-color: #e0e0e0; background: rgba(224,224,224,0.03); }
+    .screen.phosphor-white .invest-card:hover { border-color: #e0e0e0; background: rgba(224,224,224,0.05); box-shadow: 0 0 12px rgba(224,224,224,0.3), 0 0 30px rgba(224,224,224,0.1), inset 0 0 12px rgba(224,224,224,0.04); }
     .screen.phosphor-white .invest-card-name { color: #e0e0e0; }
     .screen.phosphor-white .invest-card-desc { color: #555; }
     .screen.phosphor-white .invest-list-name { color: #b0b0b0; }
@@ -1845,6 +1947,10 @@
         padding: 28px 20px;
       }
 
+      .build-grid {
+        grid-template-columns: 1fr;
+      }
+
       .invest-grid {
         grid-template-columns: 1fr;
       }
@@ -1895,6 +2001,17 @@
       .player-screen {
         width: 100% !important;
         max-width: none !important;
+        justify-content: center;
+      }
+
+      .player-waveform {
+        flex-shrink: 0;
+      }
+
+      .player-title {
+        flex: 1;
+        max-width: none !important;
+        text-align: right;
       }
 
       .music-toggle-wrap {
@@ -1993,7 +2110,7 @@
           <section class="hero">
             <h1>Philipp Beer<span class="hero-cursor"></span></h1>
             <p class="subtitle subtitle-full">Builder _ Investor _ Polymath _ Dad _ Amateur Human</p>
-            <p class="subtitle subtitle-mobile">Builder _ Investor _ Dad _ Amateur Human</p>
+            <p class="subtitle subtitle-mobile">Builder _ Investor _ Amateur Human</p>
             <p class="reflection">
               Most days I'm somewhere between trying to understand the future
               and investing in it. Sometimes both at once.
@@ -2117,22 +2234,53 @@
               </div>
             </div>
 
+          </section>
+
+          <!-- Building -->
+          <section class="section fade-in">
+            <p class="section-label">[ BUILDING ]</p>
+            <p class="work-thread">I build things quickly using AI-assisted tools. A few things I've shipped:</p>
+            <div class="build-grid">
+              <a class="build-card" href="https://getrefound.ai" target="_blank">
+                <div class="build-card-header"><img class="logo-bright" src="logos/refound.png" alt=""></div>
+                <div class="build-card-body">
+                  <div class="build-card-name">Refound AI</div>
+                  <div class="build-card-url">getrefound.ai</div>
+                  <div class="build-card-desc">AI commerce readiness scoring. Runs 15 deep checks on any e-commerce site and surfaces what's broken before customers notice.</div>
+                </div>
+              </a>
+              <a class="build-card" href="https://fragmilo.de" target="_blank">
+                <div class="build-card-header"><img class="invert" src="logos/fragmilo.png" alt=""></div>
+                <div class="build-card-body">
+                  <div class="build-card-name">FragMilo</div>
+                  <div class="build-card-url">fragmilo.de</div>
+                  <div class="build-card-desc">AI tenant concierge for German renters. Agentic workflows on WhatsApp &mdash; tenants describe a problem, the bot triages and resolves it.</div>
+                </div>
+              </a>
+              <a class="build-card" href="https://beachesofmallorca.com" target="_blank">
+                <div class="build-card-header"><img class="invert logo-lg" src="logos/beaches.png" alt=""></div>
+                <div class="build-card-body">
+                  <div class="build-card-name">Beaches of Mallorca</div>
+                  <div class="build-card-url">beachesofmallorca.com</div>
+                  <div class="build-card-desc">Real-time beach conditions for every beach on the island. Live weather, wave, and UV data in a clean map interface.</div>
+                </div>
+              </a>
+              <a class="build-card" href="#" style="cursor: default;">
+                <div class="build-card-header"><img class="invert logo-sm" src="logos/w3group.png" alt=""></div>
+                <div class="build-card-body">
+                  <div class="build-card-name">Portfolio Tools</div>
+                  <div class="build-card-url">w3.wave</div>
+                  <div class="build-card-desc">Dashboards and AI agents for tracking investments and macro signals across a liquid investment portfolio.</div>
+                </div>
+              </a>
+            </div>
             <div class="toggle">
-              <button class="toggle-btn" aria-expanded="false" aria-controls="toggle-projects" onclick="toggleContent(this)">
-                <span class="toggle-chevron">&#9654;</span> ls ~/side-projects/
+              <button class="toggle-btn" aria-expanded="false" aria-controls="toggle-building" onclick="toggleContent(this)">
+                <span class="toggle-chevron">&#9654;</span> more --verbose
               </button>
-              <div class="toggle-content" id="toggle-projects">
+              <div class="toggle-content" id="toggle-building">
                 <div class="toggle-inner">
-                  <p>I build things quickly using AI-assisted tools like Claude Code, Cursor, and Lovable. A few things I've shipped or am working on:</p>
-                  <ul class="side-projects">
-                    <li><strong>Agent Pulse</strong> — AI commerce readiness scoring for e-commerce sites</li>
-                    <li><strong>FragMilo</strong> — AI-powered tenant issue resolution</li>
-                    <li><strong>Beaches of Mallorca</strong> — Real-time beach info app</li>
-                    <li><strong>Portfolio tools</strong> — Investment tracking and macro intelligence dashboards</li>
-                  </ul>
-                  <p style="margin-top: 10px;">
-                    <a href="https://github.com/depose28" target="_blank" rel="noopener noreferrer">> cd github.com/depose28</a>
-                  </p>
+                  <p><a href="https://github.com/depose28" target="_blank">> cd github.com/depose28</a></p>
                 </div>
               </div>
             </div>
@@ -2140,7 +2288,7 @@
 
           <!-- Investing -->
           <section class="section fade-in">
-            <p class="section-label">[ PORTFOLIO ]</p>
+            <p class="section-label">[ INVESTMENT PORTFOLIO ]</p>
 
             <div class="invest-thesis">
               <p>I actively make angel investments across AI, fintech, and emerging tech. I also co-organize two small, private co-investment vehicles — <em>Homie Capital</em> and <em>Common Thread II</em> — alongside friends.</p>
@@ -2665,7 +2813,6 @@
 
   // -- Inline Music Player Easter Egg --
   const tracks = [
-    { title: 'Software \u2014 Present Voice', src: 'music/Software_Present-Voice.mp3' },
     { title: '14:31 \u2014 Global Communication', src: 'music/Global Communication_14_31.mp3' }
   ];
   let playerActive = false;
