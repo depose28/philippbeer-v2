@@ -520,39 +520,10 @@
       justify-content: space-between;
     }
 
-    .center-hero-title .name-prefix,
-    .center-hero-title .name-suffix {
+    .center-hero-title .name-bracket {
       font-family: var(--font-mono);
       font-weight: 400;
-      opacity: 0;
-      animation: bracket-fade 0.4s ease forwards;
-    }
-
-    .center-hero-title .name-prefix { animation-delay: 0.3s; }
-    .center-hero-title .name-suffix { animation-delay: 0.3s; }
-
-    @keyframes bracket-fade {
-      to { opacity: 0.3; }
-    }
-
-    .center-hero-title .name-left,
-    .center-hero-title .name-right {
-      opacity: 0;
-      animation: name-reveal 0.6s ease forwards;
-    }
-
-    .center-hero-title .name-left {
-      animation-delay: 0.8s;
-      transform: translateX(20px);
-    }
-
-    .center-hero-title .name-right {
-      animation-delay: 1.1s;
-      transform: translateX(-20px);
-    }
-
-    @keyframes name-reveal {
-      to { opacity: 1; transform: translateX(0); }
+      opacity: 0.3;
     }
 
     .center-subtitle {
@@ -1927,10 +1898,7 @@
 
   <!-- ======== CENTER COLUMN (big headers + images) ======== -->
   <div class="center-col">
-    <div class="center-hero-title">
-      <span class="name-prefix">[</span><span class="name-left">Philipp</span>
-      <span class="name-right">Beer</span><span class="name-suffix">]</span>
-    </div>
+    <div class="center-hero-title" id="hero-name"></div>
     <div id="portrait-frame" style="width:100%;padding:20px 20px 80px;display:flex;align-items:center;justify-content:center;margin-top:auto;">
       <img id="portrait-img" alt="Philipp Beer — sketch portrait" style="max-width:100%;height:auto;display:block;">
     </div>
@@ -2700,6 +2668,40 @@
   })();
 
   // ==========================================
+  // Hero name: center-out reveal from brackets
+  // ==========================================
+  (function() {
+    const el = document.getElementById('hero-name');
+    if (!el) return;
+    const left = 'Philipp';
+    const right = 'Beer';
+    const totalSteps = Math.max(left.length, right.length);
+    let step = 0;
+
+    function render(l, r) {
+      el.innerHTML =
+        '<span class="name-bracket">[</span>' +
+        '<span class="name-left">' + l + '</span>' +
+        ' ' +
+        '<span class="name-right">' + r + '</span>' +
+        '<span class="name-bracket">]</span>';
+    }
+
+    // Start with just brackets
+    render('', '');
+
+    setTimeout(function step_fn() {
+      step++;
+      const l = left.slice(0, step);
+      const r = right.slice(0, step);
+      render(l, r);
+      if (step < totalSteps) {
+        setTimeout(step_fn, 100 + Math.random() * 60);
+      }
+    }, 500);
+  })();
+
+  // ==========================================
   // Hero subtitle typing effect (after name animation)
   // ==========================================
   (function() {
@@ -2721,7 +2723,7 @@
         }
       }
       type();
-    }, 1800); // Start after name animation completes
+    }, 2200); // Start after name animation completes
   })();
 
   // ==========================================
