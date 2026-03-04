@@ -565,6 +565,7 @@
 
     .center-subtitle .subtitle-cursor {
       font-family: var(--font-mono);
+      color: var(--border);
       animation: blink-cursor 1s step-end infinite;
     }
 
@@ -2716,8 +2717,7 @@
           i++;
           setTimeout(type, 60 + Math.random() * 40);
         } else {
-          // Remove cursor after done
-          setTimeout(() => { sub.textContent = text; }, 2000);
+          // Keep subtle blinking cursor
         }
       }
       type();
