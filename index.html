@@ -808,18 +808,32 @@
       width: 32px;
       height: 32px;
       object-fit: contain;
-      filter: grayscale(1) brightness(0.9);
-      opacity: 0.12;
+      filter: grayscale(1) brightness(0.6);
+      opacity: 0.3;
       pointer-events: none;
       transition: opacity 0.2s;
     }
 
     .invest-card:hover .invest-card-logo {
-      opacity: 0.25;
+      opacity: 0.5;
+    }
+
+    .invest-card-logo.high-contrast {
+      filter: grayscale(1) brightness(0) contrast(2);
+      opacity: 0.35;
+    }
+
+    .invest-card:hover .invest-card-logo.high-contrast {
+      opacity: 0.55;
     }
 
     .invest-card-logo.invert {
-      filter: grayscale(1) brightness(0.5);
+      filter: grayscale(1) brightness(0.3);
+      opacity: 0.35;
+    }
+
+    .invest-card:hover .invest-card-logo.invert {
+      opacity: 0.55;
     }
 
     .invest-card-name {
@@ -2033,17 +2047,17 @@
           <div class="invest-card-desc">Space exploration &amp; transport</div>
         </a>
         <a class="invest-card" href="https://corgi.insure" target="_blank" rel="noopener noreferrer">
-          <img class="invest-card-logo" src="logos/corgi.png" alt="">
+          <img class="invest-card-logo high-contrast" src="logos/corgi.png" alt="">
           <div class="invest-card-name">Corgi AI</div>
           <div class="invest-card-desc">AI insurance</div>
         </a>
         <a class="invest-card" href="https://skild.ai" target="_blank" rel="noopener noreferrer">
-          <img class="invest-card-logo" src="logos/skild.png" alt="">
+          <img class="invest-card-logo high-contrast" src="logos/skild.png" alt="">
           <div class="invest-card-name">Skild AI</div>
           <div class="invest-card-desc">Robotics foundation model</div>
         </a>
         <a class="invest-card" href="https://lightmatter.co" target="_blank" rel="noopener noreferrer">
-          <img class="invest-card-logo" src="logos/lightmatter.png" alt="">
+          <img class="invest-card-logo high-contrast" src="logos/lightmatter.png" alt="">
           <div class="invest-card-name">Lightmatter</div>
           <div class="invest-card-desc">Photonic computing for AI</div>
         </a>
@@ -2063,7 +2077,7 @@
           <div class="invest-card-desc">Ultra-low-power edge processors</div>
         </a>
         <span class="invest-card" style="cursor: default;">
-          <img class="invest-card-logo invert" src="logos/impossible.png" alt="">
+          <img class="invest-card-logo high-contrast" src="logos/impossible.png" alt="">
           <div class="invest-card-name">Impossible Computer</div>
           <div class="invest-card-desc">Stealth computing startup (Naval Ravikant)</div>
         </span>
