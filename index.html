@@ -523,9 +523,15 @@
 
     .center-hero-title .name-prefix,
     .center-hero-title .name-suffix {
-      font-family: var(--font-mono);
-      font-weight: 400;
-      opacity: 0.3;
+      display: flex;
+      align-items: center;
+    }
+
+    .sketch-bracket {
+      width: clamp(14px, 1.8vw, 22px);
+      height: clamp(40px, 4.5vw, 56px);
+      color: var(--text);
+      opacity: 0.7;
     }
 
     .center-subtitle {
@@ -1842,6 +1848,16 @@
   </div>
 </nav>
 
+<!-- SVG filters for chalk/sketch effects -->
+<svg style="position:absolute;width:0;height:0;" aria-hidden="true">
+  <defs>
+    <filter id="chalk" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="4" seed="2" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="2" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+</svg>
+
 <div class="site">
 
   <!-- ======== SIDEBAR (desktop) ======== -->
@@ -1906,8 +1922,8 @@
   <!-- ======== CENTER COLUMN (big headers + images) ======== -->
   <div class="center-col">
     <div class="center-hero-title">
-      <span class="name-prefix">[</span><span class="name-left">Philipp</span>
-      <span class="name-right">Beer</span><span class="name-suffix">]</span>
+      <span class="name-prefix"><svg class="sketch-bracket" viewBox="0 0 14 50" aria-hidden="true"><path d="M12 1.5L3.5 2c-0.5 0.3-0.8 0.5-1 1L2 12l0.3 14L2 38l0.5 8c0.2 0.5 0.5 0.8 1 1l8.5 0.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M11.5 2.5L4.5 3c-0.3 0.2-0.5 0.4-0.6 0.7L3.2 13l0.2 13L3 37.5l0.7 8c0.1 0.3 0.3 0.5 0.6 0.7l7 0.5" fill="none" stroke="currentColor" stroke-width="0.5" stroke-linecap="round" opacity="0.35"/></svg></span><span class="name-left">Philipp</span>
+      <span class="name-right">Beer</span><span class="name-suffix"><svg class="sketch-bracket" viewBox="0 0 14 50" aria-hidden="true"><path d="M2 1.5l8.5 0.5c0.5 0.3 0.8 0.5 1 1l0.5 9L11.7 26l0.3 12l-0.5 8c-0.2 0.5-0.5 0.8-1 1L2 47.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M2.5 2.5l7-0.5c0.3 0.2 0.5 0.4 0.6 0.7l0.7 9.3l-0.2 13l0.2 13l-0.7 8c-0.1 0.3-0.3 0.5-0.6 0.7l-7 0.5" fill="none" stroke="currentColor" stroke-width="0.5" stroke-linecap="round" opacity="0.35"/></svg></span>
     </div>
     <div id="portrait-frame" style="width:100%;padding:20px 20px 80px;display:flex;align-items:center;justify-content:center;margin-top:auto;">
       <img id="portrait-img" src="portrait.png" alt="Philipp Beer — sketch portrait" width="500" height="500" fetchpriority="high" style="max-width:100%;height:auto;display:block;">
@@ -2305,16 +2321,10 @@
 
       <div class="newsletter-signup">
         <p class="newsletter-cta">Subscribe to get notified when I start writing</p>
-        <form class="newsletter-form" id="newsletter-form" action="https://philippxbeer.substack.com/api/v1/free?noSigup=true" method="POST" target="substack-frame">
-          <input type="email" name="email" class="newsletter-input" placeholder="your@email.com" required autocomplete="email">
-          <input type="hidden" name="first_url" value="https://philippbeer.me">
-          <input type="hidden" name="first_referrer" value="">
-          <input type="hidden" name="current_url" value="https://philippbeer.me">
-          <input type="hidden" name="current_referrer" value="">
-          <input type="hidden" name="source" value="embed">
+        <form class="newsletter-form" id="newsletter-form">
+          <input type="email" class="newsletter-input" placeholder="your@email.com" required autocomplete="email">
           <button type="submit" class="newsletter-btn">Subscribe</button>
         </form>
-        <iframe name="substack-frame" style="display:none;" tabindex="-1" aria-hidden="true"></iframe>
         <p class="newsletter-msg" id="newsletter-msg" style="display:none;">Signal received. You'll hear from me.</p>
       </div>
     </section>
@@ -2479,14 +2489,15 @@
   // ==========================================
   // Newsletter form
   // ==========================================
-  document.getElementById('newsletter-form').addEventListener('submit', function() {
+  document.getElementById('newsletter-form').addEventListener('submit', function(e) {
+    e.preventDefault();
     const input = this.querySelector('.newsletter-input');
-    const msg = document.getElementById('newsletter-msg');
-    // Form submits naturally to hidden iframe; show confirmation after short delay
-    setTimeout(() => {
-      input.value = '';
-      msg.style.display = 'block';
-    }, 500);
+    const email = input.value.trim();
+    if (!email) return;
+    // Open Substack subscribe with email pre-filled (one-click confirm)
+    window.open('https://philippxbeer.substack.com/subscribe?email=' + encodeURIComponent(email), '_blank');
+    input.value = '';
+    document.getElementById('newsletter-msg').style.display = 'block';
   });
 
   // ==========================================
