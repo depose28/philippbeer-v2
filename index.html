@@ -527,27 +527,56 @@
       opacity: 0.3;
     }
 
-    .center-footer-name {
-      font-family: var(--font-display);
-      font-size: clamp(32px, 4vw, 48px);
-      font-weight: 300;
-      text-transform: uppercase;
-      letter-spacing: 3px;
-      line-height: 1.1;
-      color: var(--text);
+    .center-footer-terminal {
       margin-top: auto;
-      padding-top: 24px;
-      opacity: 0.12;
+      padding: 24px 0;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      line-height: 1.8;
+      color: var(--text);
+      opacity: 0.2;
     }
 
-    .center-footer-name .dash-line {
-      display: inline-block;
-      width: 40px;
-      height: 1px;
+    .center-footer-terminal .terminal-line {
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    .center-footer-terminal .terminal-cursor {
+      animation: blink-cursor 1s step-end infinite;
+    }
+
+    @keyframes blink-cursor {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    .center-footer-terminal .loading-bar {
+      margin-top: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .center-footer-terminal .loading-bar-track {
+      flex: 1;
+      height: 2px;
+      background: var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .center-footer-terminal .loading-bar-fill {
+      position: absolute;
+      height: 100%;
       background: var(--text);
-      vertical-align: middle;
-      margin: 0 8px;
-      opacity: 0.25;
+      animation: loading-crawl 12s linear infinite;
+    }
+
+    @keyframes loading-crawl {
+      0% { width: 0%; left: 0; }
+      50% { width: 60%; left: 0; }
+      100% { width: 0%; left: 100%; }
     }
 
     /* ---- CONTENT (right column) ---- */
@@ -1142,7 +1171,7 @@
     .site.phosphor-green .invest-card:hover { background: rgba(51,255,51,0.06); }
     .site.phosphor-green .newsletter-input { background: #0e1a0e; }
     .site.phosphor-green .footer-name { color: #1a3a1a; }
-    .site.phosphor-green .center-footer-name { color: #1a3a1a; }
+    .site.phosphor-green .center-footer-terminal { color: #33ff33; }
     .site.phosphor-green .content-footer-cta { background: #33ff33; color: #0a120a; }
     .site.phosphor-green .hero-image { background: #0e1a0e; }
     .site.phosphor-green .flip-card-front { background: #0e1a0e; }
@@ -1166,7 +1195,7 @@
     .site.phosphor-amber .invest-card:hover { background: rgba(255,204,51,0.06); }
     .site.phosphor-amber .newsletter-input { background: #1a150e; }
     .site.phosphor-amber .footer-name { color: #3a2a1a; }
-    .site.phosphor-amber .center-footer-name { color: #3a2a1a; }
+    .site.phosphor-amber .center-footer-terminal { color: #ffcc33; }
     .site.phosphor-amber .content-footer-cta { background: #ffcc33; color: #12100a; }
     .site.phosphor-amber .hero-image { background: #1a150e; }
     .site.phosphor-amber .flip-card-front { background: #1a150e; }
@@ -1190,7 +1219,7 @@
     .site.mode-dark .invest-card:hover { background: rgba(196,132,90,0.08); }
     .site.mode-dark .newsletter-input { background: #1e1e22; }
     .site.mode-dark .footer-name { color: #2a2a2e; }
-    .site.mode-dark .center-footer-name { color: #2a2a2e; }
+    .site.mode-dark .center-footer-terminal { color: #e0ddd4; }
     .site.mode-dark .content-footer-cta { background: #e0ddd4; color: #141416; }
     .site.mode-dark .hero-image { background: #1e1e22; }
     .site.mode-dark .flip-card-front { background: #1e1e22; }
@@ -1961,8 +1990,12 @@
       </div>
     </div>
 
-    <div class="center-footer-name">
-      Philipp <span class="dash-line"></span> Beer
+    <div class="center-footer-terminal">
+      <div class="terminal-line" id="terminal-typer"></div>
+      <div class="loading-bar">
+        <span>compiling next project</span>
+        <div class="loading-bar-track"><div class="loading-bar-fill"></div></div>
+      </div>
     </div>
   </div>
 
@@ -2622,6 +2655,56 @@
     // Hide the now-empty project-images container
     const pi = document.querySelector('.project-images');
     if (pi) pi.style.display = 'none';
+  })();
+
+  // ==========================================
+  // Terminal typing easter egg
+  // ==========================================
+  (function() {
+    const el = document.getElementById('terminal-typer');
+    if (!el) return;
+    const lines = [
+      '> agent.spawn("deal_analyst", priority=high)',
+      '> await portfolio.rebalance({ risk: "measured" })',
+      '> pipeline.run(["source", "diligence", "memo"])',
+      '> if conviction > threshold: deploy_capital()',
+      '> swarm.dispatch(task="market_scan", agents=4)',
+      '> agent.think("is this the future or just hype?")',
+      '> fund.status() // returns: building_the_future',
+      '> while curious: explore(new_rabbit_hole)',
+      '> kids.bedtime() && then(agent.resume())',
+      '> deploy --env=production --vibes=immaculate',
+      '> git commit -m "ship it, fix it later"',
+      '> agent.reflect("what did we miss?")',
+    ];
+    let lineIdx = 0;
+    let charIdx = 0;
+    let deleting = false;
+    let pause = 0;
+
+    function tick() {
+      const line = lines[lineIdx];
+      if (pause > 0) { pause--; requestAnimationFrame(tick); return; }
+
+      if (!deleting) {
+        charIdx++;
+        el.textContent = line.slice(0, charIdx) + '█';
+        if (charIdx >= line.length) {
+          deleting = true;
+          pause = 120;
+        }
+      } else {
+        charIdx--;
+        el.textContent = line.slice(0, charIdx) + '█';
+        if (charIdx <= 0) {
+          deleting = false;
+          lineIdx = (lineIdx + 1) % lines.length;
+          pause = 30;
+        }
+      }
+      requestAnimationFrame(tick);
+    }
+    tick();
   })();
 </script>
 
