@@ -421,14 +421,15 @@
     }
 
     .flip-card-back .flip-back-logo {
-      width: 200px;
-      height: 200px;
+      width: 120px;
+      height: 120px;
       object-fit: contain;
+      object-position: top right;
       filter: brightness(0) invert(1);
-      opacity: 0.08;
+      opacity: 0.45;
       position: absolute;
-      top: -20px;
-      right: -20px;
+      top: 28px;
+      right: 28px;
     }
 
     .flip-card-back .flip-back-category {
@@ -1180,7 +1181,9 @@
     .site.phosphor-green .sidebar { background: #0a120a; }
     .site.phosphor-green .center-col { background: #0a120a; }
     .site.phosphor-green .content { background: #0a120a; }
-    .site.phosphor-green .flip-card-back { background: #1a3a1a; }
+    .site.phosphor-green .flip-card-back { background: #0a120a; color: #33ff33; }
+    .site.phosphor-green .flip-card-back .flip-back-link { color: #33ff33; }
+    .site.phosphor-green .flip-back-logo { filter: brightness(0) invert(1); opacity: 0.5; }
     .site.phosphor-green .stat { background: #0a120a; }
     .site.phosphor-green .invest-card:hover { background: rgba(51,255,51,0.06); }
     .site.phosphor-green .newsletter-input { background: #0e1a0e; }
@@ -1204,7 +1207,9 @@
     .site.phosphor-amber .sidebar { background: #12100a; }
     .site.phosphor-amber .center-col { background: #12100a; }
     .site.phosphor-amber .content { background: #12100a; }
-    .site.phosphor-amber .flip-card-back { background: #3a2a1a; }
+    .site.phosphor-amber .flip-card-back { background: #12100a; color: #ffcc33; }
+    .site.phosphor-amber .flip-card-back .flip-back-link { color: #ffcc33; }
+    .site.phosphor-amber .flip-back-logo { filter: brightness(0) invert(1); opacity: 0.5; }
     .site.phosphor-amber .stat { background: #12100a; }
     .site.phosphor-amber .invest-card:hover { background: rgba(255,204,51,0.06); }
     .site.phosphor-amber .newsletter-input { background: #1a150e; }
@@ -1228,7 +1233,8 @@
     .site.mode-dark .sidebar { background: #141416; }
     .site.mode-dark .center-col { background: #141416; }
     .site.mode-dark .content { background: #141416; }
-    .site.mode-dark .flip-card-back { background: #2a2a2e; }
+    .site.mode-dark .flip-card-back { background: #1e1e22; color: #e0ddd4; }
+    .site.mode-dark .flip-card-back .flip-back-link { color: #e0ddd4; }
     .site.mode-dark .stat { background: #141416; }
     .site.mode-dark .invest-card:hover { background: rgba(196,132,90,0.08); }
     .site.mode-dark .newsletter-input { background: #1e1e22; }
@@ -1238,7 +1244,7 @@
     .site.mode-dark .hero-image { background: #1e1e22; }
     .site.mode-dark .flip-card-front { background: #1e1e22; }
     .site.mode-dark .flip-card-front .flip-name { color: #807870; }
-    .site.mode-dark .flip-back-logo { filter: brightness(0) invert(1); opacity: 0.15; }
+    .site.mode-dark .flip-back-logo { filter: brightness(0) invert(1); opacity: 0.5; }
     .site.mode-dark .sidebar-doodles svg { opacity: 0.5; }
     .site.mode-dark .sidebar-doodles svg:hover { opacity: 0.8; }
 
@@ -1966,7 +1972,7 @@
             <div class="flip-card-back">
               <div class="flip-back-header">
                 <span class="flip-back-category">Travel App</span>
-                <img class="flip-back-logo" src="logos/beaches.png" alt="Beaches of Mallorca">
+                <img class="flip-back-logo" src="logos/beaches.png" alt="Beaches of Mallorca" style="width:180px;height:180px;">
               </div>
               <div class="flip-back-name">Beaches of Mallorca</div>
               <div class="flip-back-desc">Real-time beach conditions for every beach on the island. Live weather, wave height, wind, and UV data pulled fresh and displayed on a clean map interface. Pick a beach, check the conditions, go. Built for anyone who's tired of showing up to a windy shore.</div>
@@ -2299,10 +2305,16 @@
 
       <div class="newsletter-signup">
         <p class="newsletter-cta">Subscribe to get notified when I start writing</p>
-        <form class="newsletter-form" id="newsletter-form">
-          <input type="email" class="newsletter-input" placeholder="your@email.com" required autocomplete="email">
+        <form class="newsletter-form" id="newsletter-form" action="https://philippxbeer.substack.com/api/v1/free?noSigup=true" method="POST" target="substack-frame">
+          <input type="email" name="email" class="newsletter-input" placeholder="your@email.com" required autocomplete="email">
+          <input type="hidden" name="first_url" value="https://philippbeer.me">
+          <input type="hidden" name="first_referrer" value="">
+          <input type="hidden" name="current_url" value="https://philippbeer.me">
+          <input type="hidden" name="current_referrer" value="">
+          <input type="hidden" name="source" value="embed">
           <button type="submit" class="newsletter-btn">Subscribe</button>
         </form>
+        <iframe name="substack-frame" style="display:none;" tabindex="-1" aria-hidden="true"></iframe>
         <p class="newsletter-msg" id="newsletter-msg" style="display:none;">Signal received. You'll hear from me.</p>
       </div>
     </section>
@@ -2467,36 +2479,14 @@
   // ==========================================
   // Newsletter form
   // ==========================================
-  document.getElementById('newsletter-form').addEventListener('submit', async e => {
-    e.preventDefault();
-    const form = e.target;
-    const input = form.querySelector('.newsletter-input');
-    const btn = form.querySelector('.newsletter-btn');
+  document.getElementById('newsletter-form').addEventListener('submit', function() {
+    const input = this.querySelector('.newsletter-input');
     const msg = document.getElementById('newsletter-msg');
-    const email = input.value.trim();
-    if (!email) return;
-
-    btn.disabled = true;
-    btn.textContent = '...';
-
-    try {
-      const res = await fetch('https://philippxbeer.substack.com/api/v1/free?noSig498up=true', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ first_url: window.location.href, first_referrer: document.referrer, current_url: window.location.href, current_referrer: document.referrer, referral_code: '', source: 'embed', email })
-      });
-      if (!res.ok) throw new Error();
+    // Form submits naturally to hidden iframe; show confirmation after short delay
+    setTimeout(() => {
       input.value = '';
       msg.style.display = 'block';
-    } catch {
-      // Fallback: open Substack subscribe page directly
-      window.open('https://philippxbeer.substack.com/subscribe?simple=true&next=https%3A%2F%2Fphilippxbeer.substack.com%2F&utm_source=philippbeer.me&email=' + encodeURIComponent(email), '_blank');
-      input.value = '';
-      msg.style.display = 'block';
-    } finally {
-      btn.disabled = false;
-      btn.textContent = 'Subscribe';
-    }
+    }, 500);
   });
 
   // ==========================================
