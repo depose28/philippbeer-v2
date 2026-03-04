@@ -524,7 +524,48 @@
     .center-hero-title .name-suffix {
       font-family: var(--font-mono);
       font-weight: 400;
-      opacity: 0.3;
+      opacity: 0;
+      animation: bracket-fade 0.4s ease forwards;
+    }
+
+    .center-hero-title .name-prefix { animation-delay: 0.3s; }
+    .center-hero-title .name-suffix { animation-delay: 0.3s; }
+
+    @keyframes bracket-fade {
+      to { opacity: 0.3; }
+    }
+
+    .center-hero-title .name-left,
+    .center-hero-title .name-right {
+      opacity: 0;
+      animation: name-reveal 0.6s ease forwards;
+    }
+
+    .center-hero-title .name-left {
+      animation-delay: 0.8s;
+      transform: translateX(20px);
+    }
+
+    .center-hero-title .name-right {
+      animation-delay: 1.1s;
+      transform: translateX(-20px);
+    }
+
+    @keyframes name-reveal {
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    .center-subtitle {
+      visibility: hidden;
+    }
+
+    .center-subtitle.typing {
+      visibility: visible;
+    }
+
+    .center-subtitle .subtitle-cursor {
+      font-family: var(--font-mono);
+      animation: blink-cursor 1s step-end infinite;
     }
 
     .center-footer-terminal {
@@ -1893,7 +1934,7 @@
       <img id="portrait-img" alt="Philipp Beer — sketch portrait" style="max-width:100%;height:auto;display:block;">
     </div>
     <div class="center-spacer" style="margin-bottom:auto;padding-bottom:15vh;">
-      <p class="center-subtitle">Builder _ Investor _ <span class="hide-mobile">Polymath _ </span>Dad</p>
+      <p class="center-subtitle" id="hero-subtitle" data-full="Builder _ Investor _ Polymath _ Dad" data-mobile="Builder _ Investor _ Dad"></p>
     </div>
 
     <div class="project-images">
@@ -2655,6 +2696,32 @@
     // Hide the now-empty project-images container
     const pi = document.querySelector('.project-images');
     if (pi) pi.style.display = 'none';
+  })();
+
+  // ==========================================
+  // Hero subtitle typing effect (after name animation)
+  // ==========================================
+  (function() {
+    const sub = document.getElementById('hero-subtitle');
+    if (!sub) return;
+    const isMob = window.innerWidth <= 600;
+    const text = isMob ? sub.dataset.mobile : sub.dataset.full;
+    let i = 0;
+
+    setTimeout(() => {
+      sub.classList.add('typing');
+      function type() {
+        if (i <= text.length) {
+          sub.innerHTML = text.slice(0, i) + '<span class="subtitle-cursor">█</span>';
+          i++;
+          setTimeout(type, 60 + Math.random() * 40);
+        } else {
+          // Remove cursor after done
+          setTimeout(() => { sub.textContent = text; }, 2000);
+        }
+      }
+      type();
+    }, 1800); // Start after name animation completes
   })();
 
   // ==========================================
