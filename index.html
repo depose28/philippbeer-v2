@@ -520,24 +520,11 @@
       justify-content: space-between;
     }
 
-    .center-hero-title {
-      overflow: hidden;
-    }
-
-    .center-hero-title .name-bracket {
+    .center-hero-title .name-prefix,
+    .center-hero-title .name-suffix {
       font-family: var(--font-mono);
       font-weight: 400;
       opacity: 0.3;
-    }
-
-    .center-hero-title .name-letter {
-      display: inline-block;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-
-    .center-hero-title .name-letter.visible {
-      opacity: 1;
     }
 
     .center-subtitle {
@@ -1912,7 +1899,10 @@
 
   <!-- ======== CENTER COLUMN (big headers + images) ======== -->
   <div class="center-col">
-    <div class="center-hero-title" id="hero-name"></div>
+    <div class="center-hero-title">
+      <span class="name-prefix">[</span><span class="name-left">Philipp</span>
+      <span class="name-right">Beer</span><span class="name-suffix">]</span>
+    </div>
     <div id="portrait-frame" style="width:100%;padding:20px 20px 80px;display:flex;align-items:center;justify-content:center;margin-top:auto;">
       <img id="portrait-img" alt="Philipp Beer — sketch portrait" style="max-width:100%;height:auto;display:block;">
     </div>
@@ -2681,46 +2671,6 @@
     if (pi) pi.style.display = 'none';
   })();
 
-  // ==========================================
-  // Hero name: brackets start centered, expand outward revealing letters
-  // ==========================================
-  (function() {
-    const el = document.getElementById('hero-name');
-    if (!el) return;
-    const left = 'Philipp';
-    const right = 'Beer';
-
-    // Build HTML: each letter is a span, hidden initially
-    // Left word letters are reversed order (last letter closest to center)
-    let leftHTML = '';
-    for (let i = 0; i < left.length; i++) {
-      leftHTML += '<span class="name-letter" data-reveal="' + (left.length - 1 - i) + '">' + left[i] + '</span>';
-    }
-    let rightHTML = '';
-    for (let i = 0; i < right.length; i++) {
-      rightHTML += '<span class="name-letter" data-reveal="' + i + '">' + right[i] + '</span>';
-    }
-
-    el.innerHTML =
-      '<span class="name-bracket">[</span>' +
-      leftHTML +
-      '<span class="name-letter" data-reveal="0"> </span>' +
-      rightHTML +
-      '<span class="name-bracket">]</span>';
-
-    const totalSteps = Math.max(left.length, right.length);
-    let step = -1;
-
-    setTimeout(function reveal() {
-      if (step >= totalSteps) return;
-      // Reveal all letters with this reveal index
-      el.querySelectorAll('.name-letter[data-reveal="' + step + '"]').forEach(function(span) {
-        span.classList.add('visible');
-      });
-      step++;
-      setTimeout(reveal, 120);
-    }, 500);
-  })();
 
   // ==========================================
   // Hero subtitle typing effect (after name animation)
