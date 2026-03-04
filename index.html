@@ -491,7 +491,7 @@
 
     .center-subtitle {
       font-family: var(--font-display);
-      font-size: clamp(20px, 2.5vw, 32px);
+      font-size: clamp(16px, 1.8vw, 24px);
       font-weight: 300;
       color: var(--text);
       letter-spacing: 2px;
@@ -1881,8 +1881,8 @@
       <div class="sidebar-contact-row">
         <span class="row-label">[SOCIAL]</span>
         <div class="row-links">
-          <a href="https://linkedin.com/in/philippbeer" target="_blank" rel="noopener noreferrer">LI</a>
-          <a href="https://github.com/depose28" target="_blank" rel="noopener noreferrer">GH</a>
+          <a href="https://linkedin.com/in/philippbeer" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href="https://github.com/depose28" target="_blank" rel="noopener noreferrer">GitHub</a>
         </div>
       </div>
       <button class="sidebar-subscribe" onclick="document.getElementById('newsletter-form').scrollIntoView({behavior:'smooth'})">Subscribe to Newsletter</button>
@@ -1904,7 +1904,7 @@
       <span class="name-right">Beer</span><span class="name-suffix">]</span>
     </div>
     <div id="portrait-frame" style="width:100%;padding:20px 20px 80px;display:flex;align-items:center;justify-content:center;margin-top:auto;">
-      <img id="portrait-img" alt="Philipp Beer — sketch portrait" style="max-width:100%;height:auto;display:block;">
+      <img id="portrait-img" src="portrait.png" alt="Philipp Beer — sketch portrait" width="448" height="557" fetchpriority="high" style="max-width:100%;height:auto;display:block;">
     </div>
     <div class="center-spacer" style="margin-bottom:auto;padding-bottom:15vh;">
       <p class="center-subtitle" id="hero-subtitle" data-full="Builder _ Investor _ Polymath _ Dad" data-mobile="Builder _ Investor _ Dad"></p>
@@ -2387,8 +2387,8 @@
     <div class="mobile-menu-footer-row">
       <span class="footer-label">[SOCIAL]</span>
       <div class="footer-links">
-        <a href="https://linkedin.com/in/philippbeer" target="_blank" rel="noopener noreferrer">LI</a>
-        <a href="https://github.com/depose28" target="_blank" rel="noopener noreferrer">GH</a>
+        <a href="https://linkedin.com/in/philippbeer" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a href="https://github.com/depose28" target="_blank" rel="noopener noreferrer">GitHub</a>
       </div>
     </div>
   </div>
@@ -2467,10 +2467,36 @@
   // ==========================================
   // Newsletter form
   // ==========================================
-  document.getElementById('newsletter-form').addEventListener('submit', e => {
+  document.getElementById('newsletter-form').addEventListener('submit', async e => {
     e.preventDefault();
-    e.target.querySelector('.newsletter-input').value = '';
-    document.getElementById('newsletter-msg').style.display = 'block';
+    const form = e.target;
+    const input = form.querySelector('.newsletter-input');
+    const btn = form.querySelector('.newsletter-btn');
+    const msg = document.getElementById('newsletter-msg');
+    const email = input.value.trim();
+    if (!email) return;
+
+    btn.disabled = true;
+    btn.textContent = '...';
+
+    try {
+      const res = await fetch('https://philippxbeer.substack.com/api/v1/free?noSig498up=true', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ first_url: window.location.href, first_referrer: document.referrer, current_url: window.location.href, current_referrer: document.referrer, referral_code: '', source: 'embed', email })
+      });
+      if (!res.ok) throw new Error();
+      input.value = '';
+      msg.style.display = 'block';
+    } catch {
+      // Fallback: open Substack subscribe page directly
+      window.open('https://philippxbeer.substack.com/subscribe?simple=true&next=https%3A%2F%2Fphilippxbeer.substack.com%2F&utm_source=philippbeer.me&email=' + encodeURIComponent(email), '_blank');
+      input.value = '';
+      msg.style.display = 'block';
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Subscribe';
+    }
   });
 
   // ==========================================
@@ -2590,19 +2616,7 @@
     fxScanlines.classList.toggle('effect-active');
   });
 
-  // ==========================================
-  // Portrait image loader
-  // ==========================================
-  (function() {
-    const img = document.getElementById('portrait-img');
-    if (img) {
-      img.src = 'portrait.png?' + Date.now();
-      img.onerror = function() {
-        // Fallback: try without cache bust
-        img.src = 'portrait.png';
-      };
-    }
-  })();
+  // Portrait loads directly via src attribute — no JS needed
 
   // ==========================================
   // Mobile menu overlay
@@ -2692,7 +2706,7 @@
         }
       }
       type();
-    }, 2200); // Start after name animation completes
+    }, 400); // Start shortly after page load
   })();
 
   // ==========================================
