@@ -17,11 +17,14 @@ Personal website at https://philippbeer.me/.
 - `assets/lakeside-computer.jpg`: the same illustration for social previews.
 - `favicon.svg`: initials used as the browser icon.
 - `assets/github-activity.svg`: dated snapshot of the public contribution calendar.
+- `assets/fonts/geist-variable.woff2`: self-hosted Geist body font; license in the same directory.
 - `.github/scripts/update_activity.py`: optional refresh script using Python's standard library.
 - Older images and music remain in the repository but are not loaded by this page.
 
 No framework, JavaScript, package installation, or build step is required. The
-page uses system fonts and makes no third-party font or analytics requests.
+page uses self-hosted Geist for body text, Georgia for the name, and system
+monospace for contact labels and activity details. It makes no third-party font
+or analytics requests. Font source and checksum are in `.github/font-provenance.md`.
 
 ## GitHub activity trial
 
