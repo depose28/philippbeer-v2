@@ -51,9 +51,10 @@ deferred script selects the dark asset. The illustration uses a modest CSS brigh
 
 ## Icons and sharing
 
-The favicon restores the earlier quiet V2 design: regular Georgia PB initials on
-warm white with slightly rounded corners. The original Georgia initials are converted to SVG paths, so they render
-consistently without any font dependency. SVG is the editable source; ICO contains 16px,
+The favicon restores the earlier initials design: regular Georgia PB initials on
+warm white with slightly rounded corners. The original Georgia initials are
+converted to SVG paths, so they render consistently without any font dependency.
+SVG is the editable source; ICO contains 16px,
 32px, and 48px DIB images for older readers. PNG and an opaque 180px Apple touch
 icon are supplied. The `?v=3` icon URLs distinguish this design from the geometric
 PB favicon.
