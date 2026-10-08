@@ -30,6 +30,14 @@ It includes only information already visible on the public profile. Do not use
 authenticated private-repository data or change profile privacy settings without
 Philipp's direction. A contribution is not necessarily a commit or a working day.
 
+Philipp authorized showing anonymous private contribution counts on 8 October
+2026. The GitHub profile's Private contributions setting is enabled. The same
+unauthenticated source now includes these counts without repository names or
+code. Keep that boundary: do not fetch private repository details for the site.
+Committed snapshots remain in git history if that profile setting later changes.
+An empty public calendar does not establish inactivity; check visibility and
+attribution before using the calendar as evidence of someone's work.
+
 Refresh manually with `python3 .github/scripts/update_activity.py`. The script
 updates the SVG, total, accessible description, and visible snapshot date together.
 It validates the calendar before overwriting the last snapshot. There is no

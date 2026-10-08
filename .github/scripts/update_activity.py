@@ -1,6 +1,7 @@
 """Refresh the static calendar from GitHub's unauthenticated public profile.
 
 Run from any directory: python3 .github/scripts/update_activity.py
+Includes anonymous private counts shared through GitHub's profile setting.
 No token, private repository access, or browser-side API request is used.
 """
 
@@ -85,8 +86,8 @@ def make_svg(days, fetched):
     description = "; ".join(f"{label}: {count}" for label, count in months.items())
     svg = [
         f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} 98" width="{width}" height="98" role="img" aria-labelledby="title description">',
-        f'<title id="title">{total:,} contributions visible on depose28’s public GitHub profile</title>',
-        f'<desc id="description">{origin.isoformat()} to {days[-1][0].isoformat()}. {escape(description)}. Other months have no public contributions. Fetched {fetched}.</desc>',
+        f'<title id="title">{total:,} contributions visible on depose28’s GitHub profile</title>',
+        f'<desc id="description">{origin.isoformat()} to {days[-1][0].isoformat()}. {escape(description)}. Other months have no recorded contributions. Fetched {fetched}.</desc>',
         '<g fill="#696e63" font-family="ui-monospace, monospace" font-size="10">',
     ]
     last_label_x = -50
@@ -125,14 +126,14 @@ def main():
         <a class="activity-profile" href="https://github.com/depose28">@depose28 <span aria-hidden="true">↗</span></a>
       </div>
       <div class="activity-scroll" tabindex="0" role="region" aria-label="GitHub contribution calendar; scroll horizontally to see the full year">
-        <img src="assets/github-activity.svg" width="{width}" height="98" alt="{total:,} contributions visible on my public GitHub profile over the past year. A snapshot from {updated}." loading="lazy" decoding="async" aria-describedby="activity-description">
+        <img src="assets/github-activity.svg" width="{width}" height="98" alt="{total:,} contributions visible on my GitHub profile over the past year. A snapshot from {updated}." loading="lazy" decoding="async" aria-describedby="activity-description">
       </div>
-      <p id="activity-description" class="sr-only">{escape(description)}. Other months have no public contributions.</p>
+      <p id="activity-description" class="sr-only">{escape(description)}. Other months have no recorded contributions.</p>
       <div class="activity-meta">
         <p><strong>{total:,}</strong> contributions in the past year</p>
         <span class="activity-legend" aria-hidden="true">Less {legend} More</span>
       </div>
-      <p class="activity-note">Public profile activity · updated <time datetime="{now.isoformat()}">{updated}</time></p>
+      <p class="activity-note">Includes anonymous private activity · updated <time datetime="{now.isoformat()}">{updated}</time></p>
     </section>
 {END}'''
     page_path = ROOT / "index.html"
