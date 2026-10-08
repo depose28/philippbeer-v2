@@ -13,7 +13,8 @@ Personal website at https://philippbeer.me/.
 
 - `index.html`: page copy, links, accessibility labels, and social metadata.
 - `styles.css`: responsive layout and appearance.
-- `assets/lakeside-computer.webp`: temporary illustration shown on the page.
+- `assets/lake-720.webp` and `assets/lake-1440.webp`: responsive lake illustration.
+- `assets/lake-ripple.js`: interactive lake and computer screen component.
 - `assets/lakeside-computer.jpg`: the same illustration for social previews.
 - `favicon.svg`: initials used as the browser icon.
 - `assets/github-activity.svg` and `assets/github-activity-dark.svg`: matching light/dark snapshots of the public contribution calendar.
@@ -46,6 +47,48 @@ Only explicit clicks animate. Both calendar SVGs are regenerated together from
 the same data; the theme script selects the correct asset and updates browser
 chrome colour. A tall viewport can briefly show the light calendar before the
 deferred script selects the dark asset. The illustration uses a modest CSS brightness adjustment in dark mode.
+
+## Interactive lake
+
+The component was integrated from the uncommitted `design/lake-ripple` worktree,
+based on `5dc451e`. Philipp chose to retain this branch's 600px column, Geist name,
+small body text, labelled contact links, copy, and light/dark theme. The other
+worktree's page restyling and additional fonts were intentionally not imported.
+
+Click/tap the water for one drop; flick/swipe to skip a stone. Philipp chose to
+keep the gentle hover drizzle. The illustration remains still away from input,
+except for one invitation stone about 12 seconds after initialization. The
+invitation fades out within 4.5 seconds and is cancelled by visitor interaction.
+A press on the lake cancels it immediately, including a touch that becomes a
+scroll. Its delay is measured from initialization; if initially offscreen, it
+can start when first revealed after that delay.
+`auto="false"` or `drizzle="false"` disables the corresponding feature.
+
+Clicking the computer runs a 0.95-second CRT switch-on. `screen="iridescent"`
+adds a restrained cyan/lilac/rose sheen over the green phosphor. The original
+`screen="holo"` variant remains available but is not used. The effect is masked
+to the screen glass, with the bezel and surrounding illustration unchanged.
+
+The canvas retains the image's accessible description. Native buttons provide
+keyboard alternatives for a drop, a skipped stone, and the computer. They become
+visible on keyboard focus. The hint reserves two lines even before initialization,
+is hidden until ready, and fades after interaction; its seen state is stored
+locally when storage is available. With JavaScript disabled or initialization
+failure, the image remains visible and the hint stays hidden.
+
+Reduced motion disables all lake animation and hides interactive hints/controls,
+including on live preference changes. Offscreen or hidden pages suspend frames.
+Window resize and ResizeObserver share a 100ms debounce. Slow-render detection
+defers its resolution downgrade until motion settles, preserving active ripples. The solver uses bounded
+60Hz steps, stronger damping, and a 0.006 sleep threshold. Deterministic tests
+verify single drops settle within eight seconds at 272px, 342px, and 600px widths;
+this is a simulation check, not a physical-device performance measurement.
+
+The water outline (`WT`, `WB`), simulation band (`T`, `B`), computer hit area,
+and glass seed/bounds are tuned to this exact image. Replacing the image requires
+retuning them. Responsive source changes rebuild pixels and the glass mask.
+All fonts and assets stay on the same origin; the lake uses the existing system
+monospace stack and needs no additional downloaded font.
 
 ## GitHub activity trial
 
@@ -106,7 +149,8 @@ or `.git`. Use `noindex` on a shared preview, not on the production page.
 Check desktop and mobile layouts, narrow widths, keyboard focus, contact links,
 project links, image loading, text contrast, and browser zoom. There is no
 framework build or typecheck. Run `node --check assets/theme.js`,
-`node .github/scripts/test_theme.cjs`, and `git diff --check` before committing.
+`node .github/scripts/test_theme.cjs`, `node --check assets/lake-ripple.js`,
+`node .github/scripts/test_lake.cjs`, and `git diff --check` before committing.
 The theme tests cover preference handling, blocked storage, reduced motion,
 missing animation support, repeated clicks, scroll/resize/motion interruptions,
 error recovery, and cleanup.

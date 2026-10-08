@@ -1,10 +1,13 @@
 # Temporary landscape
 
 Generated with the built-in imagegen tool for this website. This is an imagined
-scene, not a real location. The two delivery files have identical 1200 × 600
-compositions: WebP for the page and JPEG for social previews. They are optimized
-exports of the same original. Replace both together and update the image alt
-text if the subject changes.
+scene, not a real location. The original 1200 × 600 exports remain as `assets/lakeside-computer.webp` and
+`assets/lakeside-computer.jpg` (the social preview). The interactive page uses
+`assets/lake-720.webp` and `assets/lake-1440.webp`, imported unchanged from the
+`design/lake-ripple` worktree. These are 720 × 360 and 1440 × 720 versions of the
+lake composition. Its water outline and screen mask are calibrated in
+`assets/lake-ripple.js`. Replace the image and retune those coordinates together;
+update the alt text and social preview if the subject changes.
 
 ## Generation prompt
 
