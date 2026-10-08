@@ -16,15 +16,35 @@ Personal website at https://philippbeer.me/.
 - `assets/lakeside-computer.webp`: temporary illustration shown on the page.
 - `assets/lakeside-computer.jpg`: the same illustration for social previews.
 - `favicon.svg`: initials used as the browser icon.
-- `assets/github-activity.svg`: dated snapshot of the public contribution calendar.
+- `assets/github-activity.svg` and `assets/github-activity-dark.svg`: matching light/dark snapshots of the public contribution calendar.
+- `assets/theme.js`: theme preference, accessible toggle, and optional pixel reveal.
 - `assets/fonts/geist-variable.woff2`: self-hosted Geist body font; license in the same directory.
 - `.github/scripts/update_activity.py`: optional refresh script using Python's standard library.
 - Older images and music remain in the repository but are not loaded by this page.
 
-No framework, JavaScript, package installation, or build step is required. The
+No framework, package installation, or build step is required. The
 page uses self-hosted Geist for body text, Georgia for the name, and system
 monospace for contact labels and activity details. It makes no third-party font
 or analytics requests. Font source and checksum are in `.github/font-provenance.md`.
+
+## Theme and typography
+
+Body text is 15px on desktop and 16px at widths up to 480px. The theme toggle
+uses a 44px button beside the name, with an 18px sun/moon icon. Its accessible
+name is "Dark mode" and its pressed state reflects the selected theme.
+
+An early inline script sets the saved `philipp-theme` preference before painting;
+otherwise it follows the system preference. `assets/theme.js` handles changes,
+cross-tab synchronization, and storage failures. With JavaScript disabled, the
+complete page remains readable in light mode and the toggle stays hidden.
+
+The 620ms pixel reveal uses native View Transitions and one generated SVG mask.
+It does not clone the page, scramble text, run a canvas loop, or load a library.
+Reduced motion, hidden pages, unsupported browsers, and animation failures switch immediately.
+Only explicit clicks animate. Both calendar SVGs are regenerated together from
+the same data; the theme script selects the correct asset and updates browser
+chrome colour. A tall viewport can briefly show the light calendar before the
+deferred script selects the dark asset. The illustration uses a modest CSS brightness adjustment in dark mode.
 
 ## GitHub activity trial
 
@@ -42,7 +62,7 @@ An empty public calendar does not establish inactivity; check visibility and
 attribution before using the calendar as evidence of someone's work.
 
 Refresh manually with `python3 .github/scripts/update_activity.py`. The script
-updates the SVG, total, accessible description, and visible snapshot date together.
+updates both SVGs, total, accessible description, and visible snapshot date together.
 It validates the calendar before overwriting the last snapshot. There is no
 scheduled refresh or visitor-side API request. If the experiment is kept, decide
 the refresh method before production publication.
@@ -79,12 +99,16 @@ or a personal photograph. Its prompt and provenance are in `.github/image-proven
 ## Local checks
 
 Serve a copy of the public files with a static HTTP server. Preview servers
-should expose only the HTML, CSS, favicon, and image assets, not this repository
+should expose only the HTML, CSS, JavaScript, fonts, favicon, and image assets, not this repository
 or `.git`. Use `noindex` on a shared preview, not on the production page.
 
 Check desktop and mobile layouts, narrow widths, keyboard focus, contact links,
 project links, image loading, text contrast, and browser zoom. There is no
-application test suite or typecheck. Run `git diff --check` before committing.
+framework build or typecheck. Run `node --check assets/theme.js`,
+`node .github/scripts/test_theme.cjs`, and `git diff --check` before committing.
+The theme tests cover preference handling, blocked storage, reduced motion,
+missing animation support, repeated clicks, scroll/resize/motion interruptions,
+error recovery, and cleanup.
 
 Before a push, obtain the cross-vendor review required by Philipp's agent rules.
 Record the author model in any pull request. Never merge automatically.

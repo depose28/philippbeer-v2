@@ -17,6 +17,7 @@ SOURCE = "https://github.com/users/depose28/contributions"
 START = "    <!-- activity:start -->"
 END = "    <!-- activity:end -->"
 COLORS = ("#e7e8e1", "#ccd7bd", "#a4b78d", "#788f61", "#4f663e")
+DARK_COLORS = ("#30362d", "#44523b", "#657853", "#90a779", "#bed2a8")
 
 
 class CalendarParser(HTMLParser):
@@ -71,7 +72,8 @@ def parse_calendar(html):
     return days
 
 
-def make_svg(days, fetched):
+def make_svg(days, fetched, dark=False):
+    colors = DARK_COLORS if dark else COLORS
     total = sum(count for _, count, _ in days)
     origin = days[0][0]
     if origin.weekday() != 6:
@@ -88,7 +90,7 @@ def make_svg(days, fetched):
         f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} 98" width="{width}" height="98" role="img" aria-labelledby="title description">',
         f'<title id="title">{total:,} contributions visible on depose28’s GitHub profile</title>',
         f'<desc id="description">{origin.isoformat()} to {days[-1][0].isoformat()}. {escape(description)}. Other months have no recorded contributions. Fetched {fetched}.</desc>',
-        '<g fill="#696e63" font-family="ui-monospace, monospace" font-size="10">',
+        f'<g fill="{"#a4ac9e" if dark else "#696e63"}" font-family="ui-monospace, monospace" font-size="10">',
     ]
     last_label_x = -50
     for i in range(columns):
@@ -103,7 +105,7 @@ def make_svg(days, fetched):
         offset = (day - origin).days
         x, y = offset // 7 * 11, 22 + offset % 7 * 11
         label = f'{day.isoformat()}: {count} contribution' + ('' if count == 1 else 's')
-        svg.append(f'<rect x="{x}" y="{y}" width="8" height="8" rx="1" fill="{COLORS[level]}"><title>{label}</title></rect>')
+        svg.append(f'<rect x="{x}" y="{y}" width="8" height="8" rx="1" fill="{colors[level]}"><title>{label}</title></rect>')
     svg.append('</svg>')
     return '\n'.join(svg) + '\n', width, total, description
 
@@ -118,7 +120,7 @@ def main():
         raise ValueError("GitHub returned an unexpectedly stale calendar")
     svg, width, total, description = make_svg(days, now.isoformat())
     updated = f"{now.day} {now.strftime('%b %Y')}"
-    legend = ''.join(f'<i style="--level: {color}"></i>' for color in COLORS)
+    legend = ''.join(f'<i style="--level: var(--activity-{level})"></i>' for level in range(len(COLORS)))
     block = f'''{START}
     <section class="activity" aria-labelledby="activity-heading">
       <div class="section-heading">
@@ -126,7 +128,7 @@ def main():
         <a class="activity-profile" href="https://github.com/depose28">@depose28 <span aria-hidden="true">↗</span></a>
       </div>
       <div class="activity-scroll" tabindex="0" role="region" aria-label="GitHub contribution calendar; scroll horizontally to see the full year">
-        <img src="assets/github-activity.svg" width="{width}" height="98" alt="{total:,} contributions visible on my GitHub profile over the past year. A snapshot from {updated}." loading="lazy" decoding="async" aria-describedby="activity-description">
+        <img src="assets/github-activity.svg" data-light-src="assets/github-activity.svg" data-dark-src="assets/github-activity-dark.svg" width="{width}" height="98" alt="{total:,} contributions visible on my GitHub profile over the past year. A snapshot from {updated}." loading="lazy" decoding="async" aria-describedby="activity-description">
       </div>
       <p id="activity-description" class="sr-only">{escape(description)}. Other months have no recorded contributions.</p>
       <div class="activity-meta">
@@ -142,6 +144,8 @@ def main():
         raise ValueError("Expected exactly one activity section")
     begin, finish = page.index(START), page.index(END) + len(END)
     (ROOT / "assets/github-activity.svg").write_text(svg, encoding="utf-8")
+    dark_svg, _, _, _ = make_svg(days, now.isoformat(), dark=True)
+    (ROOT / "assets/github-activity-dark.svg").write_text(dark_svg, encoding="utf-8")
     page_path.write_text(page[:begin] + block + page[finish:], encoding="utf-8")
     print(f"Updated public calendar: {total} contributions; {len(days)} days; fetched {now}.")
 
