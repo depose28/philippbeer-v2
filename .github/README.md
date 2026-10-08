@@ -16,7 +16,7 @@ Personal website at https://philippbeer.me/.
 - `assets/lake-720.webp` and `assets/lake-1440.webp`: responsive lake illustration.
 - `assets/lake-ripple.js`: interactive lake and computer screen component.
 - `assets/share-lake-v1.jpg`: optimized 1200 × 600 JPEG for link previews.
-- `favicon.svg`: geometric PB monogram with a small iridescent underline.
+- `favicon.svg`: classic Georgia PB initials on warm white.
 - `favicon.ico`, `favicon-32.png`, `apple-touch-icon.png`: compatible raster icon exports.
 - `assets/github-activity.svg` and `assets/github-activity-dark.svg`: matching light/dark snapshots of the public contribution calendar.
 - `assets/theme.js`: theme preference, accessible toggle, and optional pixel reveal.
@@ -51,11 +51,13 @@ deferred script selects the dark asset. The illustration uses a modest CSS brigh
 
 ## Icons and sharing
 
-The favicon uses custom geometric PB letterforms on warm paper, with a tiny
-iridescent underline echoing the lake screen. The letters are paths, so it needs
-no font or external resource. SVG is the editable source; ICO contains 16px, 32px, and 48px
-DIB images for older readers. PNG and an opaque 180px Apple touch icon are supplied.
-The `?v=2` icon URLs distinguish this design from the previous initials favicon.
+The favicon restores the earlier initials design: regular Georgia PB initials on
+warm white with slightly rounded corners. The original Georgia initials are
+converted to SVG paths, so they render consistently without any font dependency.
+SVG is the editable source; ICO contains 16px,
+32px, and 48px DIB images for older readers. PNG and an opaque 180px Apple touch
+icon are supplied. The `?v=3` icon URLs distinguish this design from the geometric
+PB favicon.
 
 Open Graph metadata is static HTML: title, description, site name, locale, canonical
 HTTPS URL, and one JPEG with explicit MIME type, dimensions, and alt text. X/Twitter
