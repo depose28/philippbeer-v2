@@ -83,6 +83,15 @@ metadata validation does not establish an end-to-end WhatsApp rendering test.
 Production sharing must be checked after Philipp publishes the design branch.
 The shared development preview uses noindex headers and rewritten image URLs.
 
+## Search Console verification
+
+`google9f4acb829614bc2d.html` is Google's unmodified HTML ownership-verification file
+for the URL-prefix property `https://philippbeer.me/`. It belongs to Philipp's
+Google account used in Search Console. Keep the file at the website root; Google
+periodically checks it to retain verified ownership. It is a public verification
+proof, not an API credential. Do not replace it with another account's file.
+This method covers the HTTPS URL prefix, not every subdomain or protocol.
+
 ## Interactive lake
 
 The component was integrated from the uncommitted `design/lake-ripple` worktree,
