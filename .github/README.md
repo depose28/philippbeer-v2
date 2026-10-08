@@ -58,9 +58,12 @@ Keep the page understated, personal, and accessible. Rahul Palamarthi and Nikhil
 Rajpurohit are the main visual references. The narrow layout, readable copy,
 monochrome contact icons, and single landscape are intentional.
 
-W3 Liquid Crypto Fund is the primary professional commitment. Common Thread,
-Homie Capital, Tapestry, and angel investing receive brief mentions. FundFunk is
-the first side project. Framewerk and Beaches of Mallorca are provisional
+w3 Liquid Crypto Fund is the primary professional commitment. Use that exact
+capitalization. The two venture funds are Common Thread I & II, using Roman
+numerals. Tapestry and angel investing receive brief mentions. Describe Tapestry
+as putting AI to work for businesses, without adding an engineering title.
+Philipp approved mentioning the AI system he built for investment research.
+FundFunk is the first side project. Framewerk and Beaches of Mallorca are provisional
 selections for Philipp to review. Do not add client details, investment lists,
 performance figures, or private projects without his direction.
 
