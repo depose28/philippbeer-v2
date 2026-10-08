@@ -65,10 +65,7 @@ a:focus-visible {
 }
 
 .intro-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
+  display: block;
 }
 
 h1 {
@@ -83,54 +80,44 @@ h1 {
 
 .contact-links {
   display: flex;
-  gap: 2px;
-  margin-right: -10px;
+  flex-wrap: wrap;
+  gap: 0 18px;
+  margin-top: 9px;
 }
 
 .icon-link {
-  position: relative;
-  display: grid;
-  width: 44px;
-  height: 44px;
-  place-items: center;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 36px;
   color: var(--muted);
-  border-radius: 6px;
+  font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.075em;
+  line-height: 1.5;
   text-decoration: none;
-  transition: color 150ms ease, background-color 150ms ease;
+  text-transform: uppercase;
+  transition: color 150ms ease;
 }
 
 .icon-link svg {
-  width: 17px;
-  height: 17px;
+  width: 13px;
+  height: 13px;
 }
 
-.icon-link:hover, .icon-link:focus-visible {
+.icon-link:hover,
+.icon-link:focus-visible {
   color: var(--ink);
-  background: #eeeee7;
 }
 
-.tooltip {
-  position: absolute;
-  top: calc(100% + 4px);
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 3px 8px;
-  border-radius: 4px;
-  color: var(--paper);
-  background: var(--ink);
-  font-size: 11px;
-  line-height: 1.5;
-  white-space: nowrap;
-  visibility: hidden;
-  pointer-events: none;
-}
-
-.icon-link:hover .tooltip, .icon-link:focus-visible .tooltip {
-  visibility: visible;
+.icon-link:hover .contact-label {
+  text-decoration: underline;
+  text-underline-offset: 4px;
 }
 
 .intro-copy {
-  margin: 22px 0 0;
+  margin: 17px 0 0;
   max-width: 560px;
   text-wrap: pretty;
 }
@@ -253,6 +240,103 @@ h2 {
   transform: translate(2px, -2px);
 }
 
+.activity {
+  margin-top: 40px;
+}
+
+.activity-profile {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  color: var(--muted);
+  font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+  font-size: 11px;
+  text-decoration: none;
+}
+
+.activity-profile:hover {
+  text-decoration: underline;
+}
+
+.activity-scroll {
+  overflow-x: auto;
+  padding: 10px 0 8px;
+  scrollbar-width: thin;
+  scrollbar-color: #a4b78d var(--paper);
+}
+
+.activity-scroll:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 5px;
+}
+
+.activity-scroll img {
+  display: block;
+  width: 100%;
+  min-width: 580px;
+  height: auto;
+}
+
+.activity-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 16px;
+  margin-top: 4px;
+  font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+  font-size: 11px;
+}
+
+.activity-meta p {
+  margin: 0;
+}
+
+.activity-meta strong {
+  color: var(--ink);
+  font-weight: 550;
+}
+
+.activity-legend {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  color: var(--muted);
+}
+
+.activity-legend i {
+  width: 8px;
+  height: 8px;
+  border-radius: 1px;
+  background: var(--level);
+}
+
+.activity-legend i:first-of-type {
+  margin-left: 4px;
+}
+
+.activity-legend i:last-of-type {
+  margin-right: 4px;
+}
+
+.activity-note {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
 .footer {
   margin-top: 38px;
   padding-top: 25px;
@@ -288,12 +372,8 @@ h2 {
   h1 {
     font-size: 27px;
   }
-  .intro-top {
-    flex-wrap: wrap;
-    gap: 4px 22px;
-  }
-  .contact-links {
-    margin-left: -10px;
+  .icon-link {
+    min-height: 44px;
   }
   .intro-copy {
     margin-top: 18px;

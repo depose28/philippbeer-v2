@@ -16,10 +16,33 @@ Personal website at https://philippbeer.me/.
 - `assets/lakeside-computer.webp`: temporary illustration shown on the page.
 - `assets/lakeside-computer.jpg`: the same illustration for social previews.
 - `favicon.svg`: initials used as the browser icon.
+- `assets/github-activity.svg`: dated snapshot of the public contribution calendar.
+- `.github/scripts/update_activity.py`: optional refresh script using Python's standard library.
 - Older images and music remain in the repository but are not loaded by this page.
 
 No framework, JavaScript, package installation, or build step is required. The
 page uses system fonts and makes no third-party font or analytics requests.
+
+## GitHub activity trial
+
+The graph is a static snapshot from GitHub's unauthenticated contribution page.
+It includes only information already visible on the public profile. Do not use
+authenticated private-repository data or change profile privacy settings without
+Philipp's direction. A contribution is not necessarily a commit or a working day.
+
+Refresh manually with `python3 .github/scripts/update_activity.py`. The script
+updates the SVG, total, accessible description, and visible snapshot date together.
+It validates the calendar before overwriting the last snapshot. There is no
+scheduled refresh or visitor-side API request. If the experiment is kept, decide
+the refresh method before production publication.
+
+During design review, the separate local preview server supports `?activity=off`
+to compare the same page without the calendar. This is a preview-only route, not
+a feature of GitHub Pages or the shipped HTML. Removing the section between the
+`activity:start` and `activity:end` comments removes the experiment from the site.
+
+The `.github` directory holds repository notes and helper scripts. The existing
+GitHub Pages Jekyll build excludes dot-directories from the website output.
 
 ## Design and content
 
