@@ -135,7 +135,7 @@ def main():
         <p><strong>{total:,}</strong> contributions in the past year</p>
         <span class="activity-legend" aria-hidden="true">Less {legend} More</span>
       </div>
-      <p class="activity-note">Includes anonymous private activity · updated <time datetime="{now.isoformat()}">{updated}</time></p>
+      <p class="activity-note">Updated <time datetime="{now.isoformat()}">{updated}</time></p>
     </section>
 {END}'''
     page_path = ROOT / "index.html"
