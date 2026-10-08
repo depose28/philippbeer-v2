@@ -23,12 +23,13 @@ Personal website at https://philippbeer.me/.
 - Older images and music remain in the repository but are not loaded by this page.
 
 No framework, package installation, or build step is required. The
-page uses self-hosted Geist for body text, Georgia for the name, and system
+page uses self-hosted Geist for body text and the name, and system
 monospace for contact labels and activity details. It makes no third-party font
 or analytics requests. Font source and checksum are in `.github/font-provenance.md`.
 
 ## Theme and typography
 
+The name uses regular-weight Geist at 22px with slight negative letter spacing.
 Body text is 15px on desktop and 16px at widths up to 480px. The theme toggle
 uses a 44px button beside the name, with an 18px sun/moon icon. Its accessible
 name is "Dark mode" and its pressed state reflects the selected theme.

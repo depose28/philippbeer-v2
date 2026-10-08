@@ -108,11 +108,11 @@ h1 {
   margin: 0;
   padding-right: 52px;
   color: var(--ink);
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: 29px;
+  font-family: inherit;
+  font-size: 22px;
   font-weight: 400;
-  letter-spacing: -0.9px;
-  line-height: 1.2;
+  letter-spacing: -0.3px;
+  line-height: 1.4;
 }
 
 .theme-toggle {
@@ -468,9 +468,6 @@ h2 {
   .page {
     padding-top: 40px;
     padding-bottom: 32px;
-  }
-  h1 {
-    font-size: 27px;
   }
   .icon-link {
     min-height: 44px;
