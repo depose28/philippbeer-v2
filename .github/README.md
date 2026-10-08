@@ -63,8 +63,9 @@ capitalization. The two venture funds are Common Thread I & II, using Roman
 numerals. Tapestry and angel investing receive brief mentions. Describe Tapestry
 as putting AI to work for businesses, without adding an engineering title.
 Philipp approved mentioning the AI system he built for investment research.
-Use https://tapestry.group/ and https://www.commonthread.capital/ for the inline
-work links. Common Thread's public site is still being developed.
+Use https://w3.fund/liquid, https://tapestry.group/, and
+https://www.commonthread.capital/ for the inline work links. Keep these links
+underlined at normal text weight. Common Thread's public site is still being developed.
 FundFunk is the first side project. Framewerk and Beaches of Mallorca are provisional
 selections for Philipp to review. Do not add client details, investment lists,
 performance figures, or private projects without his direction.

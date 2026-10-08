@@ -150,7 +150,7 @@ h2 {
 
 .work-name {
   color: var(--ink);
-  font-weight: 550;
+  font-weight: inherit;
 }
 
 .work .background {
