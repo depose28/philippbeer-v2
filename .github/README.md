@@ -15,8 +15,9 @@ Personal website at https://philippbeer.me/.
 - `styles.css`: responsive layout and appearance.
 - `assets/lake-720.webp` and `assets/lake-1440.webp`: responsive lake illustration.
 - `assets/lake-ripple.js`: interactive lake and computer screen component.
-- `assets/lakeside-computer.jpg`: the same illustration for social previews.
-- `favicon.svg`: initials used as the browser icon.
+- `assets/share-lake-v1.jpg`: optimized 1200 × 600 JPEG for link previews.
+- `favicon.svg`: geometric PB monogram with a small iridescent underline.
+- `favicon.ico`, `favicon-32.png`, `apple-touch-icon.png`: compatible raster icon exports.
 - `assets/github-activity.svg` and `assets/github-activity-dark.svg`: matching light/dark snapshots of the public contribution calendar.
 - `assets/theme.js`: theme preference, accessible toggle, and optional pixel reveal.
 - `assets/fonts/geist-variable.woff2`: self-hosted Geist body font; license in the same directory.
@@ -47,6 +48,32 @@ Only explicit clicks animate. Both calendar SVGs are regenerated together from
 the same data; the theme script selects the correct asset and updates browser
 chrome colour. A tall viewport can briefly show the light calendar before the
 deferred script selects the dark asset. The illustration uses a modest CSS brightness adjustment in dark mode.
+
+## Icons and sharing
+
+The favicon uses custom geometric PB letterforms on warm paper, with a tiny
+iridescent underline echoing the lake screen. The letters are paths, so it needs
+no font or external resource. SVG is the editable source; ICO contains 16px, 32px, and 48px
+DIB images for older readers. PNG and an opaque 180px Apple touch icon are supplied.
+The `?v=2` icon URLs distinguish this design from the previous initials favicon.
+
+Open Graph metadata is static HTML: title, description, site name, locale, canonical
+HTTPS URL, and one JPEG with explicit MIME type, dimensions, and alt text. X/Twitter
+large-image metadata is also explicit. The share image uses the complete lake
+composition without text, allowing the card's title and description to identify
+the page. `share-lake-v1.jpg` is a versioned, baseline JPEG under 200 KiB; this is
+our transfer-size target, not a claimed universal WhatsApp file-size limit.
+
+Regenerate the raster exports with `.github/scripts/generate_brand_assets.cjs`.
+Its header describes installing the development-only `@resvg/resvg-js` and `sharp`
+rendering tools outside this repo. They are never requested by visitors. The
+original image assets remain intact. Change the share image filename when replacing
+it, since sharing clients may cache URLs.
+
+Reference: https://ogp.me/. WhatsApp controls its own card layout and client cache;
+metadata validation does not establish an end-to-end WhatsApp rendering test.
+Production sharing must be checked after Philipp publishes the design branch.
+The shared development preview uses noindex headers and rewritten image URLs.
 
 ## Interactive lake
 
