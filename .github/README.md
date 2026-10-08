@@ -70,6 +70,14 @@ rendering tools outside this repo. They are never requested by visitors. The
 original image assets remain intact. Change the share image filename when replacing
 it, since sharing clients may cache URLs.
 
+The search and social title is `Philipp Beer | Investor & Builder`. The description
+summarizes investing, applied AI, and curiosity projects. The visible name and page
+copy remain short. A single static `WebSite` JSON-LD block declares `Philipp Beer`
+as the preferred site name and uses the canonical HTTPS homepage URL. It contains
+no additional personal details. Google controls the final title, snippet, and site
+name displayed. Request a fresh crawl through Search Console after publication;
+site-name markup is validated against https://developers.google.com/search/docs/appearance/site-names.
+
 Reference: https://ogp.me/. WhatsApp controls its own card layout and client cache;
 metadata validation does not establish an end-to-end WhatsApp rendering test.
 Production sharing must be checked after Philipp publishes the design branch.
