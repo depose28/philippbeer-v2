@@ -52,12 +52,31 @@ function setup({auto=false, width=600, reduced=false, storageBlocked=false, brok
   const point={isPrimary:true,button:0,pointerId:1,clientX:210,clientY:177};
   t.event(l.cv,'pointerdown',point);
   assert(l.nextAuto-l.now()>=8 && l.nextAuto-l.now()<=11,'press defers ambient ripples');
+  assert.equal(l.startupLeft,0,'manual input ends the startup sequence');
   t.event(l.cv,'pointerup',point);
   assert(l.nextAuto-l.now()>=8 && l.nextAuto-l.now()<=11,'completed interaction also defers ambient ripples');
   t.tick(1);assert.equal(l.parts.length,0);assert(l.energy>0);
   const energy=l.energy;t.event(t.toggle,'click');
   assert.equal(l.energy,energy,'pausing automatic motion preserves the manual ripple');
   t.tick(7);assert.equal(l.energy,0);assert.equal(t.raf.size,0);assert.equal(t.timers.size,0);
+}
+{
+  const t=setup({auto:true,random:()=>.5}), io=t.observers.find(o=>o.kind==='intersection');
+  io.fn([{isIntersecting:false}]);t.tick(20);
+  assert.equal(t.lake.startupLeft,4,'offscreen time does not consume startup ripples');
+  io.fn([{isIntersecting:true}]);t.tick(3);assert.equal(t.lake.startupLeft,3);
+  io.fn([{isIntersecting:false}]);t.tick(20);
+  io.fn([{isIntersecting:true}]);t.tick(3);assert.equal(t.lake.startupLeft,2,'returning resumes remaining ripples without replaying the whole sequence');
+  t.event(t.toggle,'click');assert.equal(t.lake.startupLeft,0,'pausing dismisses the remaining startup sequence');
+}
+{
+  let value=0;const t=setup({auto:true,random:()=>value});
+  Object.assign(t.lake,{lastAutoZone:0,lastAutoX:.3,nextAuto:0});
+  t.tick(.1);
+  assert.equal(t.lake.startupLeft,4,'rejected positions near the previous origin do not consume a startup ripple');
+  assert.equal(t.lake.energy,0);assert.equal(t.lake.lastAutoX,.3);
+  value=.5;t.tick(3);
+  assert.equal(t.lake.startupLeft,3,'a later safe position resumes the startup sequence');
 }
 for(const width of [272,342,600]) {
   const t=setup({width,storageBlocked:true});
@@ -70,31 +89,37 @@ for(const width of [272,342,600]) {
 {
   const t=setup({auto:true,random:()=>.5});
   const drops=[];const drop=t.lake.drop.bind(t.lake);
-  t.lake.drop=(x,y,amp,rad)=>{drops.push({x,y,amp,rad});drop(x,y,amp,rad);};
-  t.tick(5);assert.equal(drops.length,0);assert.equal(t.raf.size,0,'sleeps between ambient ripples');
-  t.tick(1);assert.equal(drops.length,1,'first small ripple arrives after a quiet delay');
+  t.lake.drop=(x,y,amp,rad)=>{drops.push({x,y,amp,rad,at:t.lake.now()});drop(x,y,amp,rad);};
+  t.tick(1);assert.equal(drops.length,0);assert.equal(t.raf.size,0,'sleeps between ambient ripples');
+  t.tick(1.5);assert.equal(drops.length,1,'first small ripple arrives after a quiet delay');
   assert(drops[0].amp>.1 && drops[0].amp<.85,'ambient ripple is clearer than hover but softer than a click');assert(t.lake.safeWater(drops[0].x,drops[0].y));
   assert.equal(t.lake.queue.length,0,'automatic ripples never throw stones');
   assert.equal(t.lake.parts.length,0,'automatic ripples never spray');
-  t.tick(4);assert.equal(t.lake.energy,0);assert.equal(t.raf.size,0);
-  t.tick(10);assert.equal(drops.length,2,'occasional surface ripples repeat');
+  t.tick(13.5);assert.equal(drops.length,4,'four surface ripples introduce the lake');
+  assert.equal(t.lake.startupLeft,0);assert.equal(t.lake.energy,0);assert.equal(t.raf.size,0);
+  for(let i=1;i<4;i++) {
+    assert(drops[i].at-drops[i-1].at>=2.5 && drops[i].at-drops[i-1].at<=4.1,'startup spacing remains gentle');
+    assert(Math.abs(drops[i].x-drops[i-1].x)>=t.lake.W*.13,'successive fish surface in different parts of the lake');
+  }
+  t.tick(7.5);assert.equal(drops.length,5,'startup settles into the slower ambient rhythm');
+  assert(drops[4].at-drops[3].at>=8);
   t.event(t.toggle,'click');t.tick(4);
   assert(t.lake.ambientPaused);assert.equal(t.lake.energy,0);assert.equal(t.timers.size,0);
-  t.tick(30);assert.equal(drops.length,2,'pause stops automatic motion');
-  t.event(t.toggle,'click');t.tick(4);assert.equal(drops.length,3,'resume restarts after a delay');
+  t.tick(30);assert.equal(drops.length,5,'pause stops automatic motion');
+  t.event(t.toggle,'click');t.tick(4);assert.equal(drops.length,6,'resume restarts after a delay');
   t.doc.hidden=true;t.event(t.doc,'visibilitychange');assert.equal(t.timers.size,0);assert.equal(t.raf.size,0);
-  t.tick(30);assert.equal(drops.length,3);
-  t.doc.hidden=false;t.event(t.doc,'visibilitychange');t.tick(1);assert.equal(drops.length,3,'returning does not trigger overdue ripples');
+  t.tick(30);assert.equal(drops.length,6);
+  t.doc.hidden=false;t.event(t.doc,'visibilitychange');t.tick(1);assert.equal(drops.length,6,'returning does not trigger overdue ripples');
   t.observers.find(o=>o.kind==='intersection').fn([{isIntersecting:false}]);assert.equal(t.timers.size,0);
-  t.tick(30);assert.equal(drops.length,3);
-  t.observers.find(o=>o.kind==='intersection').fn([{isIntersecting:true}]);t.tick(1);assert.equal(drops.length,3);
+  t.tick(30);assert.equal(drops.length,6);
+  t.observers.find(o=>o.kind==='intersection').fn([{isIntersecting:true}]);t.tick(1);assert.equal(drops.length,6);
   t.motion.matches=true;t.event(t.motion,'change');t.tick(.1);
   assert(t.toggle.hidden);assert.equal(t.timers.size,0);assert.equal(t.raf.size,0);
 }
 for(const width of [272,342,600]) {
   let seed=17;const random=()=>{seed=(seed*16807)%2147483647;return(seed-1)/2147483646;};
-  const t=setup({width,random});let drops=0;
-  t.lake.drop=(x,y,amp)=>{assert(t.lake.safeWater(x,y));assert(amp>.1 && amp<.85);drops++;};
+  const t=setup({width,random});let drops=0,lastX;
+  t.lake.drop=(x,y,amp)=>{assert(t.lake.safeWater(x,y));assert(amp>.1 && amp<.85);if(lastX!==undefined)assert(Math.abs(x-lastX)>=width*.13);lastX=x;drops++;};
   for(let i=0;i<200;i++)t.lake.surfaceRipple();
   assert.equal(drops,200,'ambient origins stay within the inset water at every width');
   for(let y=0;y<t.lake.BH;y++)for(let x=0;x<t.lake.Wd;x++) {

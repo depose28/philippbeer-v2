@@ -72,7 +72,7 @@
       this.fine = matchMedia('(hover: hover) and (pointer: fine)').matches;
       hint.textContent = this.fine ? 'click for ripples · flick for stones' : 'tap for ripples · swipe for stones';
       try { if (localStorage.getItem(STORE)) hint.classList.add('is-seen'); } catch (e) {}
-      Object.assign(this, { cv, hint, ctx: cv.getContext('2d'), queue: [], parts: [], visible: true, hover: false, mx: -1, my: -1, t0: performance.now(), nextAuto: 4 + Math.random() * 3, ema: 0, energy: 0, dirty: true, accumulator: 0 });
+      Object.assign(this, { cv, hint, ctx: cv.getContext('2d'), queue: [], parts: [], visible: true, hover: false, mx: -1, my: -1, t0: performance.now(), nextAuto: Infinity, startupLeft: 4, ema: 0, energy: 0, dirty: true, accumulator: 0 });
       // Keep the fallback until layout has painted a complete canvas.
       img.after(cv);
       if (!hint.parentElement) cv.after(hint);
@@ -102,7 +102,7 @@
         this.reduced = this.motion.matches;
         this.toggleAttribute('data-reduced', this.reduced);
         if (this.reduced) {
-          this.nextAuto = Infinity; this.queue.length = 0; this.parts.length = 0;
+          this.startupLeft = 0; this.nextAuto = Infinity; this.queue.length = 0; this.parts.length = 0;
           this.flickAt = undefined; this.settle(); this.cv.style.cursor = '';
           if (this.down && this.cv.hasPointerCapture(this.down.id)) this.cv.releasePointerCapture(this.down.id);
           this.down = null; this.hover = false; this._overWater = false;
@@ -122,7 +122,7 @@
     resume() {
       this.sleep();
       if (this.dead || !this.visible || document.hidden) return;
-      this.deferAuto(4);
+      this.deferAuto(this.startupLeft ? 1.5 : 4, this.startupLeft ? 1.5 : 3);
       this.layout();
       if (this.cur) this.render(false, this.now());
       this.dirty = true; this.wake();
@@ -145,6 +145,7 @@
         this.ambientToggle.hidden = this.reduced || !this.opt('auto');
         this.ambientToggle.addEventListener('click', () => {
           this.ambientPaused = !this.ambientPaused;
+          this.startupLeft = 0;
           this.ambientToggle.textContent = this.ambientPaused ? 'Resume ripples' : 'Pause ripples';
           this.ambientToggle.setAttribute('title', this.ambientPaused ? 'Resume automatic ripples' : 'Pause automatic ripples');
           this.deferAuto(2);
@@ -181,7 +182,7 @@
         this.wake();
       });
       on('pointerleave', e => { if (this.reduced || !e.isPrimary || (this.down && e.pointerId !== this.down.id)) return; this.hover = false; this.wake(); });
-      on('pointerdown', e => { if (this.reduced || !e.isPrimary || e.button !== 0 || this.down || !this.cur) return; const [x, y] = xy(e); this.down = { x, y, id: e.pointerId, t: performance.now() }; if (this.inW(x, y) || this.onComputer(x, y)) this.deferAuto(); this.wake(); try { cv.setPointerCapture(e.pointerId); } catch (_) {} });
+      on('pointerdown', e => { if (this.reduced || !e.isPrimary || e.button !== 0 || this.down || !this.cur) return; const [x, y] = xy(e); this.down = { x, y, id: e.pointerId, t: performance.now() }; if (this.inW(x, y) || this.onComputer(x, y)) { this.startupLeft = 0; this.deferAuto(); } this.wake(); try { cv.setPointerCapture(e.pointerId); } catch (_) {} });
       const cancel = e => { if (this.down?.id === e.pointerId) { this.down = null; this.wake(); } };
       on('pointercancel', cancel); on('lostpointercapture', cancel);
       on('pointerup', e => {
@@ -194,8 +195,8 @@
         if (this.inW(sx, sy)) { this.seen(); this.throwStone(sx, sy, ux, uy, sp); }
       });
     }
-    deferAuto(delay = 8) {
-      this.nextAuto = this.reduced || this.ambientPaused || !this.opt('auto') ? Infinity : this.now() + delay + Math.random() * 3;
+    deferAuto(delay = 8, spread = 3) {
+      this.nextAuto = this.reduced || this.ambientPaused || !this.opt('auto') ? Infinity : this.now() + delay + Math.random() * spread;
     }
     // Keep ripple origins comfortably inside the water, even on narrow screens.
     safeWater(x, y) {
@@ -203,14 +204,19 @@
       return [[0,0],[-dx,-dy],[dx,-dy],[-dx,dy],[dx,dy]].every(([a,b]) => this.inW(x+a, y+b));
     }
     surfaceRipple() {
+      const zones = [[.14,.3],[.32,.49],[.51,.74]];
+      const zone = this.lastAutoZone === undefined ? Math.floor(Math.random() * 3) : (this.lastAutoZone + 1 + Math.floor(Math.random() * 2)) % 3;
+      const [left, right] = zones[zone];
       for (let i = 0; i < 24; i++) {
-        const x = this.W * (.12 + Math.random() * .62);
+        const u = left + Math.random() * (right - left);
+        if (this.lastAutoX !== undefined && Math.abs(u - this.lastAutoX) < .13) continue;
+        const x = this.W * u;
         const top = lerpT(WT, x / this.W), bottom = lerpT(WB, x / this.W) - .006;
         const y = this.H * (top + (bottom - top) * (.3 + Math.random() * .4));
-        if (this.safeWater(x, y)) { this.drop(x, y, .22, 1.8); return; }
+        if (this.safeWater(x, y)) { this.lastAutoZone = zone; this.lastAutoX = u; this.drop(x, y, .22, 1.8); return true; }
       }
     }
-    seen() { this.deferAuto(); this.touchedAt = this.now(); if (this._seen) return; this._seen = true; this.hint.classList.add('is-seen'); try { localStorage.setItem(STORE, '1'); } catch (e) {} }
+    seen() { this.startupLeft = 0; this.deferAuto(); this.touchedAt = this.now(); if (this._seen) return; this._seen = true; this.hint.classList.add('is-seen'); try { localStorage.setItem(STORE, '1'); } catch (e) {} }
 
     layout() {
       const W = this.cv.clientWidth; if (!W || !this.img.complete || !this.img.naturalWidth) return;
@@ -300,11 +306,13 @@
       const drizzle = this.fine && this.hover && !this.down && !this.reduced && this.opt('drizzle') && this.inW(this.mx, this.my);
       if (drizzle && !quiet && Math.random() < 1 - Math.pow(1 - 0.014, dt * 60)) {
         const a = Math.random() * 6.28, r = Math.sqrt(Math.random()) * 40, x = this.mx + Math.cos(a) * r, y = this.my + Math.sin(a) * r * 0.4;
-        if (this.safeWater(x, y)) { this.deferAuto(); this.drop(x, y, .1, 1.4); }
+        if (this.safeWater(x, y)) { this.startupLeft = 0; this.deferAuto(); this.drop(x, y, .1, 1.4); }
       }
       if (!this.reduced && !this.ambientPaused && this.opt('auto') && t >= this.nextAuto) {
-        this.nextAuto = t + 8 + Math.random() * 4;
-        if (!this.down && !drizzle && !quiet && this.energy <= SLEEP_ENERGY) this.surfaceRipple();
+        if (!this.down && !drizzle && !quiet && (this.startupLeft > 0 || this.energy <= SLEEP_ENERGY)) {
+          if (this.surfaceRipple() && this.startupLeft > 0) this.startupLeft--;
+        }
+        this.nextAuto = this.startupLeft > 0 ? t + 2.5 + Math.random() * 1.5 : t + 8 + Math.random() * 4;
       }
       for (let i = 0; i < this.queue.length;) {
         const q = this.queue[i]; if (t < q.t) { i++; continue; }
