@@ -124,9 +124,8 @@ sequence and defers the next ripple by 8–11 seconds; a return from an offscree
 or hidden page starts a fresh delay rather than catching
 up. Returning never replenishes the startup sequence.
 
-The visible Pause ripples / Resume ripples button controls automatic motion
-for the current page session. Pausing stops new automatic ripples; existing waves
-finish naturally. Manual interactions remain available while paused.
+Automatic ripples stay enabled on the page without a pause/resume button.
+Philipp chose to remove that button while keeping the existing timing and strength.
 `auto="false"` disables automatic ripples; `drizzle="false"` disables hover drizzle.
 
 The pixel renderer uses an exact shoreline mask with an inward fade, and rejects
@@ -147,13 +146,13 @@ Its short interaction hint is hidden until ready and fades after interaction; it
 locally when storage is available. With JavaScript disabled or initialization
 failure, the image remains visible and the hint stays hidden.
 
-Reduced motion disables all lake animation and hides hints and controls, including
-the automatic-ripple button. Live preference changes apply immediately. Offscreen or hidden pages suspend frames.
+Reduced motion disables all lake animation and hides hints and controls.
+Live preference changes apply immediately. Offscreen or hidden pages suspend frames.
 Window resize and ResizeObserver share a 100ms debounce. Slow-render detection
 defers its resolution downgrade until motion settles, preserving active ripples. The solver uses bounded
 60Hz steps, stronger damping, and a 0.006 sleep threshold. Deterministic tests
 verify single drops settle within eight seconds at 272px, 342px, and 600px widths,
-ambient timing and safe origins, pause/resume, and offscreen suspension;
+ambient timing and safe origins, continued automatic motion, and offscreen suspension;
 this is a simulation check, not a physical-device performance measurement.
 
 The water outline (`WT`, `WB`), simulation band (`T`, `B`), computer hit area,

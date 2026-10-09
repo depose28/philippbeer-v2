@@ -35,16 +35,16 @@ function setup({auto=false, width=600, reduced=false, storageBlocked=false, brok
     customElements:{get(){},define(_,value){Lake=value;}}
   };
   vm.runInNewContext(source,ctx);
-  const lake=new Lake(), img=new Element(), hint=new Element(), toggle=new Element();
+  const lake=new Lake(), img=new Element(), hint=new Element();
   if (!auto) lake.setAttribute('auto', 'false');
   Object.assign(img,{complete:true,naturalWidth:720,naturalHeight:360,src:'lake.webp',currentSrc:'lake.webp',alt:'Lake and computer'});
-  lake.querySelector=s=>s==='img'?img:s==='.lake-ambient-toggle'?toggle:hint;
+  lake.querySelector=s=>s==='img'?img:s==='.lake-hint'?hint:null;
   // Browser QA covers pixels. Keep the actual layout grid, input, frame, and timing logic here.
   lake.buildGlass=()=>{}; lake.render=()=>{};
   lake.connectedCallback();
   const tick=(seconds)=>{ const end=clock+seconds*1000; while(clock<end){clock=Math.min(end,clock+1000/60);for(const [i,t]of [...timers])if(t.at<=clock){timers.delete(i);t.fn();} const batch=[...raf];raf.clear();for(const [,fn]of batch)fn(clock);} };
   const event=(target,type,fields={})=>{const e=new Event(type);Object.assign(e,fields);target.dispatchEvent(e);};
-  return {lake,img,hint,toggle,raf,timers,motion,doc,win,observers,tick,event};
+  return {lake,img,hint,raf,timers,motion,doc,win,observers,tick,event};
 }
 {
   const t=setup({auto:true,random:()=>.5}), l=t.lake;
@@ -56,9 +56,8 @@ function setup({auto=false, width=600, reduced=false, storageBlocked=false, brok
   t.event(l.cv,'pointerup',point);
   assert(l.nextAuto-l.now()>=8 && l.nextAuto-l.now()<=11,'completed interaction also defers ambient ripples');
   t.tick(1);assert.equal(l.parts.length,0);assert(l.energy>0);
-  const energy=l.energy;t.event(t.toggle,'click');
-  assert.equal(l.energy,energy,'pausing automatic motion preserves the manual ripple');
-  t.tick(7);assert.equal(l.energy,0);assert.equal(t.raf.size,0);assert.equal(t.timers.size,0);
+  t.tick(7);assert.equal(l.energy,0);assert.equal(t.raf.size,0);
+  assert.equal(t.timers.size,1,'automatic ripples remain scheduled after a manual ripple settles');
 }
 {
   const t=setup({auto:true,random:()=>.5}), io=t.observers.find(o=>o.kind==='intersection');
@@ -67,7 +66,6 @@ function setup({auto=false, width=600, reduced=false, storageBlocked=false, brok
   io.fn([{isIntersecting:true}]);t.tick(3);assert.equal(t.lake.startupLeft,3);
   io.fn([{isIntersecting:false}]);t.tick(20);
   io.fn([{isIntersecting:true}]);t.tick(3);assert.equal(t.lake.startupLeft,2,'returning resumes remaining ripples without replaying the whole sequence');
-  t.event(t.toggle,'click');assert.equal(t.lake.startupLeft,0,'pausing dismisses the remaining startup sequence');
 }
 {
   let value=0;const t=setup({auto:true,random:()=>value});
@@ -103,10 +101,7 @@ for(const width of [272,342,600]) {
   }
   t.tick(7.5);assert.equal(drops.length,5,'startup settles into the slower ambient rhythm');
   assert(drops[4].at-drops[3].at>=8);
-  t.event(t.toggle,'click');t.tick(4);
-  assert(t.lake.ambientPaused);assert.equal(t.lake.energy,0);assert.equal(t.timers.size,0);
-  t.tick(30);assert.equal(drops.length,5,'pause stops automatic motion');
-  t.event(t.toggle,'click');t.tick(4);assert.equal(drops.length,6,'resume restarts after a delay');
+  t.tick(10);assert.equal(drops.length,6,'automatic ripples continue without a control or interaction');
   t.doc.hidden=true;t.event(t.doc,'visibilitychange');assert.equal(t.timers.size,0);assert.equal(t.raf.size,0);
   t.tick(30);assert.equal(drops.length,6);
   t.doc.hidden=false;t.event(t.doc,'visibilitychange');t.tick(1);assert.equal(drops.length,6,'returning does not trigger overdue ripples');
@@ -114,7 +109,10 @@ for(const width of [272,342,600]) {
   t.tick(30);assert.equal(drops.length,6);
   t.observers.find(o=>o.kind==='intersection').fn([{isIntersecting:true}]);t.tick(1);assert.equal(drops.length,6);
   t.motion.matches=true;t.event(t.motion,'change');t.tick(.1);
-  assert(t.toggle.hidden);assert.equal(t.timers.size,0);assert.equal(t.raf.size,0);
+  assert.equal(t.timers.size,0);assert.equal(t.raf.size,0);
+  t.tick(20);assert.equal(drops.length,6,'reduced motion stops automatic ripples');
+  t.motion.matches=false;t.event(t.motion,'change');t.tick(6);
+  assert.equal(drops.length,7,'automatic ripples resume when reduced motion is disabled');
 }
 for(const width of [272,342,600]) {
   let seed=17;const random=()=>{seed=(seed*16807)%2147483647;return(seed-1)/2147483646;};
@@ -193,4 +191,4 @@ for(const width of [272,342,600]) {
 {
   const t=setup({brokenCanvas:true});assert.equal(t.img.style.display,'');assert(!t.lake.attrs.has('data-ready'));
 }
-console.log('Lake checks passed: settling, gentle ambient ripples, shoreline bounds, pause/resume, flick, screen timing, keyboard controls, visibility, resize, hover drizzle, reduced motion, and fallback.');
+console.log('Lake checks passed: settling, gentle ambient ripples, shoreline bounds, continued automatic motion, flick, screen timing, keyboard controls, visibility, resize, hover drizzle, reduced motion, and fallback.');

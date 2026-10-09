@@ -53,7 +53,6 @@
     fallback() {
       this.sleep(); this.events.abort(); this.ro?.disconnect(); this.io?.disconnect();
       clearTimeout(this._rt);
-      if (this.ambientToggle) this.ambientToggle.hidden = true;
       this.cv?.remove(); this.controls?.remove(); this.cv = null; this.controls = null;
       this.img.style.display = ''; this.removeAttribute('data-ready');
     }
@@ -107,7 +106,6 @@
           if (this.down && this.cv.hasPointerCapture(this.down.id)) this.cv.releasePointerCapture(this.down.id);
           this.down = null; this.hover = false; this._overWater = false;
         }
-        if (this.ambientToggle) this.ambientToggle.hidden = this.reduced || !this.opt('auto');
         this.resume();
       };
       this.motion.addEventListener('change', motionChanged, { signal });
@@ -140,18 +138,6 @@
 
     bind() {
       const cv = this.cv, signal = this.events.signal;
-      this.ambientToggle = this.querySelector('.lake-ambient-toggle');
-      if (this.ambientToggle) {
-        this.ambientToggle.hidden = this.reduced || !this.opt('auto');
-        this.ambientToggle.addEventListener('click', () => {
-          this.ambientPaused = !this.ambientPaused;
-          this.startupLeft = 0;
-          this.ambientToggle.textContent = this.ambientPaused ? 'Resume ripples' : 'Pause ripples';
-          this.ambientToggle.setAttribute('title', this.ambientPaused ? 'Resume automatic ripples' : 'Pause automatic ripples');
-          this.deferAuto(2);
-          this.wake();
-        }, { signal });
-      }
       if (!this.controls) {
         this.controls = document.createElement('div');
         this.controls.className = 'lake-controls';
@@ -196,7 +182,7 @@
       });
     }
     deferAuto(delay = 8, spread = 3) {
-      this.nextAuto = this.reduced || this.ambientPaused || !this.opt('auto') ? Infinity : this.now() + delay + Math.random() * spread;
+      this.nextAuto = this.reduced || !this.opt('auto') ? Infinity : this.now() + delay + Math.random() * spread;
     }
     // Keep ripple origins comfortably inside the water, even on narrow screens.
     safeWater(x, y) {
@@ -311,7 +297,7 @@
         const a = Math.random() * 6.28, r = Math.sqrt(Math.random()) * 40, x = this.mx + Math.cos(a) * r, y = this.my + Math.sin(a) * r * 0.4;
         if (this.safeWater(x, y)) { this.startupLeft = 0; this.deferAuto(); this.drop(x, y, .1, 1.4); }
       }
-      if (!this.reduced && !this.ambientPaused && this.opt('auto') && t >= this.nextAuto) {
+      if (!this.reduced && this.opt('auto') && t >= this.nextAuto) {
         if (!this.down && !drizzle && !quiet && (this.startupLeft > 0 || this.energy <= SLEEP_ENERGY)) {
           if (this.surfaceRipple() && this.startupLeft > 0) this.startupLeft--;
         }
@@ -338,7 +324,7 @@
       if (active || (drizzle && !quiet)) this.wake();
       else {
         this.sleep();
-        let next = !this.reduced && !this.ambientPaused && this.opt('auto') ? this.nextAuto : Infinity;
+        let next = !this.reduced && this.opt('auto') ? this.nextAuto : Infinity;
         for (const q of this.queue) next = Math.min(next, q.t);
         if (drizzle && quiet) next = Math.min(next, this.touchedAt + 2.5);
         if (Number.isFinite(next)) this._wake = setTimeout(() => this.wake(), Math.max(0, (next - t) * 1000));
