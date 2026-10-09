@@ -73,7 +73,7 @@ for(const width of [272,342,600]) {
   t.lake.drop=(x,y,amp,rad)=>{drops.push({x,y,amp,rad});drop(x,y,amp,rad);};
   t.tick(5);assert.equal(drops.length,0);assert.equal(t.raf.size,0,'sleeps between ambient ripples');
   t.tick(1);assert.equal(drops.length,1,'first small ripple arrives after a quiet delay');
-  assert(drops[0].amp<=.07);assert(t.lake.safeWater(drops[0].x,drops[0].y));
+  assert(drops[0].amp>.1 && drops[0].amp<.85,'ambient ripple is clearer than hover but softer than a click');assert(t.lake.safeWater(drops[0].x,drops[0].y));
   assert.equal(t.lake.queue.length,0,'automatic ripples never throw stones');
   assert.equal(t.lake.parts.length,0,'automatic ripples never spray');
   t.tick(4);assert.equal(t.lake.energy,0);assert.equal(t.raf.size,0);
@@ -94,7 +94,7 @@ for(const width of [272,342,600]) {
 for(const width of [272,342,600]) {
   let seed=17;const random=()=>{seed=(seed*16807)%2147483647;return(seed-1)/2147483646;};
   const t=setup({width,random});let drops=0;
-  t.lake.drop=(x,y,amp)=>{assert(t.lake.safeWater(x,y));assert.equal(amp,.07);drops++;};
+  t.lake.drop=(x,y,amp)=>{assert(t.lake.safeWater(x,y));assert(amp>.1 && amp<.85);drops++;};
   for(let i=0;i<200;i++)t.lake.surfaceRipple();
   assert.equal(drops,200,'ambient origins stay within the inset water at every width');
   for(let y=0;y<t.lake.BH;y++)for(let x=0;x<t.lake.Wd;x++) {

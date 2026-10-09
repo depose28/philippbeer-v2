@@ -207,7 +207,7 @@
         const x = this.W * (.12 + Math.random() * .62);
         const top = lerpT(WT, x / this.W), bottom = lerpT(WB, x / this.W) - .006;
         const y = this.H * (top + (bottom - top) * (.3 + Math.random() * .4));
-        if (this.safeWater(x, y)) { this.drop(x, y, .07, 1.5); return; }
+        if (this.safeWater(x, y)) { this.drop(x, y, .22, 1.8); return; }
       }
     }
     seen() { this.deferAuto(); this.touchedAt = this.now(); if (this._seen) return; this._seen = true; this.hint.classList.add('is-seen'); try { localStorage.setItem(STORE, '1'); } catch (e) {} }
@@ -300,10 +300,10 @@
       const drizzle = this.fine && this.hover && !this.down && !this.reduced && this.opt('drizzle') && this.inW(this.mx, this.my);
       if (drizzle && !quiet && Math.random() < 1 - Math.pow(1 - 0.014, dt * 60)) {
         const a = Math.random() * 6.28, r = Math.sqrt(Math.random()) * 40, x = this.mx + Math.cos(a) * r, y = this.my + Math.sin(a) * r * 0.4;
-        if (this.safeWater(x, y)) { this.deferAuto(); this.drop(x, y, .055, 1.3); }
+        if (this.safeWater(x, y)) { this.deferAuto(); this.drop(x, y, .1, 1.4); }
       }
       if (!this.reduced && !this.ambientPaused && this.opt('auto') && t >= this.nextAuto) {
-        this.nextAuto = t + 10 + Math.random() * 6;
+        this.nextAuto = t + 8 + Math.random() * 4;
         if (!this.down && !drizzle && !quiet && this.energy <= SLEEP_ENERGY) this.surfaceRipple();
       }
       for (let i = 0; i < this.queue.length;) {

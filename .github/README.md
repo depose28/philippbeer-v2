@@ -102,11 +102,13 @@ small body text, labelled contact links, copy, and light/dark theme. The other
 worktree's page restyling and additional fonts were intentionally not imported.
 
 Click/tap the water for a soft drop; flick/swipe to skip a stone. Philipp chose to
-keep gentle hover drizzle, with reduced amplitude and frequency. Clicks and manual
+keep gentle hover drizzle at its original strength, with reduced frequency. Clicks and manual
 stone skips also use smaller ripples and less spray.
 
-Automatic motion is a small surface ripple, never a thrown stone or spray. After
-an initial 4–7 second delay, it checks every 10–16 seconds and makes one ripple only
+Automatic motion is a small surface ripple, never a thrown stone or spray.
+Its isolated drop is stronger than one hover drop so it remains visible in the
+detailed illustration; it remains substantially softer than a click. After
+an initial 4–7 second delay, it checks every 8–12 seconds and makes one ripple only
 when the lake is calm and the visitor is not interacting. Its origin stays inside
 an inset of the water. Interaction defers the next ripple by 8–11 seconds; a
 return from an offscreen or hidden page starts a fresh delay rather than catching
