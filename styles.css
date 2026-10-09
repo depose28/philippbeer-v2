@@ -338,9 +338,8 @@ h2 {
   margin-bottom: 10px;
 }
 
-.section-note {
-  color: var(--muted);
-  font-size: 12px;
+.projects > h2 {
+  margin-bottom: 10px;
 }
 
 .project-list {
@@ -402,6 +401,30 @@ h2 {
 .project:hover .project-arrow {
   color: var(--accent);
   transform: translate(2px, -2px);
+}
+
+.private-work {
+  margin-top: 24px;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.private-work p {
+  margin: 0 0 10px;
+}
+
+.private-work ul {
+  margin: 0;
+  padding-left: 18px;
+  color: var(--muted);
+}
+
+.private-work li {
+  padding-left: 2px;
+}
+
+.private-work li + li {
+  margin-top: 8px;
 }
 
 .activity {
@@ -548,9 +571,6 @@ h2 {
   }
   .projects {
     margin-top: 34px;
-  }
-  .section-note {
-    display: none;
   }
 }
 
