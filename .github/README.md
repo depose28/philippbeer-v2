@@ -113,7 +113,8 @@ On arrival, four ripples appear in different parts of the lake: the first after
 1.5–3 seconds, then another every 2.5–4 seconds. Their strength matches the regular
 automatic ripples. After that, checks happen every 8–12 seconds, making one ripple
 only when the lake is calm and the visitor is not interacting. Its origin stays
-inside an inset of the water, away from the previous origin. Interaction ends the startup
+inside an inset of the water, away from the previous origin. Positions are sampled
+continuously across the usable lake, including depth, rather than from fixed zones. Interaction ends the startup
 sequence and defers the next ripple by 8–11 seconds; a return from an offscreen
 or hidden page starts a fresh delay rather than catching
 up. Returning never replenishes the startup sequence.

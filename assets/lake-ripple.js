@@ -204,16 +204,19 @@
       return [[0,0],[-dx,-dy],[dx,-dy],[-dx,dy],[dx,dy]].every(([a,b]) => this.inW(x+a, y+b));
     }
     surfaceRipple() {
-      const zones = [[.14,.3],[.32,.49],[.51,.74]];
-      const zone = this.lastAutoZone === undefined ? Math.floor(Math.random() * 3) : (this.lastAutoZone + 1 + Math.floor(Math.random() * 2)) % 3;
-      const [left, right] = zones[zone];
+      // Sample continuously across the lake, excluding a small band around the last ripple.
+      const minX = .1, maxX = .8, gap = .13;
+      const previous = this.lastAutoX;
+      const leftSpan = previous === undefined ? maxX - minX : Math.max(0, previous - gap - minX);
+      const rightStart = previous === undefined ? maxX : Math.min(maxX, previous + gap);
+      const rightSpan = maxX - rightStart;
       for (let i = 0; i < 24; i++) {
-        const u = left + Math.random() * (right - left);
-        if (this.lastAutoX !== undefined && Math.abs(u - this.lastAutoX) < .13) continue;
-        const x = this.W * u;
-        const top = lerpT(WT, x / this.W), bottom = lerpT(WB, x / this.W) - .006;
-        const y = this.H * (top + (bottom - top) * (.3 + Math.random() * .4));
-        if (this.safeWater(x, y)) { this.lastAutoZone = zone; this.lastAutoX = u; this.drop(x, y, .22, 1.8); return true; }
+        const choice = Math.random() * (leftSpan + rightSpan);
+        const u = choice < leftSpan ? minX + choice : rightStart + choice - leftSpan;
+        const top = lerpT(WT, u) + .035, bottom = lerpT(WB, u) - .006 - .035;
+        if (bottom <= top) continue;
+        const x = this.W * u, y = this.H * (top + Math.random() * (bottom - top));
+        if (this.safeWater(x, y)) { this.lastAutoX = u; this.drop(x, y, .22, 1.8); return true; }
       }
     }
     seen() { this.startupLeft = 0; this.deferAuto(); this.touchedAt = this.now(); if (this._seen) return; this._seen = true; this.hint.classList.add('is-seen'); try { localStorage.setItem(STORE, '1'); } catch (e) {} }

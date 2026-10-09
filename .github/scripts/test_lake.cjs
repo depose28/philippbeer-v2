@@ -71,9 +71,9 @@ function setup({auto=false, width=600, reduced=false, storageBlocked=false, brok
 }
 {
   let value=0;const t=setup({auto:true,random:()=>value});
-  Object.assign(t.lake,{lastAutoZone:0,lastAutoX:.3,nextAuto:0});
+  Object.assign(t.lake,{lastAutoX:.3,nextAuto:0});
   t.tick(.1);
-  assert.equal(t.lake.startupLeft,4,'rejected positions near the previous origin do not consume a startup ripple');
+  assert.equal(t.lake.startupLeft,4,'rejected shoreline positions do not consume a startup ripple');
   assert.equal(t.lake.energy,0);assert.equal(t.lake.lastAutoX,.3);
   value=.5;t.tick(3);
   assert.equal(t.lake.startupLeft,3,'a later safe position resumes the startup sequence');
