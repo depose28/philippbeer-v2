@@ -175,13 +175,19 @@ w3 Liquid Crypto Fund is the primary professional commitment. Use that exact
 capitalization. The two venture funds are Common Thread I & II, using Roman
 numerals. Tapestry and angel investing receive brief mentions. Describe Tapestry
 as putting AI to work for businesses, without adding an engineering title.
-Philipp approved mentioning the AI system he built for investment research.
 Use https://w3.fund/liquid, https://tapestry.group/, and
 https://www.commonthread.capital/ for the inline work links. Keep these links
 underlined at normal text weight. Common Thread's public site is still being developed.
-FundFunk is the first side project. Framewerk and Beaches of Mallorca are provisional
-selections for Philipp to review. Do not add client details, investment lists,
-performance figures, or private projects without his direction.
+FundFunk, Framewerk, and Beaches of Mallorca are the selected public projects, in
+that order. The same section includes a compact private-work block below the
+linked rows. Philipp approved broad descriptions of fund research and operations,
+a brand-research tool for consultants, and collaborative investment-data work
+with Tapestry. Omit the former "Side projects" label because the section now
+includes private work. Use ordinary, unlinked list text for this block, with no project-row
+hover treatment or arrows. It stays visible on mobile. The fund-research detail
+lives here rather than repeating in "These days."
+Keep private client names, investment lists, performance figures, and private
+repository links out of the public copy. Additional private projects need his direction.
 
 The illustration is a replaceable, generated placeholder, not a real location
 or a personal photograph. Its prompt and provenance are in `.github/image-provenance.md`.
