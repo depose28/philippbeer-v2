@@ -101,14 +101,25 @@ based on `5dc451e`. Philipp chose to retain this branch's 600px column, Geist na
 small body text, labelled contact links, copy, and light/dark theme. The other
 worktree's page restyling and additional fonts were intentionally not imported.
 
-Click/tap the water for one drop; flick/swipe to skip a stone. Philipp chose to
-keep the gentle hover drizzle. The illustration remains still away from input,
-except for one invitation stone about 12 seconds after initialization. The
-invitation fades out within 4.5 seconds and is cancelled by visitor interaction.
-A press on the lake cancels it immediately, including a touch that becomes a
-scroll. Its delay is measured from initialization; if initially offscreen, it
-can start when first revealed after that delay.
-`auto="false"` or `drizzle="false"` disables the corresponding feature.
+Click/tap the water for a soft drop; flick/swipe to skip a stone. Philipp chose to
+keep gentle hover drizzle, with reduced amplitude and frequency. Clicks and manual
+stone skips also use smaller ripples and less spray.
+
+Automatic motion is a small surface ripple, never a thrown stone or spray. After
+an initial 4–7 second delay, it checks every 10–16 seconds and makes one ripple only
+when the lake is calm and the visitor is not interacting. Its origin stays inside
+an inset of the water. Interaction defers the next ripple by 8–11 seconds; a
+return from an offscreen or hidden page starts a fresh delay rather than catching
+up. The visible Pause ripples / Resume ripples button controls automatic motion
+for the current page session. Pausing stops new automatic ripples; existing waves
+finish naturally. Manual interactions remain available while paused.
+`auto="false"` disables automatic ripples; `drizzle="false"` disables hover drizzle.
+
+The pixel renderer uses an exact shoreline mask with an inward fade, and rejects
+refraction samples from land. Glyphs and spray have a separate inset canvas clip.
+Keep the clip inset: clipping on the boundary can still paint outside it through
+anti-aliasing. Browser pixel checks should cover the banks at narrow widths and
+both pixel densities. The computer screen effect is rendered outside this clip.
 
 Clicking the computer runs a 0.95-second CRT switch-on. `screen="iridescent"`
 adds a restrained cyan/lilac/rose sheen over the green phosphor. The original
@@ -117,17 +128,18 @@ to the screen glass, with the bezel and surrounding illustration unchanged.
 
 The canvas retains the image's accessible description. Native buttons provide
 keyboard alternatives for a drop, a skipped stone, and the computer. They become
-visible on keyboard focus. The hint reserves two lines even before initialization,
-is hidden until ready, and fades after interaction; its seen state is stored
+visible on keyboard focus. The caption reserves two lines before initialization.
+Its short interaction hint is hidden until ready and fades after interaction; its seen state is stored
 locally when storage is available. With JavaScript disabled or initialization
 failure, the image remains visible and the hint stays hidden.
 
-Reduced motion disables all lake animation and hides interactive hints/controls,
-including on live preference changes. Offscreen or hidden pages suspend frames.
+Reduced motion disables all lake animation and hides hints and controls, including
+the automatic-ripple button. Live preference changes apply immediately. Offscreen or hidden pages suspend frames.
 Window resize and ResizeObserver share a 100ms debounce. Slow-render detection
 defers its resolution downgrade until motion settles, preserving active ripples. The solver uses bounded
 60Hz steps, stronger damping, and a 0.006 sleep threshold. Deterministic tests
-verify single drops settle within eight seconds at 272px, 342px, and 600px widths;
+verify single drops settle within eight seconds at 272px, 342px, and 600px widths,
+ambient timing and safe origins, pause/resume, and offscreen suspension;
 this is a simulation check, not a physical-device performance measurement.
 
 The water outline (`WT`, `WB`), simulation band (`T`, `B`), computer hit area,

@@ -82,7 +82,10 @@
     <figure class="landscape">
       <lake-ripple screen="iridescent">
         <img src="assets/lake-720.webp" srcset="assets/lake-720.webp 720w, assets/lake-1440.webp 1440w" sizes="(max-width: 648px) calc(100vw - 48px), 600px" width="1440" height="720" alt="A dotted illustration of a small vintage computer among wildflowers beside a quiet lake." fetchpriority="high" decoding="async">
-        <p class="lake-hint" aria-hidden="true"></p>
+        <div class="lake-caption">
+          <button class="lake-ambient-toggle" type="button" title="Pause automatic ripples" hidden>Pause ripples</button>
+          <p class="lake-hint" aria-hidden="true"></p>
+        </div>
       </lake-ripple>
     </figure>
     <section class="work" aria-labelledby="work-heading">

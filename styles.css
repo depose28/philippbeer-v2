@@ -250,9 +250,39 @@ lake-ripple:not([data-ready]) .lake-canvas {
   -webkit-tap-highlight-color: transparent;
 }
 
-.lake-hint {
+.lake-caption {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
   min-height: 28px;
   margin: 10px 0 -14px;
+}
+
+.lake-ambient-toggle {
+  flex: 0 0 auto;
+  min-width: 94px;
+  white-space: nowrap;
+  min-height: 28px;
+  padding: 0 0 14px;
+  text-align: left;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font: 11px / 14px ui-monospace, "SFMono-Regular", Consolas, monospace;
+  cursor: pointer;
+}
+
+.lake-ambient-toggle:hover {
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.lake-hint {
+  flex: 1;
+  min-height: 28px;
+  margin: 0;
   color: var(--muted);
   font: 11px / 14px ui-monospace, "SFMono-Regular", Consolas, monospace;
   text-align: right;

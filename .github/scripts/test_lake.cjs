@@ -4,7 +4,7 @@ const fs = require('node:fs');
 const vm = require('node:vm');
 const path = require('node:path');
 const source = fs.readFileSync(path.resolve(__dirname, '../../assets/lake-ripple.js'), 'utf8');
-function setup({width=600, reduced=false, storageBlocked=false, brokenCanvas=false, random}={}) {
+function setup({auto=false, width=600, reduced=false, storageBlocked=false, brokenCanvas=false, random}={}) {
   let clock=0, id=0, Lake;
   const raf=new Map(), timers=new Map(), observers=[];
   class Element extends EventTarget {
@@ -30,20 +30,34 @@ function setup({width=600, reduced=false, storageBlocked=false, brokenCanvas=fal
     localStorage:{getItem(){if(storageBlocked)throw Error('blocked');},setItem(){if(storageBlocked)throw Error('blocked');}},
     requestAnimationFrame:fn=>{raf.set(++id,fn);return id;},cancelAnimationFrame:i=>raf.delete(i),
     setTimeout:(fn,ms)=>{timers.set(++id,{fn,at:clock+ms});return id;},clearTimeout:i=>timers.delete(i),
-    ResizeObserver:class{constructor(fn){this.fn=fn;observers.push(this);}observe(){}disconnect(){}},
-    IntersectionObserver:class{constructor(fn){this.fn=fn;observers.push(this);}observe(){}disconnect(){}},
+    ResizeObserver:class{constructor(fn){this.kind='resize';this.fn=fn;observers.push(this);}observe(){}disconnect(){}},
+    IntersectionObserver:class{constructor(fn){this.kind='intersection';this.fn=fn;observers.push(this);}observe(){}disconnect(){}},
     customElements:{get(){},define(_,value){Lake=value;}}
   };
   vm.runInNewContext(source,ctx);
-  const lake=new Lake(), img=new Element(), hint=new Element();
+  const lake=new Lake(), img=new Element(), hint=new Element(), toggle=new Element();
+  if (!auto) lake.setAttribute('auto', 'false');
   Object.assign(img,{complete:true,naturalWidth:720,naturalHeight:360,src:'lake.webp',currentSrc:'lake.webp',alt:'Lake and computer'});
-  lake.querySelector=s=>s==='img'?img:hint;
+  lake.querySelector=s=>s==='img'?img:s==='.lake-ambient-toggle'?toggle:hint;
   // Browser QA covers pixels. Keep the actual layout grid, input, frame, and timing logic here.
   lake.buildGlass=()=>{}; lake.render=()=>{};
   lake.connectedCallback();
   const tick=(seconds)=>{ const end=clock+seconds*1000; while(clock<end){clock=Math.min(end,clock+1000/60);for(const [i,t]of [...timers])if(t.at<=clock){timers.delete(i);t.fn();} const batch=[...raf];raf.clear();for(const [,fn]of batch)fn(clock);} };
   const event=(target,type,fields={})=>{const e=new Event(type);Object.assign(e,fields);target.dispatchEvent(e);};
-  return {lake,img,hint,raf,timers,motion,doc,win,observers,tick,event};
+  return {lake,img,hint,toggle,raf,timers,motion,doc,win,observers,tick,event};
+}
+{
+  const t=setup({auto:true,random:()=>.5}), l=t.lake;
+  t.tick(5);
+  const point={isPrimary:true,button:0,pointerId:1,clientX:210,clientY:177};
+  t.event(l.cv,'pointerdown',point);
+  assert(l.nextAuto-l.now()>=8 && l.nextAuto-l.now()<=11,'press defers ambient ripples');
+  t.event(l.cv,'pointerup',point);
+  assert(l.nextAuto-l.now()>=8 && l.nextAuto-l.now()<=11,'completed interaction also defers ambient ripples');
+  t.tick(1);assert.equal(l.parts.length,0);assert(l.energy>0);
+  const energy=l.energy;t.event(t.toggle,'click');
+  assert.equal(l.energy,energy,'pausing automatic motion preserves the manual ripple');
+  t.tick(7);assert.equal(l.energy,0);assert.equal(t.raf.size,0);assert.equal(t.timers.size,0);
 }
 for(const width of [272,342,600]) {
   const t=setup({width,storageBlocked:true});
@@ -51,13 +65,41 @@ for(const width of [272,342,600]) {
   t.tick(1); assert(t.lake.energy>.006,'drop remains visible initially');
   t.tick(7); assert.equal(t.lake.energy,0,'drop settles within eight seconds');
   assert.equal(t.raf.size,0,'no animation frames after settling');
-  assert.equal(t.timers.size,0,'user input cancels the automatic invitation');
+  assert.equal(t.timers.size,0,'auto=false leaves no ambient timer');
 }
 {
-  const t=setup(); t.tick(11); assert.equal(t.lake.energy,0); assert.equal(t.raf.size,0);
-  t.tick(1.3); assert(t.lake.energy>0,'invitation starts after twelve seconds');
-  t.tick(4.5); assert.equal(t.lake.energy,0); assert.equal(t.raf.size,0);
-  t.tick(20); assert.equal(t.lake.energy,0,'invitation does not repeat');
+  const t=setup({auto:true,random:()=>.5});
+  const drops=[];const drop=t.lake.drop.bind(t.lake);
+  t.lake.drop=(x,y,amp,rad)=>{drops.push({x,y,amp,rad});drop(x,y,amp,rad);};
+  t.tick(5);assert.equal(drops.length,0);assert.equal(t.raf.size,0,'sleeps between ambient ripples');
+  t.tick(1);assert.equal(drops.length,1,'first small ripple arrives after a quiet delay');
+  assert(drops[0].amp<=.07);assert(t.lake.safeWater(drops[0].x,drops[0].y));
+  assert.equal(t.lake.queue.length,0,'automatic ripples never throw stones');
+  assert.equal(t.lake.parts.length,0,'automatic ripples never spray');
+  t.tick(4);assert.equal(t.lake.energy,0);assert.equal(t.raf.size,0);
+  t.tick(10);assert.equal(drops.length,2,'occasional surface ripples repeat');
+  t.event(t.toggle,'click');t.tick(4);
+  assert(t.lake.ambientPaused);assert.equal(t.lake.energy,0);assert.equal(t.timers.size,0);
+  t.tick(30);assert.equal(drops.length,2,'pause stops automatic motion');
+  t.event(t.toggle,'click');t.tick(4);assert.equal(drops.length,3,'resume restarts after a delay');
+  t.doc.hidden=true;t.event(t.doc,'visibilitychange');assert.equal(t.timers.size,0);assert.equal(t.raf.size,0);
+  t.tick(30);assert.equal(drops.length,3);
+  t.doc.hidden=false;t.event(t.doc,'visibilitychange');t.tick(1);assert.equal(drops.length,3,'returning does not trigger overdue ripples');
+  t.observers.find(o=>o.kind==='intersection').fn([{isIntersecting:false}]);assert.equal(t.timers.size,0);
+  t.tick(30);assert.equal(drops.length,3);
+  t.observers.find(o=>o.kind==='intersection').fn([{isIntersecting:true}]);t.tick(1);assert.equal(drops.length,3);
+  t.motion.matches=true;t.event(t.motion,'change');t.tick(.1);
+  assert(t.toggle.hidden);assert.equal(t.timers.size,0);assert.equal(t.raf.size,0);
+}
+for(const width of [272,342,600]) {
+  let seed=17;const random=()=>{seed=(seed*16807)%2147483647;return(seed-1)/2147483646;};
+  const t=setup({width,random});let drops=0;
+  t.lake.drop=(x,y,amp)=>{assert(t.lake.safeWater(x,y));assert.equal(amp,.07);drops++;};
+  for(let i=0;i<200;i++)t.lake.surfaceRipple();
+  assert.equal(drops,200,'ambient origins stay within the inset water at every width');
+  for(let y=0;y<t.lake.BH;y++)for(let x=0;x<t.lake.Wd;x++) {
+    if(!t.lake.inW((x+.5)/t.lake.dpr,(t.lake.y0+y+.5)/t.lake.dpr))assert.equal(t.lake.shore[y*t.lake.Wd+x],0,'land pixels never receive ripple distortion');
+  }
 }
 {
   const t=setup(); const l=t.lake; l.seen(); l.throwStone(90,177,.97,-.24,1);
@@ -68,11 +110,11 @@ for(const width of [272,342,600]) {
   t.event(l.controls.children[0],'click'); assert(l.energy>0,'keyboard button triggers a drop');
   t.lake.hover=true; t.doc.hidden=true; t.event(t.doc,'visibilitychange'); assert.equal(t.raf.size,0); assert.equal(t.lake.hover,false,'tab switch clears stale hover');
   t.doc.hidden=false; t.event(t.doc,'visibilitychange'); assert(t.raf.size>0);
-  t.observers[1].fn([{isIntersecting:false}]); assert.equal(t.raf.size,0,'offscreen pauses');
+  t.observers.find(o=>o.kind==='intersection').fn([{isIntersecting:false}]); assert.equal(t.raf.size,0,'offscreen pauses');
 }
 {
   const t=setup(); let layouts=0; const original=t.lake.layout.bind(t.lake);t.lake.layout=()=>{layouts++; original();};
-  for(let i=0;i<10;i++) {t.event(t.win,'resize');t.observers[0].fn();}
+  for(let i=0;i<10;i++) {t.event(t.win,'resize');t.observers.find(o=>o.kind==='resize').fn();}
   t.tick(.08); assert.equal(layouts,0);
   t.tick(.04); assert.equal(layouts,1,'window and element resize share one debounce');
   t.lake.disconnectedCallback(); assert.equal(t.raf.size,0); assert.equal(t.timers.size,0);
@@ -89,7 +131,7 @@ for(const width of [272,342,600]) {
   const t=setup({random:()=>0});
   Object.assign(t.lake,{hover:true,mx:210,my:177});t.lake.wake();t.tick(.2);
   assert(t.lake.energy>0,'hover drizzle makes gentle drops');
-  assert.equal(t.lake.nextAuto,Infinity,'hover interaction cancels the invitation');
+  assert.equal(t.lake.nextAuto,Infinity,'auto=false remains respected while hovering');
   t.lake.hover=false;t.tick(8);assert.equal(t.raf.size,0,'leaving the lake lets drizzle settle');
 }
 {
@@ -110,7 +152,7 @@ for(const width of [272,342,600]) {
   const t=setup({width:0});
   assert.equal(t.img.style.display,'','zero-width initialization retains the image');
   assert(!t.lake.attrs.has('data-ready'));
-  t.lake.cv.clientWidth=600;t.observers[0].fn();t.tick(.2);
+  t.lake.cv.clientWidth=600;t.observers.find(o=>o.kind==='resize').fn();t.tick(.2);
   assert(t.lake.attrs.has('data-ready'),'component reveals only after successful layout');
   assert.equal(t.img.style.display,'none');
 }
@@ -121,9 +163,9 @@ for(const width of [272,342,600]) {
   assert.equal(t.raf.size,0);
 }
 {
-  const t=setup({reduced:true});t.tick(20);assert.equal(t.raf.size,0);assert.equal(t.lake.energy,0);
+  const t=setup({auto:true,reduced:true});t.tick(20);assert.equal(t.raf.size,0);assert.equal(t.lake.energy,0);
 }
 {
   const t=setup({brokenCanvas:true});assert.equal(t.img.style.display,'');assert(!t.lake.attrs.has('data-ready'));
 }
-console.log('Lake checks passed: settling, one invitation, flick, screen timing, keyboard controls, visibility, resize, hover drizzle, reduced motion, and fallback.');
+console.log('Lake checks passed: settling, gentle ambient ripples, shoreline bounds, pause/resume, flick, screen timing, keyboard controls, visibility, resize, hover drizzle, reduced motion, and fallback.');
