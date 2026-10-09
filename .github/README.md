@@ -4,9 +4,14 @@ Personal website at https://philippbeer.me/.
 
 ## Source and publishing
 
-- Canonical repository: `depose28/philippbeer-v2`.
+- Canonical repository: `depose28/philippbeer.me` (formerly `philippbeer-v2`).
 - GitHub Pages publishes the root of `main`; `CNAME` holds the custom domain.
-- `depose28/philippbeer.me` is the previous site, not the production source.
+- The previous site is `depose28/philippbeer.me-legacy`, now private and archived.
+  Its GitHub Pages configuration and GoDaddy `v2` CNAME record were removed.
+  The retired record was `v2 CNAME depose28.github.io.`, with a one-hour TTL.
+- Local `origin` points to the current site; `legacy` points to the previous site.
+- The old `philippbeer.me` repository name was reused for the current site.
+  Update old checkouts explicitly: their existing URL now points to the current site.
 - Work on a branch. Philipp approves and merges production changes.
 
 ## Structure
