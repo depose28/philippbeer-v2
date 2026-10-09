@@ -1,5 +1,5 @@
 /* <lake-ripple auto="true" drizzle="true"><img src="…" alt="…"></lake-ripple>
-   Wave-simulated lake surface over the engraving. Tap/click = splash, drag/swipe = skipping stone.
+   Wave-simulated lake surface over the engraving. Tap/click = soft drop, drag/swipe = skipping stone.
    The <img> inside is the fallback and the accessible description; the canvas replaces it once ready.
    No dependencies. Pauses offscreen, respects prefers-reduced-motion, adapts resolution under load.
    Adapted from the Claude Design prototype (lake-ripple.js). */
@@ -14,7 +14,7 @@
   const GLASS = { box: [0.6, 0.6, 0.69, 0.76], seed: [0.643, 0.678] }; // where to look for the dark screen glass, and a point inside it
   const FLICKER = { phosphor: 0.75, iridescent: 0.95, holo: 1.15 }; // seconds, per screen style
   const isComputer = (x, y) => x > COMPUTER[0] && x < COMPUTER[2] && y > COMPUTER[1] && y < COMPUTER[3];
-  const isWater = (x, y) => x <= 0.935 && y > lerpT(WT, x) && y < lerpT(WB, x) - 0.006;
+  const isWater = (x, y) => x >= 0 && x <= 0.935 && y > lerpT(WT, x) && y < lerpT(WB, x) - 0.006;
   const hash = (c, r) => { const s = Math.sin(c*12.9898 + r*78.233) * 43758.5453; return s - Math.floor(s); };
   const blur = (src, w, h, r) => { // separable box blur
     const tmp = new Float32Array(src.length), out = new Float32Array(src.length);
@@ -53,6 +53,7 @@
     fallback() {
       this.sleep(); this.events.abort(); this.ro?.disconnect(); this.io?.disconnect();
       clearTimeout(this._rt);
+      if (this.ambientToggle) this.ambientToggle.hidden = true;
       this.cv?.remove(); this.controls?.remove(); this.cv = null; this.controls = null;
       this.img.style.display = ''; this.removeAttribute('data-ready');
     }
@@ -69,11 +70,12 @@
       this.motion = matchMedia('(prefers-reduced-motion: reduce)');
       this.reduced = this.motion.matches;
       this.fine = matchMedia('(hover: hover) and (pointer: fine)').matches;
-      hint.textContent = this.fine ? 'click the lake, or flick a stone across it' : 'tap the lake, or swipe a stone across it';
+      hint.textContent = this.fine ? 'click for ripples · flick for stones' : 'tap for ripples · swipe for stones';
       try { if (localStorage.getItem(STORE)) hint.classList.add('is-seen'); } catch (e) {}
-      Object.assign(this, { cv, hint, ctx: cv.getContext('2d'), queue: [], parts: [], visible: true, hover: false, mx: -1, my: -1, t0: performance.now(), nextAuto: 12, ema: 0, energy: 0, dirty: true, accumulator: 0 });
+      Object.assign(this, { cv, hint, ctx: cv.getContext('2d'), queue: [], parts: [], visible: true, hover: false, mx: -1, my: -1, t0: performance.now(), nextAuto: Infinity, startupLeft: 4, ema: 0, energy: 0, dirty: true, accumulator: 0 });
       // Keep the fallback until layout has painted a complete canvas.
-      img.after(cv, hint);
+      img.after(cv);
+      if (!hint.parentElement) cv.after(hint);
       this.layout();
       if (this.cur) this.render(false, 0);
       this.connect();
@@ -100,11 +102,12 @@
         this.reduced = this.motion.matches;
         this.toggleAttribute('data-reduced', this.reduced);
         if (this.reduced) {
-          this.cancelAuto(); this.queue.length = 0; this.parts.length = 0;
+          this.startupLeft = 0; this.nextAuto = Infinity; this.queue.length = 0; this.parts.length = 0;
           this.flickAt = undefined; this.settle(); this.cv.style.cursor = '';
           if (this.down && this.cv.hasPointerCapture(this.down.id)) this.cv.releasePointerCapture(this.down.id);
           this.down = null; this.hover = false; this._overWater = false;
         }
+        if (this.ambientToggle) this.ambientToggle.hidden = this.reduced || !this.opt('auto');
         this.resume();
       };
       this.motion.addEventListener('change', motionChanged, { signal });
@@ -119,6 +122,7 @@
     resume() {
       this.sleep();
       if (this.dead || !this.visible || document.hidden) return;
+      this.deferAuto(this.startupLeft ? 1.5 : 4, this.startupLeft ? 1.5 : 3);
       this.layout();
       if (this.cur) this.render(false, this.now());
       this.dirty = true; this.wake();
@@ -136,6 +140,18 @@
 
     bind() {
       const cv = this.cv, signal = this.events.signal;
+      this.ambientToggle = this.querySelector('.lake-ambient-toggle');
+      if (this.ambientToggle) {
+        this.ambientToggle.hidden = this.reduced || !this.opt('auto');
+        this.ambientToggle.addEventListener('click', () => {
+          this.ambientPaused = !this.ambientPaused;
+          this.startupLeft = 0;
+          this.ambientToggle.textContent = this.ambientPaused ? 'Resume ripples' : 'Pause ripples';
+          this.ambientToggle.setAttribute('title', this.ambientPaused ? 'Resume automatic ripples' : 'Pause automatic ripples');
+          this.deferAuto(2);
+          this.wake();
+        }, { signal });
+      }
       if (!this.controls) {
         this.controls = document.createElement('div');
         this.controls.className = 'lake-controls';
@@ -166,7 +182,7 @@
         this.wake();
       });
       on('pointerleave', e => { if (this.reduced || !e.isPrimary || (this.down && e.pointerId !== this.down.id)) return; this.hover = false; this.wake(); });
-      on('pointerdown', e => { if (this.reduced || !e.isPrimary || e.button !== 0 || this.down || !this.cur) return; const [x, y] = xy(e); this.down = { x, y, id: e.pointerId, t: performance.now() }; if (this.inW(x, y) || this.onComputer(x, y)) this.cancelAuto(); this.wake(); try { cv.setPointerCapture(e.pointerId); } catch (_) {} });
+      on('pointerdown', e => { if (this.reduced || !e.isPrimary || e.button !== 0 || this.down || !this.cur) return; const [x, y] = xy(e); this.down = { x, y, id: e.pointerId, t: performance.now() }; if (this.inW(x, y) || this.onComputer(x, y)) { this.startupLeft = 0; this.deferAuto(); } this.wake(); try { cv.setPointerCapture(e.pointerId); } catch (_) {} });
       const cancel = e => { if (this.down?.id === e.pointerId) { this.down = null; this.wake(); } };
       on('pointercancel', cancel); on('lostpointercapture', cancel);
       on('pointerup', e => {
@@ -179,12 +195,31 @@
         if (this.inW(sx, sy)) { this.seen(); this.throwStone(sx, sy, ux, uy, sp); }
       });
     }
-    cancelAuto() {
-      this.nextAuto = Infinity; this.autoEnd = undefined;
-      for (let i = this.queue.length - 1; i >= 0; i--) if (this.queue[i].auto) this.queue.splice(i, 1);
-      this.dirty = true; this.wake();
+    deferAuto(delay = 8, spread = 3) {
+      this.nextAuto = this.reduced || this.ambientPaused || !this.opt('auto') ? Infinity : this.now() + delay + Math.random() * spread;
     }
-    seen() { this.cancelAuto(); this.touchedAt = this.now(); if (this._seen) return; this._seen = true; this.hint.classList.add('is-seen'); try { localStorage.setItem(STORE, '1'); } catch (e) {} }
+    // Keep ripple origins comfortably inside the water, even on narrow screens.
+    safeWater(x, y) {
+      const dx = this.W * .035, dy = this.H * .035;
+      return [[0,0],[-dx,-dy],[dx,-dy],[-dx,dy],[dx,dy]].every(([a,b]) => this.inW(x+a, y+b));
+    }
+    surfaceRipple() {
+      // Sample continuously across the lake, excluding a small band around the last ripple.
+      const minX = .1, maxX = .8, gap = .13;
+      const previous = this.lastAutoX;
+      const leftSpan = previous === undefined ? maxX - minX : Math.max(0, previous - gap - minX);
+      const rightStart = previous === undefined ? maxX : Math.min(maxX, previous + gap);
+      const rightSpan = maxX - rightStart;
+      for (let i = 0; i < 24; i++) {
+        const choice = Math.random() * (leftSpan + rightSpan);
+        const u = choice < leftSpan ? minX + choice : rightStart + choice - leftSpan;
+        const top = lerpT(WT, u) + .035, bottom = lerpT(WB, u) - .006 - .035;
+        if (bottom <= top) continue;
+        const x = this.W * u, y = this.H * (top + Math.random() * (bottom - top));
+        if (this.safeWater(x, y)) { this.lastAutoX = u; this.drop(x, y, .22, 1.8); return true; }
+      }
+    }
+    seen() { this.startupLeft = 0; this.deferAuto(); this.touchedAt = this.now(); if (this._seen) return; this._seen = true; this.hint.classList.add('is-seen'); try { localStorage.setItem(STORE, '1'); } catch (e) {} }
 
     layout() {
       const W = this.cv.clientWidth; if (!W || !this.img.complete || !this.img.naturalWidth) return;
@@ -205,6 +240,14 @@
       for (let y = 1; y < SY-1; y++) for (let x = 1; x < SX-1; x++) { const k = y*SX+x; if (!this.mask[k]) continue; let n = 0, t = 0;
         for (let j = -3; j <= 3; j++) for (let i = -3; i <= 3; i++) { const X = x+i, Y = y+j; t++; if (X >= 0 && Y >= 0 && X < SX && Y < SY && this.mask[Y*SX+X]) n++; }
         this.dmap[k] = DAMP * (0.955 + 0.045 * Math.pow(n / t, 2)); }
+      // Exact pixel shoreline with a soft inward fade. The simulation grid is coarser.
+      this.shore = new Float32Array(Wd * this.BH);
+      for (let y = 0; y < this.BH; y++) for (let x = 0; x < Wd; x++) {
+        const u = (x + .5) / Wd, v = (this.y0 + y + .5) / Hd;
+        this.shore[y * Wd + x] = Math.max(0, Math.min(1,
+          (v - lerpT(WT, u)) / .018, (lerpT(WB, u) - .006 - v) / .018,
+          u / .025, (.935 - u) / .025));
+      }
       this.sxOf = new Int32Array(Wd); for (let x = 0; x < Wd; x++) this.sxOf[x] = Math.min(SX-2, Math.max(1, Math.floor(x / Wd * SX)));
       this.syOf = new Int32Array(this.BH); for (let y = 0; y < this.BH; y++) this.syOf[y] = Math.min(SY-2, Math.max(1, Math.floor(y / this.BH * SY)));
       const c = this.ctx; c.font = '100px ' + FONT; const m = c.measureText('M').width || 60;
@@ -236,12 +279,12 @@
     }
     // One click, one drop. The spray is decoration only and makes no rings of its own.
     splashBig(x, y) {
-      this.drop(x, y, 2.2, 3.6); this.spray(x, y, 12, 0, 1.25);
+      this.drop(x, y, .85, 2.6); this.spray(x, y, 4, 0, .45);
     }
-    throwStone(x, y, ux, uy, sp, auto = false) {
-      let t = this.now(), n = Math.max(3, Math.min(10, Math.round(sp * 6.5))), L = Math.max(36, Math.min(160, sp * 125)), px = x, py = y, amp = 1.05, dt = 0.26, prev = null;
+    throwStone(x, y, ux, uy, sp) {
+      let t = this.now(), n = Math.max(3, Math.min(10, Math.round(sp * 6.5))), L = Math.max(36, Math.min(160, sp * 125)), px = x, py = y, amp = .55, dt = 0.26, prev = null;
       for (let k = 0; k < n; k++) {
-        const q = { t, auto, x: px, y: py, amp, ux, last: false, from: prev, L };
+        const q = { t, x: px, y: py, amp, ux, last: false, from: prev, L };
         this.queue.push(q); prev = { x: px, y: py, t };
         const nx = px + ux * L, ny = py + uy * L * 0.6;
         if (!this.inW(nx, ny) || k === n - 1) { q.last = true; break; }
@@ -264,17 +307,19 @@
       const t = this.now();
       const quiet = this.touchedAt !== undefined && t - this.touchedAt < 2.5;
       const drizzle = this.fine && this.hover && !this.down && !this.reduced && this.opt('drizzle') && this.inW(this.mx, this.my);
-      if (drizzle && !quiet && Math.random() < 1 - Math.pow(1 - 0.035, dt * 60)) {
+      if (drizzle && !quiet && Math.random() < 1 - Math.pow(1 - 0.014, dt * 60)) {
         const a = Math.random() * 6.28, r = Math.sqrt(Math.random()) * 40, x = this.mx + Math.cos(a) * r, y = this.my + Math.sin(a) * r * 0.4;
-        if (this.inW(x, y)) { this.cancelAuto(); this.drop(x, y, 0.1, 1.4); }
+        if (this.safeWater(x, y)) { this.startupLeft = 0; this.deferAuto(); this.drop(x, y, .1, 1.4); }
       }
-      if (!this.reduced && this.opt('auto') && t >= this.nextAuto) {
-        this.nextAuto = Infinity; this.autoEnd = t + 4.5;
-        this.throwStone(this.W * (0.05 + Math.random() * 0.08), this.H * (0.6 + Math.random() * 0.05), 0.97, -0.24, 0.95 + Math.random() * 0.4, true);
+      if (!this.reduced && !this.ambientPaused && this.opt('auto') && t >= this.nextAuto) {
+        if (!this.down && !drizzle && !quiet && (this.startupLeft > 0 || this.energy <= SLEEP_ENERGY)) {
+          if (this.surfaceRipple() && this.startupLeft > 0) this.startupLeft--;
+        }
+        this.nextAuto = this.startupLeft > 0 ? t + 2.5 + Math.random() * 1.5 : t + 8 + Math.random() * 4;
       }
       for (let i = 0; i < this.queue.length;) {
         const q = this.queue[i]; if (t < q.t) { i++; continue; }
-        if (this.inW(q.x, q.y)) { this.drop(q.x, q.y, q.last ? q.amp * 1.3 : q.amp, q.last ? 2.6 : 1.8); this.spray(q.x, q.y, q.last ? 7 : 4, q.ux, q.last ? 0.8 : 0.6); }
+        if (this.inW(q.x, q.y)) { this.drop(q.x, q.y, q.last ? q.amp * 1.3 : q.amp, q.last ? 2.6 : 1.8); this.spray(q.x, q.y, q.last ? 3 : 2, q.ux, q.last ? .4 : .3); }
         this.queue.splice(i, 1);
       }
       if (this.energy > 0) {
@@ -285,9 +330,6 @@
       for (const p of this.parts) { p.age += dt; p.x += p.vx * dt; p.y += p.vy * dt; p.vy += 260 * dt;
         if (p.vy > 0 && p.y >= p.y0) p.dead = true; }
       for (let i = this.parts.length - 1; i >= 0; i--) if (this.parts[i].dead || this.parts[i].age >= 2) this.parts.splice(i, 1);
-      if (this.autoEnd !== undefined && t >= this.autoEnd) {
-        this.autoEnd = undefined; this.queue.length = 0; this.parts.length = 0; this.settle();
-      }
       const flying = this.queue.some(q => q.from);
       const flickering = this.flickAt !== undefined && t - this.flickAt < this.flickFor + 0.05;
       const active = this.energy > SLEEP_ENERGY || this.parts.length || flying || flickering;
@@ -296,7 +338,7 @@
       if (active || (drizzle && !quiet)) this.wake();
       else {
         this.sleep();
-        let next = !this.reduced && this.opt('auto') ? this.nextAuto : Infinity;
+        let next = !this.reduced && !this.ambientPaused && this.opt('auto') ? this.nextAuto : Infinity;
         for (const q of this.queue) next = Math.min(next, q.t);
         if (drizzle && quiet) next = Math.min(next, this.touchedAt + 2.5);
         if (Number.isFinite(next)) this._wake = setTimeout(() => this.wake(), Math.max(0, (next - t) * 1000));
@@ -314,14 +356,15 @@
     render(active, t) {
       const c = this.ctx; c.setTransform(1, 0, 0, 1, 0, 0); c.globalAlpha = 1; c.drawImage(this.img, 0, 0, this.Wd, this.Hd);
       if (!active) return;
-      const fade = this.autoEnd === undefined ? 1 : Math.max(0, Math.min(1, (this.autoEnd - t) / .75));
       if (this.energy > 0) {
         const Wd = this.Wd, Hd = this.Hd, y0 = this.y0, BH = this.BH, src = this.pixels, out = this.out.data, h = this.cur, m = this.mask, SX = this.SX, sxOf = this.sxOf, syOf = this.syOf, K = 26 * this.dpr, LK = 240;
         for (let yy = 0; yy < BH; yy++) { const py = y0 + yy, row = syOf[yy] * SX; let o = yy * Wd * 4, si = py * Wd * 4;
           for (let px = 0; px < Wd; px++, o += 4, si += 4) { const k = row + sxOf[px];
-            if (m[k]) { const gx = (h[k+1] - h[k-1]) * fade, gy = (h[k+SX] - h[k-SX]) * fade;
+            const shore = this.shore[yy * Wd + px];
+            if (m[k] && shore > 0) { const gx = (h[k+1] - h[k-1]) * shore, gy = (h[k+SX] - h[k-SX]) * shore;
               if (gx > 0.0008 || gx < -0.0008 || gy > 0.0008 || gy < -0.0008) {
                 let qx = px + (gx * K | 0), qy = py + (gy * K * 0.6 | 0); if (qx < 0) qx = 0; else if (qx >= Wd) qx = Wd - 1; if (qy < 0) qy = 0; else if (qy >= Hd) qy = Hd - 1;
+                if (!this.shore[(qy - y0) * Wd + qx]) { qx = px; qy = py; }
                 const q = (qy * Wd + qx) * 4; let L = gy * LK; if (L < -0) L *= 0.7; else if (L > 14) L = 14 + (L - 14) * 1.6;
                 out[o] = src[q] + L; out[o+1] = src[q+1] + L; out[o+2] = src[q+2] + L * 0.92; out[o+3] = 255; continue; } }
             out[o] = src[si]; out[o+1] = src[si+1]; out[o+2] = src[si+2]; out[o+3] = 255; } }
@@ -329,23 +372,30 @@
       }
       c.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
       if (this.flickAt !== undefined && t - this.flickAt < this.flickFor) this.renderFlicker((t - this.flickAt) / this.flickFor);
+      // Clip glyphs and spray too; checking only a glyph's centre lets it cross the bank.
+      const inset = 2 / this.dpr;
+      c.save(); c.beginPath(); c.moveTo(inset, lerpT(WT, 0) * this.H + inset);
+      for (const [x,y] of WT) if (x > 0 && x <= .92) c.lineTo(x * this.W, y * this.H + inset);
+      c.lineTo(.92 * this.W, lerpT(WT, .92) * this.H + inset);
+      for (let i = WB.length - 1; i >= 0; i--) if (WB[i][0] <= .92) c.lineTo(Math.max(inset, WB[i][0] * this.W), (WB[i][1] - .006) * this.H - inset);
+      c.closePath(); c.clip();
       c.font = this.fs + 'px ' + FONT; c.textBaseline = 'middle'; c.textAlign = 'center';
       if (active) {
         const thr = 0.07, cw = this.cw, ch = this.ch, yA = T * this.H, yB = B * this.H;
         c.fillStyle = 'rgb(250,248,238)';
         for (let y = yA + ch / 2; y < yB; y += ch) for (let x = cw / 2; x < this.W; x += cw) {
-          const hv = -this.hAt(x, y) * fade; if (hv < thr) continue; const w = Math.min(1, (hv - thr) * 7);
+          const hv = -this.hAt(x, y); if (hv < thr) continue; const w = Math.min(1, (hv - thr) * 7);
           c.globalAlpha = Math.min(0.85, w); const r = (y / ch) | 0, col = (x / cw) | 0;
           c.fillText(w > 0.6 ? '~' : (w > 0.3 ? '-' : (hash(col, r) > 0.5 ? '.' : ',')), x, y); }
       }
       for (const q of this.queue) if (q.from && t >= q.from.t && t < q.t) {
         const f = (t - q.from.t) / (q.t - q.from.t), x = q.from.x + (q.x - q.from.x) * f, y = q.from.y + (q.y - q.from.y) * f - Math.sin(Math.PI * f) * Math.min(26, q.L * 0.22);
-        c.globalAlpha = 0.22 * fade; c.fillStyle = 'rgb(40,40,34)'; c.fillText('.', q.from.x + (q.x - q.from.x) * f, q.from.y + (q.y - q.from.y) * f);
-        c.globalAlpha = 0.95 * fade; c.fillStyle = 'rgb(52,50,44)'; c.fillText('o', x, y);
+        c.globalAlpha = 0.22; c.fillStyle = 'rgb(40,40,34)'; c.fillText('.', q.from.x + (q.x - q.from.x) * f, q.from.y + (q.y - q.from.y) * f);
+        c.globalAlpha = 0.95; c.fillStyle = 'rgb(52,50,44)'; c.fillText('o', x, y);
       }
       c.fillStyle = 'rgb(252,250,242)';
-      for (const p of this.parts) { c.globalAlpha = Math.max(0, 0.95 - p.age * 0.6) * fade; c.fillText(p.g, p.x, p.y); }
-      c.globalAlpha = 1;
+      for (const p of this.parts) { c.globalAlpha = Math.max(0, 0.95 - p.age * 0.6); c.fillText(p.g, p.x, p.y); }
+      c.restore(); c.globalAlpha = 1;
     }
     // Trace the screen glass from the picture itself: blur, keep the dark pixels connected to a
     // point inside the screen, fill the speckles, then pull the edge in so the bezel stays untouched.
